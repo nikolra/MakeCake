@@ -16,15 +16,13 @@ const InputField: React.FC<IInputProps> = (props: IInputProps) => {
 
     return (
         <Box
-            component="form"
+            component="div"
             sx={{
                 '& > :not(style)': { m: 1, width: '25ch' },
             }}
-            noValidate
-            autoComplete="off"
             onChange={props.onChange}
         >
-            <TextField id="standard-basic" label="Standard" variant="standard" />
+            <TextField id="standard-basic" label={props.placeholder} variant="standard" />
         </Box>
     )
 }

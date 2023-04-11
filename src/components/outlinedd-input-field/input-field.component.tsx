@@ -13,14 +13,12 @@ const InputField: React.FC<IProps> = ({setValueDelegate, label, width}: IProps) 
     const [errorString, setErrorString] = useState('');
     return (
         <Box
-            component="form"
+            component="div"
             sx={{
                 width: width,
                 maxWidth: '100%',
                 m: 1
             }}
-            noValidate
-            autoComplete="off"
         >
             <TextField fullWidth id="outlined-basic" label={label} variant="outlined" onChange={(e: any) => {
                 console.log(`${label}: ${e.target.value}`)

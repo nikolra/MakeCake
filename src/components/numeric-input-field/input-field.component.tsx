@@ -13,14 +13,12 @@ const InputField: React.FC<IProps> = ({setValueDelegate, label}: IProps) => {
 
     return (
         <Box
-            component="form"
+            component="div"
             sx={{
                 width: 250,
                 maxWidth: '100%',
                 m: 1
             }}
-            noValidate
-            autoComplete="off"
         >
             <TextField
                 id="outlined-number"
