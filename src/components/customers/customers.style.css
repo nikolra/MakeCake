@@ -1,0 +1,85 @@
+.customers-widget{
+    height: 780px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.customers-header{
+    /*height: 80%;*/
+    width: 100%;
+    padding: 0 20px 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.customers-header-title-row{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+}
+
+.customers-header-find-container{
+    height: 100%;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.customers-header-text{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.customers-header-customers-list-title{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: repeat(1, 30px);
+    width: 100%;
+    padding: 0 20px;
+    border-bottom: 2px solid var(--widget-line-separator);
+}
+
+.customers-header-customers-list-title-item{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 14px;
+    font-family: 'Roboto';
+    font-weight: 700;
+    color: var(--foreground);
+    opacity: 0.5;
+    gap: 5px;
+}
+
+.customers-list-container{
+    margin-bottom: 3px;
+    width: 100%;
+    flex: 1;
+    overflow: auto;
+}
+
+.customers-list{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 5px;
+    margin-top: 5px;
+}
+.recipes-input{
+    padding-top: 1vw;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 3fr 4fr 4fr 1fr;
+    grid-template-rows: repeat(1, 60px);
+}

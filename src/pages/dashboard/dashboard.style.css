@@ -1,0 +1,45 @@
+.dashboard-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+}
+
+.dashboard-content{
+    width: 90%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 380px);
+    grid-gap: 20px;
+}
+
+@media screen and (max-width: 1400px) {
+    .dashboard-container{
+        align-items: flex-start;
+    }
+    .dashboard-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 40px;
+    }
+
+    .dashboard-widget-container{
+        width: 560px;
+        height: 360px;
+    }
+
+    .today-orders-ext{
+        height: 400px;
+    }
+}
+
+@media screen and (max-height: 800px) {
+    .dashboard-container{
+        align-items: flex-start;
+        padding: 40px;
+    }
+}

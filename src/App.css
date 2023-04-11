@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap');
+
+/*::-webkit-scrollbar {*/
+/*    width: 8px;*/
+/*}*/
+
+/*::-webkit-scrollbar-track {*/
+/*    background: transparent;*/
+/*}*/
+
+/*::-webkit-scrollbar-thumb {*/
+/*    background: var(--shadow);*/
+/*    border-radius: 4px;*/
+/*}*/
+
+/*::-webkit-scrollbar-thumb:hover {*/
+/*    background: var(--shadow);*/
+/*}*/
+
+:root {
+    --main-gradient: linear-gradient(180deg, rgb(255, 166, 128) 0%, rgb(255, 200, 124) 100%);
+    --background: rgb(255, 245, 235);
+    --donut-gradient: linear-gradient(90.76deg, rgba(255, 142, 95, 0.4) 1.46%, rgba(255, 104, 95, 0.4) 99.62%);
+    --foreground: #3f3f3f;
+    --button-gradient: linear-gradient(90.76deg, #ff5b57 1.46%, #FF8E5F 99.62%);
+    --borders: rgb(255, 104, 95);
+    --borders-transparent: #ff675f42;
+    --error: rgb(255, 83, 83);
+    --nav-inactive: #AB6853;
+    --nav-active: var(--foreground);
+    --shadow: rgba(128, 128, 128, 0.3);
+    --widget-radius: 20px;
+    --dashboard-widgets-color: #fffbfb;
+    --widget-second-color: #eceaea;
+    --widget-line-separator: #dadada;
+}
+
+*{
+    margin: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+body{
+    background-color: var(--background);
+}
+
+.pages{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+.data-container{
+    /* border: 2px solid red; */
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background);
+}
+
+.inputs-container{
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.remember-forgot-container{
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.forgot-button{
+    font-size: 14px;
+    font-family: 'Roboto Condensed';
+    font-weight: 700;
+    margin-left: 5px;
+    color: var(--foreground);
+    text-decoration: none;
+}
+
+.forgot-button:hover{
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.forgot-button:active{
+    color: var(--borders)
+}
+
+.button{
+    height: 50px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: 'Roboto Condensed';
+    font-weight: 700;
+    color: var(--foreground);
+    text-decoration: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button:hover{
+    cursor: pointer;
+}
+
+.button-gradient{
+    background-image: var(--button-gradient);
+    border: none;
+}
+
+.button-bordered{
+    border: 3px solid var(--borders);
+    color: var(--borders);
+}
+
+.button:active {
+    scale: 0.99;
+}
+
+.button:hover {
+    background-color: var(--borders-transparent);
+    opacity: 0.9;
+}

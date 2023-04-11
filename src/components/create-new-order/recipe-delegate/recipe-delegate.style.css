@@ -1,0 +1,34 @@
+.recipe-delegate-main-container{
+    display: flex;
+    flex-direction: column;
+    justify-self: flex-start;
+    align-items: center;
+    border-radius: 16px;
+    background-color: #f5f3f3;
+    padding: 0 20px;
+    width: 100%;
+}
+
+.recipe-delegate-opened{
+}
+
+.recipe-delegate-container{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 3fr 4fr 4fr 1fr;
+    grid-template-rows: repeat(1, 60px);
+}
+
+.recipe-delegate-text{
+    font-size: 14px;
+    font-family: 'Roboto';
+    font-weight: 700;
+    color: var(--foreground);
+}
+
+.recipe-delegate-table-container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+}

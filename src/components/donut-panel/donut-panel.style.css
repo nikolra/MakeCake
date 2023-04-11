@@ -1,0 +1,29 @@
+.donut-panel-container{
+    width: 36%;
+    background: var(--main-gradient);
+    position: relative;
+    clip-path: inset(0);
+}
+
+.donut-image{
+    height: 100vh;
+    position: absolute;
+    right: 50px;
+    opacity: 0.2;
+
+}
+
+@media screen and (max-width: 900px) {
+  .donut-panel-container{
+    width: 0px;
+  }
+}
+
+/* @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+} */

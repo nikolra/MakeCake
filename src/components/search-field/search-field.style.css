@@ -1,0 +1,18 @@
+.search-field{
+    height: 32px;
+    background-color: #f5f3f3;
+    border-radius: 40px;
+    border: none;
+    text-decoration: none;
+    outline: none;
+    width: 200px;
+    padding: 0px 10px;
+    font-size: 12px;
+    font-family: "Roboto";
+    font-weight: 700;
+    color: var(--foreground);
+}
+
+.search-field:focus{
+    background-color: var(--widget-second-color);
+}

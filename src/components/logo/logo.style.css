@@ -1,0 +1,11 @@
+.logo{
+    height: 60px;
+    display: flex;
+    justify-content: center;
+
+}
+
+.logo-image{
+    height: 100%;
+    fill: var(--foreground);
+}

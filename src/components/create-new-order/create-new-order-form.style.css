@@ -1,0 +1,104 @@
+.all-orders-container{
+    width: 95%;
+    height: 90%;
+}
+
+.input-fields{
+    display: flex;
+}
+
+.recipes-header-title-row{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    padding-top: 10px;
+}
+
+.recipes-in-new-order-header{
+    /*height: 100px;*/
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.recipes-header-recipes-list-title{
+    display: grid;
+    grid-template-columns: 3fr 4fr 4fr 2fr ;
+    grid-template-rows: repeat(1, 30px);
+    width: 100%;
+    border-bottom: 2px solid var(--widget-line-separator);
+}
+
+.recipes-header-list-title {
+    width: 100%;
+    padding: 0 20px;
+    border-bottom: 2px solid var(--widget-line-separator);
+    font-size: 14px;
+    font-family: 'Roboto';
+    font-weight: 700;
+    color: var(--foreground);
+    opacity: 0.5;
+    gap: 5px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.submit-button-container{
+    align-self: end;
+    height: 46px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.new-order-widget{
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+    height: 85%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.recipes-widget{
+    height: 90%;
+    width: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: var(--dashboard-widgets-color);
+    border-radius: var(--widget-radius);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+
+    align-items: center;
+    padding: 40px;
+}
+
+.button-container{
+    margin-top: 10px;
+    align-self: end;
+    height: 46px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+}
+
+
+.orders{
+    height: 80%;
+    width: 100%;
+    padding: 0 20px 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}

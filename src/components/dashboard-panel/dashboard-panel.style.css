@@ -1,0 +1,24 @@
+.dashboard-side-panel{
+    width: 220px;
+    background: var(--main-gradient);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-section-container{
+    width: 200px;
+    margin-top: 20px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logout-container{
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,39 @@
+.dashboard-widget-container{
+    background-color: var(--dashboard-widgets-color);
+    border-radius: var(--widget-radius);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 40px;
+}
+
+.widget-title-text{
+    font-size: 18px;
+    font-family: 'Roboto';
+    font-weight: 700;
+    color: var(--foreground);
+}
+
+.widget-title-text-secondary{
+    font-size: 14px;
+    font-family: 'Roboto';
+    font-weight: 100;
+    color: var(--foreground);
+    opacity: 0.8;
+}
+
+/*.dashboard-widget-title{*/
+/*    height: 40px;*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*
+/*    opacity: 0.5;*/
+/*}*/
+
+/*.dashboard-widget-content{*/
+/*    width: 100%;*/
+/*    flex: 1;*/
+/*}*/
