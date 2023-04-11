@@ -10,7 +10,15 @@ import ComboBox from "../combo-box/combo-box.component";
 
 export default function NewOrderForm() {
 
-    const [recipes, setRecipes] = useState(devRecipes)
+
+    const devRecipes:{
+        name: string,
+        quantity: number,
+        ingredientsCost: number,
+        totalCost: number
+    }[] = [];
+
+    const [recipes, setRecipes] = useState(devRecipes);//TODO: initial value should be an empty array
     const [customerName, setCustomerName] = useState();
     const [recipeName, setRecipeName] = useState();
     const [dueDate, setDueDate] = useState();
@@ -21,6 +29,7 @@ export default function NewOrderForm() {
 
     function sendDataToBackend() {
         console.log(`Submit clicked`);
+        //TODO: implement integration with backend
     }
 
     function addRecipe() {
@@ -34,12 +43,13 @@ export default function NewOrderForm() {
 
     function setDateFromPicker(value: any) {
         setDueDate(value);
-        //TODO: implement integration with backend
     }
     return (
         <div className="dashboard-widget-container new-order-widget all-orders-container inputs-container">
             <div className="input-fields">
-                <ComboBox setValueDelegate={setCustomerName} label="Customer Name"/>
+                <div className={"new-order-customer-name"}>
+                    <ComboBox setValueDelegate={setCustomerName} label="Customer Name"/>
+                </div>
                 <DatePicker setValueDelegate={setDateFromPicker}/>
             </div>
 
@@ -77,7 +87,7 @@ export default function NewOrderForm() {
                         <div className="orders-list">
                             {
                                 recipes.map((recipe) => {
-                                    return <RecipeDelegate key={recipe.name} name={recipe.name} quantity={recipe.quantity} ingredientsCost={recipe.ingredientsCost} totalCost={recipe.totalCost.toString()}/>
+                                    return <RecipeDelegate key={recipe.name} name={recipe.name} quantity={recipe.quantity.toString()} ingredientsCost={recipe.ingredientsCost.toString()} totalCost={recipe.totalCost.toString()}/>
                                 })
                             }
                         </div>

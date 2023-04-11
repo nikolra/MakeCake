@@ -58,6 +58,9 @@
     cursor: pointer;
     margin-top: 10px;
 }
+.new-order-customer-name{
+    padding-top: 15px;
+}
 
 .new-order-widget{
     margin-top: 10vh;
@@ -77,7 +80,7 @@
     justify-content: flex-start;
     background-color: var(--dashboard-widgets-color);
     border-radius: var(--widget-radius);
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0 5px 15px 0;
 
     align-items: center;
     padding: 40px;
