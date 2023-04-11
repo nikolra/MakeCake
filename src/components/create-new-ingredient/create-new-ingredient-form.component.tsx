@@ -13,6 +13,7 @@ export default function NewIngredientForm() {
 
     function sendDataToBackend() {
         console.log(`Submit clicked`);
+        //TODO: should calculate avg price??
     }
 
     return (

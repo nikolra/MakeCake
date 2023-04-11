@@ -15,7 +15,7 @@ const makeCustomer = (id, name) =>{
     }
 }
 
-const makeReciept = (id, name, total, quantity) =>{
+const makeRecipe = (id, name, total, quantity) =>{
     return {
         id: id,
         name: name,
@@ -30,9 +30,9 @@ export const devOrders = [
         480,
         makeCustomer("c1", "Hanna Wilson"),
         [
-            makeReciept("r1", "Cookie", 10, 10),
-            makeReciept("r2", "Banana cake", 180, 1),
-            makeReciept("r3", "Cherry pie", 200, 1),
+            makeRecipe("r1", "Cookie", 10, 10),
+            makeRecipe("r2", "Banana cake", 180, 1),
+            makeRecipe("r3", "Cherry pie", 200, 1),
         ] ),
 
     makeOrder(
@@ -41,9 +41,9 @@ export const devOrders = [
         300,
         makeCustomer("c2", "Bob Thornton"),
         [
-            makeReciept("r4", "Chocolate cookie", 12, 10),
-            makeReciept("r5", "Muffin", 20, 5),
-            makeReciept("r6", "Ginger cookie", 8, 10),
+            makeRecipe("r4", "Chocolate cookie", 12, 10),
+            makeRecipe("r5", "Muffin", 20, 5),
+            makeRecipe("r6", "Ginger cookie", 8, 10),
         ] ),
 
     makeOrder(
@@ -52,9 +52,9 @@ export const devOrders = [
         240,
         makeCustomer("c3", "Jill Anderson"),
         [
-            makeReciept("r2", "Banana cake", 180, 1),
-            makeReciept("r5", "Muffin", 20, 5),
-            makeReciept("r4", "Chocolate cookie", 12, 5),
+            makeRecipe("r2", "Banana cake", 180, 1),
+            makeRecipe("r5", "Muffin", 20, 5),
+            makeRecipe("r4", "Chocolate cookie", 12, 5),
         ] ),
 
     makeOrder(
@@ -63,7 +63,7 @@ export const devOrders = [
         440,
         makeCustomer("c4", "Eva Fender"),
         [
-            makeReciept("r3", "Cherry pie", 200, 2),
-            makeReciept("r5", "Muffin", 20, 2),
+            makeRecipe("r3", "Cherry pie", 200, 2),
+            makeRecipe("r5", "Muffin", 20, 2),
         ] ),
 ]
