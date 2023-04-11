@@ -11,12 +11,6 @@ interface IProps {
 const InputField: React.FC<IProps> = ({setValueDelegate, label}: IProps) => {
     const [errorString, setErrorString] = useState('');
 
-    const handleNumberChange = (id: number, key: string, value: string) => {
-        if (["e", "E", "-"].some((char) => value.includes(char))) return;
-
-        // handle change here
-    };
-
     return (
         <Box
             component="form"
@@ -32,8 +26,8 @@ const InputField: React.FC<IProps> = ({setValueDelegate, label}: IProps) => {
                 id="outlined-number"
                 label={label}
                 type="number"
+                inputProps={{ min: 0, inputMode: "numeric", pattern: '[0-9]+' }}
                 onChange={(e) => {
-                    handleNumberChange(1, "Id", e.target.value);
                     console.log(`${label}: ${e.target.value}`);
                     setValueDelegate(e.target.value);
                 }}
