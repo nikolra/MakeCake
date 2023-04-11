@@ -5,16 +5,17 @@ import TextField from '@mui/material/TextField';
 
 interface IProps {
     label: string,
-    setValueDelegate: Function
+    setValueDelegate: Function,
+    width: number
 }
 
-const InputField: React.FC<IProps> = ({setValueDelegate, label}: IProps) => {
+const InputField: React.FC<IProps> = ({setValueDelegate, label, width}: IProps) => {
     const [errorString, setErrorString] = useState('');
     return (
         <Box
             component="form"
             sx={{
-                width: 500,
+                width: width,
                 maxWidth: '100%',
                 m: 1
             }}

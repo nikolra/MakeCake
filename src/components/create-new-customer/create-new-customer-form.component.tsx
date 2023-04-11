@@ -24,15 +24,15 @@ export default function NewCustomerForm() {
             </div>
             <div className="new-customer-input-fields">
                 <div className="customer-input-field">
-                    <InputField setValueDelegate={setCustomerName} label="Customer Name"/>
+                    <InputField setValueDelegate={setCustomerName} label="Customer Name" width={500}/>
                 </div>
 
                 <div className="customer-input-field">
-                    <InputField setValueDelegate={setPhoneNumber} label="Phone Number"/>
+                    <InputField setValueDelegate={setPhoneNumber} label="Phone Number" width={500}/>
                 </div>
 
                 <div className="customer-input-field">
-                    <InputField setValueDelegate={setEmail} label="Email Address"/>
+                    <InputField setValueDelegate={setEmail} label="Email Address" width={500}/>
                 </div>
             </div>
             <div className="submit-button-container customer-create-button">
