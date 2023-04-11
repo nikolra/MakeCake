@@ -43,28 +43,16 @@ function IngredientDelegate(props: IIngredientProps) {
                         <span>Min Price</span>
                     </div>
                     <div className="ingredient-delegate-recipe-title-item">
-                        <span>Store Name</span>
-                    </div>
-                    <div className="ingredient-delegate-recipe-title-item">
                         <span>Max Price</span>
-                    </div>
-                    <div className="ingredient-delegate-recipe-title-item">
-                        <span>Store Name</span>
                     </div>
                 </div>
                 {
                     <div className="ingredient-delegate-recipe-title-value">
                         <div className="ingredient-delegate-recipe-title-item">
-                            <span>{minCost.price}₪</span>
+                            <span>{minCost.supermarketName} - {minCost.price}₪</span>
                         </div>
                         <div className="ingredient-delegate-recipe-title-item">
-                            <span>{minCost.supermarketName}</span>
-                        </div>
-                        <div className="ingredient-delegate-recipe-title-item">
-                            <span>{maxCost.price}₪</span>
-                        </div>
-                        <div className="ingredient-delegate-recipe-title-item">
-                            <span>{maxCost.supermarketName}</span>
+                            <span>{maxCost.supermarketName} - {maxCost.price}₪</span>
                         </div>
                     </div>
                 }
