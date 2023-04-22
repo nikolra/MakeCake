@@ -3,6 +3,7 @@ import '../../App.css';
 import './create-new-ingredient-form.style.css';
 import InputField from "../outlinedd-input-field/input-field.component";
 import NumericInputField from "../numeric-input-field/input-field.component";
+import axios from "axios";
 
 export default function NewIngredientForm() {
 //TODO: avgCost
@@ -11,7 +12,15 @@ export default function NewIngredientForm() {
     const [maxPrice, setMaxPrice] = useState();
     const [code, setCode] = useState();
 
-    function sendDataToBackend() {
+    async function sendDataToBackend() {
+        await axios.post("https://fvr4qwfb9a.execute-api.us-east-1.amazonaws.com/prod/ingredients/add",
+            {
+                name: ingredientName,
+                minPrice: minPrice,
+                maxPrice: maxPrice,
+                code: code
+            }
+        );
         console.log(`Submit clicked`);
         //TODO: should calculate avg price??
     }
