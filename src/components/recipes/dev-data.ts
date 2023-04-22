@@ -1,18 +1,33 @@
-const makeIngredient = (id, name, avgCost, minCost, maxCost) => {
+interface IIngredient {
+    id: string,
+    name: string,
+    quantity: number,
+    avgCost: number
+    minCost: ICost,
+    maxCost: ICost
+}
+
+interface ICost {
+    price: number,
+    supermarketName: string
+}
+
+const makeIngredient = (id: string, name: string, avgCost: number, minCost: ICost, maxCost: ICost, quantity: number = 5): IIngredient => {
     return {
         id: id,
         name: name,
         minCost: minCost,
         avgCost: avgCost,
-        maxCost: maxCost
+        maxCost: maxCost,
+        quantity: quantity
     }
 }
 
-const makeRecipe = (id, name, total, ingredients) =>{
+const makeRecipe = (id: string, name: string, avgCost: number, ingredients: IIngredient[]) => {
     return {
         id: id,
         name: name,
-        avgCost: total,
+        avgCost: avgCost,
         ingredients: ingredients
     }
 }
@@ -75,10 +90,10 @@ const ingredients = [makeIngredient(
 ]
 
 export const devRecipes = [
-    makeRecipe("#1", "Cookie", 10, ingredients),
-    makeRecipe("#2", "Banana cake", 180, ingredients),
-    makeRecipe("#3", "Cherry pie", 200, ingredients),
-    makeRecipe("#4", "Chocolate cookie", 12, ingredients),
-    makeRecipe("#5", "Muffin", 20, ingredients),
-    makeRecipe("#6", "Ginger cookie", 8, ingredients),
+    makeRecipe("1", "Cookie", 10, ingredients),
+    makeRecipe("2", "Banana cake", 180, ingredients),
+    makeRecipe("3", "Cherry pie", 200, ingredients),
+    makeRecipe("4", "Chocolate cookie", 12, ingredients),
+    makeRecipe("5", "Muffin", 20, ingredients),
+    makeRecipe("6", "Ginger cookie", 8, ingredients),
 ]

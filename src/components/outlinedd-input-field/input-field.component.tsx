@@ -6,10 +6,11 @@ import TextField from '@mui/material/TextField';
 interface IProps {
     label: string,
     setValueDelegate: Function,
-    width: number
+    width: number,
+    value?: string
 }
 
-const InputField: React.FC<IProps> = ({setValueDelegate, label, width}: IProps) => {
+const InputField: React.FC<IProps> = ({setValueDelegate, label, width, value}: IProps) => {
     const [errorString, setErrorString] = useState('');
     return (
         <Box
@@ -20,7 +21,8 @@ const InputField: React.FC<IProps> = ({setValueDelegate, label, width}: IProps) 
                 m: 1
             }}
         >
-            <TextField fullWidth id="outlined-basic" label={label} variant="outlined" onChange={(e: any) => {
+            <TextField fullWidth id="outlined-basic" label={label} variant="outlined" defaultValue={value}
+                       onChange={(e: any) => {
                 console.log(`${label}: ${e.target.value}`)
                 setValueDelegate(e.target.value)
             }}/>

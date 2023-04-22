@@ -15,6 +15,8 @@ import PasswordRestore from './pages/password-restore/password-restore.page'
 import AddOrder from "./pages/orders/add-order.page";
 import AddCustomer from "./pages/customers/add-customer.page";
 import AddIngredient from "./pages/ingredients/add-ingredient.page";
+import AddRecipePage from "./pages/recipes/add-recipe.page";
+import EditRecipePage from "./pages/recipes/edit-recipe.page";
 
 function App() {
     return (
@@ -31,6 +33,8 @@ function App() {
                 <Route path="customers" element={<Customers/>}/>
                 <Route path="customers/new" element={<AddCustomer/>}/>
                 <Route path="recipes" element={<Recipes/>}/>
+                <Route path="recipes/new" element={<AddRecipePage/>}/>
+                <Route path="recipe/edit/:id" element={<EditRecipePage/>}/>
                 <Route path="ingredients" element={<Ingredients/>}/>
                 <Route path="ingredients/new" element={<AddIngredient/>}/>
                 <Route path="settings" element={<Settings/>}/>

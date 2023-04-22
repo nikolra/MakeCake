@@ -1,4 +1,4 @@
-.ingredients-widget{
+.all-ingredients-widget{
     width: 90%;
     height: 90%;
     display: flex;
@@ -7,7 +7,7 @@
     align-items: flex-start;
 }
 
-.ingredients-header{
+.all-ingredients-header{
     /*height: 80%;*/
     width: 100%;
     padding: 0 20px 0 20px;
@@ -16,7 +16,7 @@
     align-items: flex-start;
 }
 
-.ingredients-header-title-row{
+.all-ingredients-header-title-row{
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -24,7 +24,7 @@
     width: 100%;
 }
 
-.ingredients-header-find-container{
+.all-ingredients-header-find-container{
     height: 100%;
     flex: 1;
     display: flex;
@@ -32,7 +32,7 @@
     align-items: flex-start;
 }
 
-.ingredients-header-text{
+.all-ingredients-header-text{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -40,7 +40,7 @@
     gap: 10px;
 }
 
-.ingredients-header-ingredients-list-title{
+.all-ingredients-header-ingredients-list-title{
     display: grid;
     grid-template-columns: 2fr 2fr 2fr 1fr;
     grid-template-rows: repeat(1, 30px);
@@ -49,7 +49,7 @@
     border-bottom: 2px solid var(--widget-line-separator);
 }
 
-.ingredients-header-ingredients-list-title-item{
+.all-ingredients-header-ingredients-list-title-item{
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -61,14 +61,14 @@
     gap: 5px;
 }
 
-.ingredients-list-container{
+.all-ingredients-list-container{
     margin-bottom: 3px;
     width: 100%;
     flex: 1;
     overflow: auto;
 }
 
-.ingredients-list{
+.all-ingredients-list{
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -77,7 +77,8 @@
     gap: 5px;
     margin-top: 5px;
 }
-.recipes-input{
+
+.all-ingredients-input{
     padding-top: 1vw;
     width: 100%;
     display: grid;

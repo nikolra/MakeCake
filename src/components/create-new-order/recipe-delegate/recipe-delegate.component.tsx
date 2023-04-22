@@ -10,12 +10,11 @@ interface IRecipeProps{
 }
 
 function RecipeDelegate(props: IRecipeProps) {
-    const [isOpened, setOpened] = useState(false)
     const {name, quantity, ingredientsCost, totalCost} = props;
 
     return (
         <div className={
-            `recipe-delegate-main-container recipe-delegate-text ${ isOpened ? "recipe-delegate-opened" : "" }`
+            `recipe-delegate-main-container recipe-delegate-text`
         }>
             <div className="recipe-delegate-container">
                 <div className="recipe-delegate-table-container">

@@ -15,7 +15,7 @@
     cursor: pointer;
 }
 
-.button-container{
+.nav-button-container{
     align-self: end;
     height: 46px;
     display: flex;

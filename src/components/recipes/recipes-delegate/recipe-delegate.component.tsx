@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 
 import './recipe-delegate.style.css'
+import {NavLink} from "react-router-dom";
 
 interface IRecipeProps {
     data: any
@@ -28,10 +29,13 @@ function RecipeDelegate(props: IRecipeProps) {
                 <div className="all-recipes-delegate-table-container align-right">
                     <button className="expand-button" onClick={
                         () => {
-                            setOpened(!isOpened)
+                            setOpened(!isOpened);
                         }
                     }>
                         {!isOpened ? "Show" : "Hide"}
+                    </button>
+                    <button className="expand-button">
+                        <NavLink to={`/recipe/edit/${id}`} className={`link active`}>Edit</NavLink>
                     </button>
                 </div>
             </div>

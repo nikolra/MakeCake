@@ -10,7 +10,6 @@ import ComboBox from "../combo-box/combo-box.component";
 
 export default function NewOrderForm() {
 
-
     const devRecipes:{
         name: string,
         quantity: number,
@@ -61,7 +60,7 @@ export default function NewOrderForm() {
                     </div>
                 </div>
 
-                <div className=" recipes-widget">
+                <div className="recipes-widget">
                     <div className="recipes-header-recipes-list-title">
                         <div className="recipes-header-list-title">
                             <span>Name</span>

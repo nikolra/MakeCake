@@ -1,5 +1,5 @@
 import React from 'react'
-import AllIngredients from "../../components/ingrediants/ingrediants.component";
+import AllIngredients from "../../components/ingredients/ingrediants.component";
 
 export default function Ingredients() {
   return (

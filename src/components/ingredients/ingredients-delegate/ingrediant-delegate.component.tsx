@@ -12,19 +12,19 @@ function IngredientDelegate(props: IIngredientProps) {
 
     return (
         <div className={
-            `ingredient-delegate-main-container ingredient-delegate-text ${isOpened ? "ingredient-delegate-opened" : ""}`
+            `all-ingredient-delegate-main-container all-ingredient-delegate-text ${isOpened ? "all-ingredient-delegate-opened" : ""}`
         }>
-            <div className="ingredient-delegate-container">
-                <div className="ingredient-delegate-table-container">
+            <div className="all-ingredient-delegate-container">
+                <div className="all-ingredient-delegate-table-container">
                     <span>{id}</span>
                 </div>
-                <div className="ingredient-delegate-table-container">
+                <div className="all-ingredient-delegate-table-container">
                     <span>{name}</span>
                 </div>
-                <div className="ingredient-delegate-table-container">
+                <div className="all-ingredient-delegate-table-container">
                     <span>{avgCost}₪</span>
                 </div>
-                <div className="ingredient-delegate-table-container align-right">
+                <div className="all-ingredient-delegate-table-container align-right">
                     <button className="expand-button" onClick={
                         () => {
                             setOpened(!isOpened)
@@ -36,22 +36,22 @@ function IngredientDelegate(props: IIngredientProps) {
             </div>
 
             {isOpened &&
-            <div className="ingredient-delegate-recipe-container op-50">
+            <div className="all-ingredient-delegate-recipe-container op-50">
 
-                <div className="ingredient-delegate-recipe-title">
-                    <div className="ingredient-delegate-recipe-title-item">
+                <div className="all-ingredient-delegate-recipe-title">
+                    <div className="all-ingredient-delegate-recipe-title-item">
                         <span>Min Price</span>
                     </div>
-                    <div className="ingredient-delegate-recipe-title-item">
+                    <div className="all-ingredient-delegate-recipe-title-item">
                         <span>Max Price</span>
                     </div>
                 </div>
                 {
-                    <div className="ingredient-delegate-recipe-title-value">
-                        <div className="ingredient-delegate-recipe-title-item">
+                    <div className="all-ingredient-delegate-recipe-title-value">
+                        <div className="all-ingredient-delegate-recipe-title-item">
                             <span>{minCost.supermarketName} - {minCost.price}₪</span>
                         </div>
-                        <div className="ingredient-delegate-recipe-title-item">
+                        <div className="all-ingredient-delegate-recipe-title-item">
                             <span>{maxCost.supermarketName} - {maxCost.price}₪</span>
                         </div>
                     </div>

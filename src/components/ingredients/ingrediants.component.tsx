@@ -30,14 +30,14 @@ export default function Ingredients({className, header, description}: IIngredien
     }, [ingredients, searchString])
 
     return (
-        <div className= {`dashboard-widget-container ingredients-widget ${className}`}>
-            <div className="ingredients-header">
-                <div className="ingredients-header-title-row">
-                    <div className="ingredients-header-text">
+        <div className= {`dashboard-widget-container all-ingredients-widget ${className}`}>
+            <div className="all-ingredients-header">
+                <div className="all-ingredients-header-title-row">
+                    <div className="all-ingredients-header-text">
                         <span className="widget-title-text">{header}</span>
                         <span className="widget-title-text-secondary">{description}</span>
                     </div>
-                    <div className="ingredients-header-find-container">
+                    <div className="all-ingredients-header-find-container">
                         <SearchField placeholder="Find" onChangeHandler={
                             (event: any) => {
                                 setSearchString(event.target.value.toLowerCase())
@@ -46,20 +46,20 @@ export default function Ingredients({className, header, description}: IIngredien
                     </div>
                 </div>
 
-                <div className="ingredients-header-ingredients-list-title">
-                    <div className="ingredients-header-ingredients-list-title-item">
+                <div className="all-ingredients-header-ingredients-list-title">
+                    <div className="all-ingredients-header-ingredients-list-title-item">
                         <span>Ingredient ID</span>
                     </div>
-                    <div className="ingredients-header-ingredients-list-title-item">
+                    <div className="all-ingredients-header-ingredients-list-title-item">
                         <span>Ingredient Name</span>
                     </div>
-                    <div className="ingredients-header-ingredients-list-title-item">
+                    <div className="all-ingredients-header-ingredients-list-title-item">
                         <span>Average Price</span>
                     </div>
                 </div>
             </div>
-            <div className="ingredients-list-container">
-                <div className="ingredients-list">
+            <div className="all-ingredients-list-container">
+                <div className="all-ingredients-list">
                     {
                         filteredIngredients.map((ingredient) => {
                             return <IngredientDelegate key={ingredient.id} data={ingredient} />

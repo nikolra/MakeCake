@@ -1,13 +1,21 @@
-.all-orders-container{
+.all-recipes-container{
     width: 95%;
     height: 90%;
 }
 
-.input-fields{
+.new-recipe-input-fields{
     display: flex;
 }
 
-.recipes-header-title-row{
+.recipes-header-text{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.ingredients-header-title-row{
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -16,7 +24,7 @@
     padding-top: 10px;
 }
 
-.recipes-in-new-order-header{
+.recipes-in-new-recipe-header{
     /*height: 100px;*/
     width: 100%;
     padding: 20px;
@@ -27,15 +35,15 @@
     gap: 20px;
 }
 
-.recipes-header-recipes-list-title{
+.ingredients-header-ingredients-list-title{
     display: grid;
-    grid-template-columns: 3fr 4fr 4fr 2fr ;
+    grid-template-columns: 3fr 3fr 2fr ;
     grid-template-rows: repeat(1, 30px);
     width: 100%;
     border-bottom: 2px solid var(--widget-line-separator);
 }
 
-.recipes-header-list-title {
+.ingredients-header-list-title {
     width: 100%;
     padding: 0 20px;
     border-bottom: 2px solid var(--widget-line-separator);
@@ -49,6 +57,13 @@
     justify-content: flex-start;
 }
 
+.ingredients-list-container{
+    margin-bottom: 3px;
+    width: 100%;
+    flex: 1;
+    overflow: auto;
+}
+
 .submit-button-container{
     align-self: end;
     height: 46px;
@@ -58,11 +73,11 @@
     cursor: pointer;
     margin-top: 10px;
 }
-.new-order-customer-name{
+.new-recipe-customer-name{
     padding-top: 15px;
 }
 
-.new-order-widget{
+.new-recipe-widget{
     margin-top: 10vh;
     margin-bottom: 10vh;
     height: 85%;
@@ -72,7 +87,7 @@
     align-items: flex-start;
 }
 
-.recipes-widget{
+.ingredients-widget{
     height: 90%;
     width: inherit;
     display: flex;
@@ -96,11 +111,19 @@
     cursor: pointer;
 }
 
-.orders{
+.recipes{
     height: 80%;
     width: 100%;
     padding: 0 20px 0 20px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+}
+
+.ingredients-input{
+    padding-top: 1vw;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 3fr 3fr 2fr 1fr;
+    grid-template-rows: repeat(1, 60px);
 }
