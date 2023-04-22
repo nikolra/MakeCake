@@ -54,7 +54,7 @@ export default function Recipes({className, header, description}: IRecipeProps) 
                         <span>Recipe Name</span>
                     </div>
                     <div className="all-recipes-header-recipes-list-title-item">
-                        <span>Total Cost</span>
+                        <span>Average Cost</span>
                     </div>
                 </div>
             </div>

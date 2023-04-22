@@ -12,7 +12,7 @@ const makeRecipe = (id, name, total, ingredients) =>{
     return {
         id: id,
         name: name,
-        totalCost: total,
+        avgCost: total,
         ingredients: ingredients
     }
 }
