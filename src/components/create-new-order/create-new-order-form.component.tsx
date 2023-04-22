@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import '../../App.css';
 import './create-new-order-form.style.css';
 import InputField from "../standart-input-field/input-field.component";
-import {devRecipes, makeRecipe} from "./dev-data";
+import {makeRecipe} from "./dev-data";
 import RecipeDelegate from "./recipe-delegate/recipe-delegate.component";
 import DatePicker from "../date-picker/date-picker.component";
 import ComboBox from "../combo-box/combo-box.component";
