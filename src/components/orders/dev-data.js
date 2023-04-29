@@ -26,7 +26,7 @@ const makeRecipe = (id, name, total, quantity) =>{
 export const devOrders = [
     makeOrder(
         "#1",
-        Date.now(),
+        new Date().toISOString().split("T")[0],
         480,
         makeCustomer("c1", "Hanna Wilson"),
         [
@@ -37,7 +37,7 @@ export const devOrders = [
 
     makeOrder(
         "#2",
-        Date.now(),
+        new Date().toISOString().split("T")[0],
         300,
         makeCustomer("c2", "Bob Thornton"),
         [
@@ -48,7 +48,7 @@ export const devOrders = [
 
     makeOrder(
         "#3",
-        Date.now(),
+        new Date().toISOString().split("T")[0],
         240,
         makeCustomer("c3", "Jill Anderson"),
         [
@@ -59,7 +59,7 @@ export const devOrders = [
 
     makeOrder(
         "#4",
-        Date.now(),
+        new Date().toISOString().split("T")[0],
         440,
         makeCustomer("c4", "Eva Fender"),
         [

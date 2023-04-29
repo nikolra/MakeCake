@@ -23,12 +23,12 @@ export const devCustomers = [
         [
             makeOrder(
                 "#3",
-                Date.now(),
+                new Date().toISOString().split("T")[0],
                 240
             ),
             makeOrder(
                 "#1",
-                Date.now(),
+                new Date().toISOString().split("T")[0],
                 480)
         ]
     ),
@@ -40,12 +40,12 @@ export const devCustomers = [
         [
             makeOrder(
                 "#4",
-                Date.now(),
+                new Date().toISOString().split("T")[0],
                 440
             ),
             makeOrder(
                 "#3",
-                Date.now(),
+                new Date().toISOString().split("T")[0],
                 240
             )
         ]
@@ -58,12 +58,12 @@ export const devCustomers = [
         [
             makeOrder(
                 "#2",
-                Date.now(),
+                new Date().toISOString().split("T")[0],
                 300
             ),
             makeOrder(
                 "#3",
-                Date.now(),
+                new Date().toISOString().split("T")[0],
                 240
             )
         ]
@@ -76,12 +76,12 @@ export const devCustomers = [
         [
             makeOrder(
                 "#1",
-                Date.now(),
+                new Date().toISOString().split("T")[0],
                 480
             ),
             makeOrder(
                 "#2",
-                Date.now(),
+                new Date().toISOString().split("T")[0],
                 300
             )
         ]
