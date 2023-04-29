@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import './customer-delegate.style.css'
 
@@ -7,11 +7,13 @@ interface ICustomerProps{
 }
 
 function CustomerDelegate(props: ICustomerProps) {
-    const {name, phoneNumber, email} = props.data;
+
+    const [isOpened, setOpened] = useState(false)
+    const {name, phoneNumber, email, orders} = props.data;
 
     return (
         <div className={
-            `customer-delegate-main-container customer-delegate-text customer-delegate-opened`
+            `customer-delegate-main-container customer-delegate-text customer-delegate-opened ${isOpened ? "all-customers-delegate-opened" : ""}`
         }>
             <div className="customer-delegate-container">
                 <div className="customer-delegate-table-container">
@@ -23,9 +25,51 @@ function CustomerDelegate(props: ICustomerProps) {
                 <div className="customer-delegate-table-container">
                     <span>{email}</span>
                 </div>
-
+                <div className="all-customers-delegate-table-container align-right">
+                    <button className="expand-button" onClick={
+                        () => {
+                            setOpened(!isOpened);
+                        }
+                    }>
+                        {!isOpened ? "Show" : "Hide"}
+                    </button>
+                </div>
             </div>
 
+            {isOpened &&
+            <div className="all-customers-delegate-customer-container op-50">
+
+                <div className="all-customers-delegate-customer-title">
+                    <div className="all-customers-delegate-customer-title-item">
+                        <span>Order ID</span>
+                    </div>
+                    <div className="all-customers-delegate-customer-title-item">
+                        <span>Order Due Date</span>
+                    </div>
+                    <div className="all-customers-delegate-customer-title-item">
+                        <span>Order Price</span>
+                    </div>
+
+                </div>
+                {
+                    orders.map((order: any) => {
+                        return(
+                            <div className="all-customers-delegate-customer-title-value">
+                                <div className="all-customers-delegate-customer-title-item">
+                                    <span>{order.id}</span>
+                                </div>
+                                <div className="all-customers-delegate-customer-title-item">
+                                    <span>{order.dueDate}</span>
+                                </div>
+                                <div className="all-customers-delegate-customer-title-item">
+                                    <span>{order.totalCost}₪</span>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+            }
         </div>
     );
 }

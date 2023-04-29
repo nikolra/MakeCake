@@ -65,5 +65,5 @@ export const devOrders = [
         [
             makeRecipe("r3", "Cherry pie", 200, 2),
             makeRecipe("r5", "Muffin", 20, 2),
-        ] ),
+        ] )
 ]

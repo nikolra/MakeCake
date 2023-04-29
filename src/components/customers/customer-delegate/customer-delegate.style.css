@@ -15,7 +15,7 @@
 .customer-delegate-container{
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr 1fr;
     grid-template-rows: repeat(1, 60px);
 }
 
@@ -53,7 +53,10 @@
     cursor: pointer;
 }
 
-.customer-delegate-recipe-container{
+.all-customers-delegate-opened{
+}
+
+.all-customers-delegate-customer-container{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -61,33 +64,52 @@
     width: 96%;
 }
 
-.customer-delegate-recipe-title{
+.all-customers-delegate-customer-title{
     display: grid;
-    grid-template-columns: 5fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: repeat(1, 40px);
     width: 100%;
     font-size: 14px;
     font-family: 'Roboto';
     font-weight: 700;
     color: rgba(63, 63, 63, 0.5);
-    bcustomer-top: 2px solid var(--widget-line-separator);
+    border-top: 2px solid var(--widget-line-separator);
 }
 
-.customer-delegate-recipe-title-item{
+.all-customers-delegate-customer-title-item{
     display: flex;
     justify-content: flex-start;
     align-items: center;
     gap: 5px;
 }
 
-.customer-delegate-recipe-title-value{
+.all-customers-delegate-customer-title-value{
     display: grid;
-    grid-template-columns: 5fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: repeat(1, 40px);
     width: 100%;
     font-size: 14px;
     font-family: 'Roboto';
     font-weight: 700;
     color: rgba(63, 63, 63, 0.8);
+    border-top: 2px solid var(--widget-line-separator);
+}
+
+.all-customers-delegate-table-container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+}
+
+.all-customers-delegate-customer-title{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: repeat(1, 40px);
+    width: 100%;
+    font-size: 14px;
+    font-family: 'Roboto';
+    font-weight: 700;
+    color: rgba(63, 63, 63, 0.5);
     border-top: 2px solid var(--widget-line-separator);
 }
