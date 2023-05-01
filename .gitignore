@@ -102,7 +102,6 @@ dist
 
 # vuepress v2.x temp and cache directory
 .temp
-.cache
 
 # Serverless directories
 .serverless/
@@ -130,3 +129,12 @@ dist
 /.idea/MakeCake.iml
 /.idea/modules.xml
 /.idea/vcs.xml
+/build/asset-manifest.json
+/build/favicon.ico
+/build/index.html
+/build/static/css/main.2d046161.css
+/build/static/css/main.2d046161.css.map
+/build/static/js/main.7a7fe6e0.js
+/build/static/js/main.7a7fe6e0.js.LICENSE.txt
+/build/static/js/main.7a7fe6e0.js.map
+/build/robots.txt

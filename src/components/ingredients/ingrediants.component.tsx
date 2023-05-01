@@ -29,6 +29,10 @@ export default function Ingredients({className, header, description}: IIngredien
         setFilteredIngredients(filtered)
     }, [ingredients, searchString])
 
+    const updateIngredients = () => {
+        console.log(`updateIngredients called`);
+        //TODO: implement
+    }
     return (
         <div className= {`dashboard-widget-container all-ingredients-widget ${className}`}>
             <div className="all-ingredients-header">
@@ -67,7 +71,12 @@ export default function Ingredients({className, header, description}: IIngredien
                     }
                 </div>
             </div>
-            <NavigationButtonComponent to="/ingredients/new" text="Add Ingredient"/>
+            <div className = "buttons-container-row align-right">
+                <div className="update-ingredients-button-container align-right">
+                    <button className='update-ingredients-button' onClick={updateIngredients}>update ingredients</button>
+                </div>
+                <NavigationButtonComponent to="/ingredients/new" text="Add Ingredient" fontClassName={"height-button"}/>
+            </div>
         </div>
     )
 }

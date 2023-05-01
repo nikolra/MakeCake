@@ -45,3 +45,49 @@
     font-size: 24px;
     width: 12vh;
 }
+
+.update-ingredients-button{
+    font-family: 'Roboto';
+    font-weight: 700;
+    color: var(--foreground);
+    background: #dedcdc;
+    font-size: 18px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 15vh;
+    align-self: end;
+    height: 46px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    text-decoration: none;
+    /*padding-top: 18%;*/
+}
+
+.update-ingredients-button:hover{
+    cursor: pointer;
+    background: var(--button-gradient);
+}
+
+
+.update-ingredients-button-container{
+    align-self: end;
+    height: 46px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 10px;
+    padding-top: 6vh;
+}
+
+.buttons-container-row{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+}
