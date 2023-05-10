@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import '../../App.css';
 import './create-new-customer-form.style.css';
 import InputField from "../outlinedd-input-field/input-field.component";
+import axios from "axios";
 
 export default function NewCustomerForm() {
 
@@ -10,7 +11,19 @@ export default function NewCustomerForm() {
     const [email, setEmail] = useState();
 
 
-    function sendDataToBackend() {
+    async function sendDataToBackend() {
+        try {
+            const payload = {
+                name: customerName,
+                phone_number: phoneNumber,
+                email_address: email
+            };
+            const response = await axios.post('https://e1gdwg1tvk.execute-api.us-east-1.amazonaws.com/add_or_update_customer', payload);
+
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
         console.log(`Submit clicked`);
     }
 
