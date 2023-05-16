@@ -15,7 +15,7 @@ export default function Login() {
     const isLogged = true
     // code for login
     console.log('Try login')
-    if(isLogged) navigate('/dashboard')
+    if(isLogged) navigate('/dashboard');
   }
 
   return (

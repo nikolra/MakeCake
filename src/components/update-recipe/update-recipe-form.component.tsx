@@ -6,6 +6,7 @@ import OutlinedInputField from "../outlinedd-input-field/input-field.component";
 import {makeIngredient} from "../create-new-recipe/dev-data";
 import IngredientDelegate from "../create-new-recipe/ingredient-delegate/ingredient-delegate.component";
 import {devRecipes} from "../recipes/dev-data"
+
 interface IRecipeProps {
     id: string
 }

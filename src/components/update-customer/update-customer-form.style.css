@@ -1,0 +1,41 @@
+.new-customer-input-fields{
+    /*margin-left: 50vh;*/
+}
+
+.new-customer-widget-container{
+    width: 45%;
+    height: 60%;
+}
+
+.new-customers-header-title-row{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    padding-left: 40%;
+}
+
+.new-customers-header-text{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.customer-create-button{
+    padding-top: 20%;
+    padding-right: 10%;
+}
+
+.customer-input-field{
+    display: flex;
+}
+
+.create-customer-button{
+    font-size: 24px;
+    width: 12vh;
+}

@@ -4,12 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 interface IInputProps{
-    title?: string
-    placeholder?: string
-    required?: boolean
-    className?: string
-    type?: string
-    onChange?: any
+    title?: string,
+    placeholder?: string,
+    required?: boolean,
+    className?: string,
+    inputClassName?: string,
+    type?: string,
+    onChange?: any,
+    value?: string,
 }
 
 const LabeledField: React.FC<IInputProps> = (props: IInputProps) => {
@@ -21,10 +23,10 @@ const LabeledField: React.FC<IInputProps> = (props: IInputProps) => {
     }
 
     return (
-        <div className={"input-container " + props.className}>
+        <div className={ props.className + " input-container" }>
             {props.title ? <span className="input-label">{props.title}</span> : null }
 
-            <div className="input-border-container">
+            <div className={props.inputClassName + " input-border-container"}>
                 <input  
                 className="input"  
                 placeholder={props.placeholder}  

@@ -7,10 +7,11 @@ interface IProps {
     label: string,
     setValueDelegate: Function,
     width: number,
-    value?: string
+    value?: string,
+    disabled?: boolean
 }
 
-const InputField: React.FC<IProps> = ({setValueDelegate, label, width, value}: IProps) => {
+const InputField: React.FC<IProps> = ({setValueDelegate, label, width, value, disabled = false}: IProps) => {
     const [errorString, setErrorString] = useState('');
     return (
         <Box
@@ -21,7 +22,7 @@ const InputField: React.FC<IProps> = ({setValueDelegate, label, width, value}: I
                 m: 1
             }}
         >
-            <TextField fullWidth id="outlined-basic" label={label} variant="outlined" defaultValue={value}
+            <TextField disabled={disabled} fullWidth id="outlined-basic" label={label} variant="outlined" defaultValue={value}
                        onChange={(e: any) => {
                 console.log(`${label}: ${e.target.value}`)
                 setValueDelegate(e.target.value)

@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 
 import './customer-delegate.style.css'
+import {NavLink} from "react-router-dom";
 
 interface ICustomerProps{
     data: any
@@ -26,6 +27,9 @@ function CustomerDelegate(props: ICustomerProps) {
                     <span>{email}</span>
                 </div>
                 <div className="all-customers-delegate-table-container align-right">
+                    <button className="expand-button">
+                        <NavLink to={`/customer/edit/${email}`} className={`link active`}>Edit</NavLink>
+                    </button>
                     <button className="expand-button" onClick={
                         () => {
                             setOpened(!isOpened);
