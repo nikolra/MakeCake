@@ -13,7 +13,7 @@ export default function NewIngredientForm() {
     const [code, setCode] = useState();
 
     async function sendDataToBackend() {
-        await axios.post("https://fvr4qwfb9a.execute-api.us-east-1.amazonaws.com/prod/ingredients/add",
+        await axios.post("https://e1gdwg1tvk.execute-api.us-east-1.amazonaws.com",
             {
                 name: ingredientName,
                 minPrice: minPrice,
