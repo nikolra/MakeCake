@@ -13,6 +13,7 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
     const customer = devCustomers.find(customer => customer.email === email) || devCustomers[0];
     const [customerName, setCustomerName] = useState(customer.name);
     const [phoneNumber, setPhoneNumber] = useState(customer.phoneNumber);
+    const [address, setAddress] = useState();
 
     //  {
     //     name: name,
@@ -44,6 +45,11 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
 
                 <div className="customer-input-field">
                     <InputField setValueDelegate={()=>{}} label="Email Address" width={500} disabled={true} value={customer.email}/>
+                </div>
+
+
+                <div className="customer-input-field">
+                    <InputField setValueDelegate={setAddress} label="Address" width={500}/>
                 </div>
             </div>
             <div className="submit-button-container customer-create-button">
