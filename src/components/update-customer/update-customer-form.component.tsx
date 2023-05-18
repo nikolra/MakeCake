@@ -3,6 +3,7 @@ import '../../App.css';
 import './update-customer-form.style.css';
 import InputField from "../outlinedd-input-field/input-field.component";
 import {devCustomers} from "../customers/dev-data";
+import axios from "axios/index";
 
 interface ICustomerProps {
     email: string
@@ -22,7 +23,21 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
     //     orders: orders
     // }
 
-    function sendDataToBackend() {
+    async function sendDataToBackend() {
+        try {
+            const payload = {
+                name: customerName,
+                phone_number: phoneNumber,
+                email_address: email,
+                address: address
+            };
+
+            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/customer', payload);
+            console.log(JSON.stringify(response));
+            console.log(response.data);
+        } catch (error) {
+            console.error(JSON.stringify(error));
+        }
         console.log(`Submit clicked`);
     }
 
