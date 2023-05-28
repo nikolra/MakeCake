@@ -33,6 +33,14 @@ function CustomerDelegate(props: ICustomerProps) {
                     <button className="expand-button">
                         <NavLink to={`/customer/edit/${email}`} className={`link active`}>Edit</NavLink>
                     </button>
+
+                    <button className="expand-button" onClick={
+                        () => {
+                            //TODO: EDEN - implement customer delete. should be with a toaster like in create
+                        }
+                    }>
+                        Delete
+                    </button>
                     <button className="expand-button" onClick={
                         () => {
                             setOpened(!isOpened);
