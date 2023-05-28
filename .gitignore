@@ -139,4 +139,4 @@ dist
 /build/static/js/main.7a7fe6e0.js.map
 /build/robots.txt
 
-.gitignore
+package-lock.json
