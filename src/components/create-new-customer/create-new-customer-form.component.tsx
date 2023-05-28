@@ -10,6 +10,7 @@ export default function NewCustomerForm() {
     const [customerName, setCustomerName] = useState();
     const [phoneNumber, setPhoneNumber] = useState();
     const [email, setEmail] = useState();
+    const [address, setAddress] = useState();
 
 
     async function sendDataToBackend() {
@@ -17,7 +18,8 @@ export default function NewCustomerForm() {
             const payload = {
                 name: customerName,
                 phone_number: phoneNumber,
-                email_address: email
+                email_address: email,
+                address: address
             };
 
             const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/customer', payload);
@@ -48,6 +50,10 @@ export default function NewCustomerForm() {
 
                 <div className="customer-input-field">
                     <InputField setValueDelegate={setEmail} label="Email Address" width={500}/>
+                </div>
+
+                <div className="customer-input-field">
+                    <InputField setValueDelegate={setAddress} label="Address" width={500}/>
                 </div>
             </div>
             <div className="submit-button-container customer-create-button">

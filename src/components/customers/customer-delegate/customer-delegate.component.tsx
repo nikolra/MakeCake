@@ -10,7 +10,7 @@ interface ICustomerProps{
 function CustomerDelegate(props: ICustomerProps) {
 
     const [isOpened, setOpened] = useState(false)
-    const {name, phoneNumber, email, orders} = props.data;
+    const {name, phoneNumber, email, orders, address} = props.data;
 
     return (
         <div className={
@@ -25,6 +25,9 @@ function CustomerDelegate(props: ICustomerProps) {
                 </div>
                 <div className="customer-delegate-table-container">
                     <span>{email}</span>
+                </div>
+                <div className="customer-delegate-table-container">
+                    <span>{address? address : ""}</span>
                 </div>
                 <div className="all-customers-delegate-table-container align-right">
                     <button className="expand-button">

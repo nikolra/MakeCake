@@ -97,6 +97,9 @@ export default function Customers({ className, header, description }: ICustomerP
                     <div className="customers-header-customers-list-title-item">
                         <span>Email Address</span>
                     </div>
+                    <div className="customers-header-customers-list-title-item">
+                        <span>Address</span>
+                    </div>
                 </div>
             </div>
             <div className="customers-list-container">

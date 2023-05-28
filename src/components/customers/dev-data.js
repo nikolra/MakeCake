@@ -1,8 +1,9 @@
-const makeCustomer = (name, phoneNumber, email, orders) => {
+const makeCustomer = (name, phoneNumber, email,orders, address ) => {
     return {
         name: name,
         phoneNumber: phoneNumber,
         email: email,
+        address: address,
         orders: orders
     }
 }
@@ -30,13 +31,16 @@ export const devCustomers = [
                 "#1",
                 new Date().toISOString().split("T")[0],
                 480)
-        ]
-    ),
+        ],
+    "Netanya"
+
+),
 
     makeCustomer(
         "Eden",
         123123,
         "123@123.com",
+
         [
             makeOrder(
                 "#4",
@@ -48,7 +52,8 @@ export const devCustomers = [
                 new Date().toISOString().split("T")[0],
                 240
             )
-        ]
+        ],
+        "Tel Aviv"
     ),
 
     makeCustomer(
@@ -66,7 +71,8 @@ export const devCustomers = [
                 new Date().toISOString().split("T")[0],
                 240
             )
-        ]
+        ],
+        "Ramle"
     ),
 
     makeCustomer(
