@@ -6,6 +6,7 @@ import CustomerDelegate from './customer-delegate/customer-delegate.component';
 import SearchField from '../search-field/search-field.component';
 import NavigationButtonComponent from '../navigation-button/navigation-button.component';
 import axios from 'axios';
+import {ToastContainer} from "react-toastify";
 
 interface ICustomerProps {
     className: string;
@@ -110,6 +111,7 @@ export default function Customers({ className, header, description }: ICustomerP
                 </div>
             </div>
             <NavigationButtonComponent to="/customers/new" text="Add Customer" />
+            <ToastContainer/>
         </div>
     );
 }

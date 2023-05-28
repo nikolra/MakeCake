@@ -9,12 +9,12 @@ export default function Login() {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function tryLogin(){
     const isLogged = true
     // code for login
-    console.log('Try login')
+    console.log('Try login');
     if(isLogged) navigate('/dashboard');
   }
 
