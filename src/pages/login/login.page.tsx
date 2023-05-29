@@ -12,20 +12,34 @@ export default function Login() {
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
 
-  function tryLogin(){
-      const payload = {
-        email: email,
-        password: password
-      };
+  async function tryLogin() {
+    const payload = {
+      email: email,
+      password: password
+    };
 
     try {
-      const response = axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', payload);
-        console.log(JSON.stringify((response as any).statusCode));
+      const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', { params: payload });
+      console.log(JSON.stringify(response.status));
+
+      // Assuming the response contains a token field
+      const token = response.data.token;
+
+      if (token) {
+        navigate('/dashboard');
+      } else {
+        // Handle login failure
+        console.error('Login failed');
+        // Additional error handling code if needed
+      }
     } catch (error) {
-        console.error(JSON.stringify(error));
+      console.error(JSON.stringify(error));
+      // Handle error during the request
+      // Additional error handling code if needed
+      return;
     }
-    navigate('/dashboard')
   }
+
 
   return (
     <div className="pages">
