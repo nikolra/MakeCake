@@ -13,40 +13,36 @@ export default function Login() {
   const navigate = useNavigate()
 
 
-  const tryLogin = async () => {
+    const tryLogin = async () => {
+        const body = {
+            params: {
+                email: email,
+                password: password
+            }
+        };
 
-    const body = {
-      params: {
-        email: email,
-        password: password
-      }
-    }
+        try {
+            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', body);
+            console.log(JSON.stringify(response.status));
 
-    try {
-      const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login',  body);
-      console.log(JSON.stringify(response.status));
-
-      // Assuming the response contains a token field
-      const token = response.data.token;
-
-      if (token) {
-        navigate('/dashboard');
-      } else {
-        // Handle login failure
-        console.error('Login failed');
-        // Additional error handling code if needed
-      }
-    } catch (error) {
-      console.error(JSON.stringify(error));
-      // Handle error during the request
-      // Additional error handling code if
-      console.error('Error during login:', error);
-      return;
-    }
-  }
+            // Assuming the response contains a token field
+            const token = response.data.token;
+            if (token) {
+                navigate('/dashboard');
+            } else {
+                console.error('Login failed');
+                // Additional error handling code if needed
+            }
+        } catch (error) {
+            console.error('Error during login:', error);
+            // Handle error during the request
+            // Additional error handling code if needed
+            return;
+        }
+    };
 
 
-  return (
+    return (
     <div className="pages">
       <DonutPanel />
       <div className="data-container">
