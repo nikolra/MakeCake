@@ -13,7 +13,7 @@ export default function Login() {
   const navigate = useNavigate()
 
 
-  async function tryLogin() {
+  const tryLogin = async () => {
     const payload = {
       email: email,
       password: password
