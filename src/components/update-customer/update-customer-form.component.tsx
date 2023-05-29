@@ -3,7 +3,7 @@ import '../../App.css';
 import './update-customer-form.style.css';
 import InputField from "../outlinedd-input-field/input-field.component";
 import {devCustomers} from "../customers/dev-data";
-import axios from "axios/index";
+import axios from "axios";
 
 interface ICustomerProps {
     email: string

@@ -21,10 +21,10 @@ export default function Login() {
     try {
       const response = axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', payload);
         console.log(JSON.stringify((response as any).statusCode));
-        navigate('/dashboard');
     } catch (error) {
         console.error(JSON.stringify(error));
     }
+    navigate('/dashboard')
   }
 
   return (
