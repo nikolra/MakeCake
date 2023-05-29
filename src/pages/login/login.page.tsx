@@ -12,16 +12,6 @@ export default function Login() {
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
 
-  async function loginHandler() {
-    // Call tryLogin() and await the result
-    try {
-      await tryLogin();
-    } catch (error) {
-      // Handle any error that occurred during login
-      console.error(error);
-    }
-  }
-
 
   async function tryLogin() {
     const payload = {
@@ -58,7 +48,7 @@ export default function Login() {
       <div className="data-container">
         <div className="inputs-container">
           <LogoComponent />
-          <form className="inputs-container" onSubmit={loginHandler}>
+          <form className="inputs-container" onSubmit={tryLogin}>
             <LabeledField title='Login or email' placeholder='Enter your login or email' required={true} onChange={ (e : any) => { setEmail(e.target.value) }}/>
             <LabeledField title='Password' placeholder='Enter your password' type="password" required={true} onChange={ (e : any) => { setPassword(e.target.value)} }/>
             <div className="remember-forgot-container">
