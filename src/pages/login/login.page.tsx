@@ -4,6 +4,7 @@ import DonutPanel from '../../components/donut-panel/donut-panel.component'
 import LogoComponent from '../../components/logo/logo.component'
 import LabeledField from '../../components/labeled-input/labeled-input.component'
 import CheckBox from '../../components/checkbox/checkbox.component'
+import axios from 'axios';
 
 export default function Login() {
 
@@ -12,10 +13,18 @@ export default function Login() {
   const navigate = useNavigate()
 
   function tryLogin(){
-    const isLogged = true
-    // code for login
-    console.log('Try login')
-    if(isLogged) navigate('/dashboard');
+      const payload = {
+        email: email,
+        password: password
+      };
+
+    try {
+      const response = axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', payload);
+        console.log(JSON.stringify((response as any).statusCode));
+        navigate('/dashboard');
+    } catch (error) {
+        console.error(JSON.stringify(error));
+    }
   }
 
   return (
