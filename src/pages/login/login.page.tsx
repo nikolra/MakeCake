@@ -36,7 +36,8 @@ export default function Login() {
     } catch (error) {
       console.error(JSON.stringify(error));
       // Handle error during the request
-      // Additional error handling code if needed
+      // Additional error handling code if
+      console.error('Error during login:', error);
       return;
     }
   }
