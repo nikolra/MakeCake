@@ -13,16 +13,8 @@ export default function NewIngredientForm() {
     const [code, setCode] = useState();
 
     async function sendDataToBackend() {
-        await axios.post("https://e1gdwg1tvk.execute-api.us-east-1.amazonaws.com",
-            {
-                name: ingredientName,
-                minPrice: minPrice,
-                maxPrice: maxPrice,
-                code: code
-            }
-        );
         console.log(`Submit clicked`);
-        //TODO: should calculate avg price??
+        //TODO: Amit integrate create new ingredient (manual?)
     }
 
     return (

@@ -7,15 +7,14 @@ import CheckBox from '../../components/checkbox/checkbox.component'
 
 export default function Login() {
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   function tryLogin(){
-    const isLogged = true
-    // code for login
+    //TODO: Amit implement login with cognito
     console.log('Try login');
-    if(isLogged) navigate('/dashboard');
+    navigate('/dashboard');
   }
 
   return (

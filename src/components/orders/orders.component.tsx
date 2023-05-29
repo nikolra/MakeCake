@@ -5,6 +5,7 @@ import OrderDelegate from './order-delegate/order-delegate.component'
 import {devOrders} from "./dev-data";
 import SearchField from "../search-field/search-field.component";
 import NavigationButtonComponent from "../navigation-button/navigation-button.component";
+import {ToastContainer} from "react-toastify";
 
 interface IOrderProps{
     className: string,
@@ -14,6 +15,7 @@ interface IOrderProps{
 
 export default function Orders({className, header, description}: IOrderProps) {
 
+    //TODO: Tomer should use ingredients from DB and not devOrders
     const [orders, setOrders] = useState(devOrders);
     const [filteredOrders, setFilteredOrders] = useState(orders);
     const [searchString, setSearchString] = useState('');
@@ -21,9 +23,7 @@ export default function Orders({className, header, description}: IOrderProps) {
     useEffect( () => {
         const filtered = orders.filter((order) => {
             const name = order.customer.name.toLowerCase();
-
             console.log(name, searchString, name.includes(searchString))
-
             return name.includes(searchString);
         })
         setFilteredOrders(filtered)
@@ -68,6 +68,7 @@ export default function Orders({className, header, description}: IOrderProps) {
                 </div>
             </div>
             <NavigationButtonComponent to="/orders/new" text="Add Order"/>
+            <ToastContainer/>
         </div>
     )
 }

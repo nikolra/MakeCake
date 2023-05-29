@@ -13,6 +13,7 @@ interface ICustomerProps {
 
 export default function UpdateCustomerForm({email} : ICustomerProps) {
 
+    //TODO: Eden, should find the customer to edit from DB and not from devCustomers
     const customer = devCustomers.find(customer => customer.email === email) || devCustomers[0];
     const [customerName, setCustomerName] = useState(customer.name);
     const [phoneNumber, setPhoneNumber] = useState(customer.phoneNumber);
@@ -20,7 +21,6 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
     const navigate = useNavigate();
 
     async function sendDataToBackend() {
-
         try {
             const payload = {
                 name: customerName,
@@ -39,13 +39,9 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
                 success: `Updated customer ${customerName}, ${email}`,
                 error: `Error updating customer ${customerName}, ${email}`
             });
-
-
-
         } catch (error) {
             console.error(JSON.stringify(error));
         }
-        console.log(`Submit clicked`);
     }
 
     return (

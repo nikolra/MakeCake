@@ -28,10 +28,10 @@ export default function NewOrderForm() {
 
     function sendDataToBackend() {
         console.log(`Submit clicked`);
-        //TODO: implement integration with backend
+        //TODO: Tomer integrate create new order
     }
 
-    function addRecipe() {
+    function addRecipeToOrder() {
         console.log(`addRecipe clicked`);
         console.log(`name: ${recipeName}`);
         console.log(`quantity: ${quantity}`);
@@ -91,7 +91,7 @@ export default function NewOrderForm() {
                             }
                         </div>
                     </div>
-                    <button className='button-container button-text add-item-button' onClick={addRecipe}>Add recipe</button> {/*TODO: when clicked should init the recipe input line*/}
+                    <button className='button-container button-text add-item-button' onClick={addRecipeToOrder}>Add recipe</button> {/*TODO: when clicked should init the recipe input line*/}
                 </div>
 
             </div>
