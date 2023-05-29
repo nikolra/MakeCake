@@ -14,13 +14,33 @@ export default function Login() {
 
 
   const tryLogin = async () => {
-    const payload = {
-      email: email,
-      password: password
-    };
 
+    /*
+    const body = {
+        email: email,
+        password: password
+    }
+    */
+
+    axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', {
+      params: {
+        email: email,
+        password: password
+      }
+    })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .finally(function () {
+          // always executed
+        });
+
+    /*
     try {
-      const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', { params: payload });
+      const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', { params: body });
       console.log(JSON.stringify(response.status));
 
       // Assuming the response contains a token field
@@ -40,6 +60,7 @@ export default function Login() {
       console.error('Error during login:', error);
       return;
     }
+    */
   }
 
 
