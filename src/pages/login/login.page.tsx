@@ -20,9 +20,7 @@ export default function Login() {
                 password: password
             }
         };
-
-        try {
-            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', body);
+        axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', body).then((response) => {
             console.log(JSON.stringify(response.status));
 
             // Assuming the response contains a token field
@@ -33,12 +31,9 @@ export default function Login() {
                 console.error('Login failed');
                 // Additional error handling code if needed
             }
-        } catch (error) {
+        }).catch(error => {
             console.error('Error during login:', error);
-            // Handle error during the request
-            // Additional error handling code if needed
-            return;
-        }
+        });
     };
 
 
