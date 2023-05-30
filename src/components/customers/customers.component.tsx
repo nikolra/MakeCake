@@ -6,8 +6,8 @@ import CustomerDelegate from './customer-delegate/customer-delegate.component';
 import SearchField from '../search-field/search-field.component';
 import NavigationButtonComponent from '../navigation-button/navigation-button.component';
 import axios from 'axios';
-import {ToastContainer} from "react-toastify";
-
+import {toast, ToastContainer} from "react-toastify";
+import {useNavigate} from "react-router-dom";
 
 interface ICustomerProps {
     className: string;
@@ -31,10 +31,41 @@ export default function Customers({ className, header, description }: ICustomerP
     const [customers, setCustomers] = useState<ICustomer[]>([]);
     const [filteredCustomers, setFilteredCustomers] = useState<ICustomer[]>([]);
     const [searchString, setSearchString] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchCustomerDetails();
     }, []);
+
+    const deleteCustomer = async (customerEmail:string) => {
+        // console.log('Deleting customer:', customerEmail);
+        // const payload = {
+        //     email_address: customerEmail
+        // };
+        // toast.promise(async () => {
+        //     navigate('/customers');
+        //     //console.log('Deleting customer:', customerEmail);
+        //     // @ts-ignore
+        //     const response = await axios.delete('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/deletecustomer',payload);
+        //     const response2 = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/customer', payload);
+        //
+        //     console.log('Delete customer response status:', response.status);
+        //     console.log('Delete customer response data:', response.data);
+        //
+        // }, {
+        //     // @ts-ignore
+        //     loading: 'Loading',
+        //     success: `Delete customer ${customerEmail}`,
+        //     error: `Error deleting customer ${customerEmail}`
+        // });
+        // console.log(customers);
+        // const arr= customers.filter(customer=>customer.email!==customerEmail);
+        // //TODO: EDEN - implement customer delete. should be with a toaster like in create
+        // // You should use setCustomers method to update the new customers list
+        // //await fetchCustomerDetails();
+        // console.log(arr);
+        // setCustomers(arr);
+    }
 
     const fetchCustomerDetails = async () => {
         try {
@@ -56,7 +87,6 @@ export default function Customers({ className, header, description }: ICustomerP
                     }),
                 };
             });
-            console.log('Fetched updated customer details');
             setCustomers(formattedCustomers);
             setFilteredCustomers(formattedCustomers);
         } catch (error) {
@@ -70,16 +100,7 @@ export default function Customers({ className, header, description }: ICustomerP
             return name.includes(searchString);
         });
         setFilteredCustomers(filtered);
-        console.log('Filtered customers:', filtered);
     }, [customers, searchString]);
-
-    const handleFetchCustomers = async () => {
-        try {
-            await fetchCustomerDetails();
-        } catch (error) {
-            console.error('Error fetching customers:', error);
-        }
-    };
 
     return (
         <div className={`dashboard-widget-container customers-widget ${className}`}>
@@ -117,7 +138,7 @@ export default function Customers({ className, header, description }: ICustomerP
             <div className="customers-list-container">
                 <div className="customers-list">
                     {filteredCustomers.map((customer) => {
-                        return <CustomerDelegate key={customer.email} data={customer}  fetchCustomers={handleFetchCustomers}/>;
+                        return <CustomerDelegate key={customer.email} data={customer} deleteDelegate={deleteCustomer}/>;
                     })}
                 </div>
             </div>
