@@ -23,7 +23,7 @@ export default function Login() {
 
         console.log(body);
 
-        return await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', body )
+        return await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', {email:"amitle111@gmail.com", password: "Aa*12345"} )
             .then((response) => {
                 console.log(JSON.stringify(response));
             // Assuming the response contains a token field
@@ -36,12 +36,6 @@ export default function Login() {
             }
         }).catch(error => {
             console.error('Error during login:', error)
-        }).finally(() => {
-            //wait a minute before logs disappear
-            setTimeout(() => {
-                console.log("waited 1 minute");
-            }
-            , 60000)
         });
     };
 
