@@ -5,7 +5,7 @@ import LogoComponent from '../../components/logo/logo.component'
 import LabeledField from '../../components/labeled-input/labeled-input.component'
 import CheckBox from '../../components/checkbox/checkbox.component'
 import axios from 'axios';
-import { setTimeout } from "timers/promises";
+
 
 
 export default function Login() {
@@ -37,8 +37,11 @@ export default function Login() {
         }).catch(error => {
             console.error('Error during login:', error)
         }).finally(() => {
-            //wait a minute
-            setTimeout(1000);
+            //wait a minute before logs disappear
+            setTimeout(() => {
+                console.log("waited 1 minute");
+            }
+            , 60000)
         });
     };
 
