@@ -22,10 +22,9 @@ export default function Login() {
         };
 
         console.log(body);
-        console.log("hi");
 
         return axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', body).then((response) => {
-            console.log(JSON.stringify(response.status));
+            console.log(JSON.stringify(response));
 
             // Assuming the response contains a token field
             const token = response.data.token;
