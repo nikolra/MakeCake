@@ -5,6 +5,8 @@ import LogoComponent from '../../components/logo/logo.component'
 import LabeledField from '../../components/labeled-input/labeled-input.component'
 import CheckBox from '../../components/checkbox/checkbox.component'
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 
 export default function Login() {
@@ -21,31 +23,28 @@ export default function Login() {
         };
 
         try {
-            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', {
-                    email: "amitle111@gmail.com",
-                    password: "Aa*12345"
-                }, {
+            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', body, {
                     headers: {
                         'Access-Control-Allow-Origin': '*',
                         'Access-Control-Allow-Headers': '*'
                     }
                 }
             )
-
-            console.log(response);
-            console.log(response.data);
             // Assuming the response contains a token field
-            const token = response.data;
-            if (token) {
+            console.log(response);
+            const token = response.data.body.token;
+
+            console.log(token);
+            if (token && response.status === 200) {
                 navigate('/dashboard');
             } else {
-                console.error('Login failed');
-                // Additional error handling code if needed
+                console.error('Login failed: ', response.data.message);
+                toast.error('Login failed')
             }
         } catch (error) {
             console.error('Error during login:', error)
+            toast.error('Error during login')
         }
-        //navigate('/dashboard');
     };
 
 
@@ -55,7 +54,7 @@ export default function Login() {
             <div className="data-container">
                 <div className="inputs-container">
                     <LogoComponent/>
-                    <form className="inputs-container">
+                    <div className="inputs-container">
                         <LabeledField title='Login or email' placeholder='Enter your login or email' required={true}
                                       onChange={(e: any) => {
                                           setEmail(e.target.value)
@@ -69,10 +68,11 @@ export default function Login() {
                             <Link className={'forgot-button'} to="forgot-password">Forgot password</Link>
                         </div>
                         <button className='button button-gradient' onClick={tryLogin}>Sign In</button>
-                    </form>
+                    </div>
                     <Link className='button button-bordered' to="register">Sign Up</Link>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     )
 }
