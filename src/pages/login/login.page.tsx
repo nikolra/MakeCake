@@ -7,12 +7,11 @@ import CheckBox from '../../components/checkbox/checkbox.component'
 import axios from 'axios';
 
 
-
 export default function Login() {
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const navigate = useNavigate()
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const navigate = useNavigate()
 
 
     const tryLogin = async () => {
@@ -21,51 +20,51 @@ export default function Login() {
             password: password
         };
 
-        console.log(body);
-        return axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', {
-            email: "amitle111@gmail.com",
-            password: "Aa*12345"
-        }, {
-            headers: {
-                'Access-Control-Allow-Origin': 'http://3.224.189.195',
-                // Add any other required headers here
+        try {
+            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', {
+                email: "amitle111@gmail.com",
+                password: "Aa*12345"
+            })
+
+            console.log(JSON.stringify(response));
+            // Assuming the response contains a token field
+            const token = response.data.token;
+            if (token) {
+                navigate('/dashboard');
+            } else {
+                console.error('Login failed');
+                // Additional error handling code if needed
             }
-        })
-            .then((response) => {
-                console.log(JSON.stringify(response));
-                // Assuming the response contains a token field
-                const token = response.data.token;
-                if (token) {
-                    navigate('/dashboard');
-                } else {
-                    console.error('Login failed');
-                    // Additional error handling code if needed
-                }
-            }).catch(error => {
-                console.error('Error during login:', error)
-            });
+        } catch (error) {
+            console.error('Error during login:', error)
+        }
     };
 
 
-
-  return (
-    <div className="pages">
-      <DonutPanel />
-      <div className="data-container">
-        <div className="inputs-container">
-          <LogoComponent />
-          <form className="inputs-container" onSubmit={tryLogin}>
-            <LabeledField title='Login or email' placeholder='Enter your login or email' required={true} onChange={ (e : any) => { setEmail(e.target.value) }}/>
-            <LabeledField title='Password' placeholder='Enter your password' type="password" required={true} onChange={ (e : any) => { setPassword(e.target.value)} }/>
-            <div className="remember-forgot-container">
-              <CheckBox text="Remember me" />
-              <Link className={'forgot-button'} to="forgot-password">Forgot password</Link>
+    return (
+        <div className="pages">
+            <DonutPanel/>
+            <div className="data-container">
+                <div className="inputs-container">
+                    <LogoComponent/>
+                    <form className="inputs-container" onSubmit={tryLogin}>
+                        <LabeledField title='Login or email' placeholder='Enter your login or email' required={true}
+                                      onChange={(e: any) => {
+                                          setEmail(e.target.value)
+                                      }}/>
+                        <LabeledField title='Password' placeholder='Enter your password' type="password" required={true}
+                                      onChange={(e: any) => {
+                                          setPassword(e.target.value)
+                                      }}/>
+                        <div className="remember-forgot-container">
+                            <CheckBox text="Remember me"/>
+                            <Link className={'forgot-button'} to="forgot-password">Forgot password</Link>
+                        </div>
+                        <button className='button button-gradient' type='submit'>Sign In</button>
+                    </form>
+                    <Link className='button button-bordered' to="register">Sign Up</Link>
+                </div>
             </div>
-            <button className='button button-gradient' type='submit' >Sign In</button>
-          </form>
-          <Link className='button button-bordered' to="register" >Sign Up</Link>
         </div>
-      </div>
-    </div>
-  )
+    )
 }
