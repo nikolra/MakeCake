@@ -25,7 +25,10 @@ export default function NewCustomerForm() {
             };
             toast.promise(async ()=> {
                 navigate('/customers');
+                console.log('create customer:', payload);
                 const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/customer', payload);
+                console.log('create customer response status:', response.status);
+                console.log('create customer response data:', response.data);
                 console.log(JSON.stringify(response));
                 console.log(response.data);
             }, {

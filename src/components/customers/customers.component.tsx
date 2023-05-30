@@ -8,6 +8,7 @@ import NavigationButtonComponent from '../navigation-button/navigation-button.co
 import axios from 'axios';
 import {ToastContainer} from "react-toastify";
 
+
 interface ICustomerProps {
     className: string;
     header: string;
@@ -55,6 +56,7 @@ export default function Customers({ className, header, description }: ICustomerP
                     }),
                 };
             });
+            console.log('Fetched updated customer details');
             setCustomers(formattedCustomers);
             setFilteredCustomers(formattedCustomers);
         } catch (error) {
@@ -68,7 +70,16 @@ export default function Customers({ className, header, description }: ICustomerP
             return name.includes(searchString);
         });
         setFilteredCustomers(filtered);
+        console.log('Filtered customers:', filtered);
     }, [customers, searchString]);
+
+    const handleFetchCustomers = async () => {
+        try {
+            await fetchCustomerDetails();
+        } catch (error) {
+            console.error('Error fetching customers:', error);
+        }
+    };
 
     return (
         <div className={`dashboard-widget-container customers-widget ${className}`}>
@@ -106,7 +117,7 @@ export default function Customers({ className, header, description }: ICustomerP
             <div className="customers-list-container">
                 <div className="customers-list">
                     {filteredCustomers.map((customer) => {
-                        return <CustomerDelegate key={customer.name} data={customer} />;
+                        return <CustomerDelegate key={customer.email} data={customer}  fetchCustomers={handleFetchCustomers}/>;
                     })}
                 </div>
             </div>
