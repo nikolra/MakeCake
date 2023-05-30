@@ -5,6 +5,8 @@ import LogoComponent from '../../components/logo/logo.component'
 import LabeledField from '../../components/labeled-input/labeled-input.component'
 import CheckBox from '../../components/checkbox/checkbox.component'
 import axios from 'axios';
+import { setTimeout } from "timers/promises";
+
 
 export default function Login() {
 
@@ -21,10 +23,9 @@ export default function Login() {
 
         console.log(body);
 
-        return axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', body )
+        return await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', body )
             .then((response) => {
-            console.log(JSON.stringify(response));
-
+                console.log(JSON.stringify(response));
             // Assuming the response contains a token field
             const token = response.data.token;
             if (token) {
@@ -34,7 +35,10 @@ export default function Login() {
                 // Additional error handling code if needed
             }
         }).catch(error => {
-            console.error('Error during login:', error);
+            console.error('Error during login:', error)
+        }).finally(() => {
+            //wait a minute
+            setTimeout(1000);
         });
     };
 
