@@ -5,10 +5,11 @@ import TextField from '@mui/material/TextField';
 
 interface IProps {
     label: string,
-    setValueDelegate: Function
+    setValueDelegate: Function,
+    value?: number
 }
 
-const InputField: React.FC<IProps> = ({setValueDelegate, label}: IProps) => {
+const InputField: React.FC<IProps> = ({setValueDelegate, label, value}: IProps) => {
     const [errorString, setErrorString] = useState('');
 
     return (
@@ -24,6 +25,7 @@ const InputField: React.FC<IProps> = ({setValueDelegate, label}: IProps) => {
                 id="outlined-number"
                 label={label}
                 type="number"
+                defaultValue={value}
                 inputProps={{ min: 0, inputMode: "numeric", pattern: '[0-9]+' }}
                 onChange={(e) => {
                     console.log(`${label}: ${e.target.value}`);

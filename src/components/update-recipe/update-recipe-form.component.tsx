@@ -27,6 +27,7 @@ interface IIngredient {
 
 export default function EditRecipeForm( {id}: IRecipeProps) {
 
+    //TODO: Tomer - should get the recipe to edit from DB and not from devRecipes
     const recipe = devRecipes.find(recipe => recipe.id === id) || devRecipes[0];
     //     {
     //     id: number,
@@ -46,7 +47,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
 
     function sendDataToBackend() {
         console.log(`Submit clicked`);
-        //TODO: implement integration with backend
+        //TODO: Tomer - implement integration with backend gor recipe update
     }
 
     function removeIngredient(name: string) {

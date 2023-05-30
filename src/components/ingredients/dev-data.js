@@ -1,10 +1,11 @@
-const makeIngredient = (id, name, avgCost, minCost, maxCost) => {
+const makeIngredient = (id, name, avgCost, minCost, maxCost, isManual) => {
     return {
         id: id,
         name: name,
         minCost: minCost,
         avgCost: avgCost,
-        maxCost: maxCost
+        maxCost: maxCost,
+        isManual: isManual
     }
 }
 
@@ -20,8 +21,9 @@ export const devIngredients = [
         {
             price: 10,
             supermarketName: "Rami Levi"
-        }
-        ),
+        },
+        true
+    ),
 
     makeIngredient(
         "#2",
@@ -34,8 +36,9 @@ export const devIngredients = [
         {
             price: 5,
             supermarketName: "Rami Levi"
-        }
-         ),
+        },
+        false
+    ),
 
     makeIngredient(
         "#3",
@@ -48,8 +51,9 @@ export const devIngredients = [
         {
             price: 100,
             supermarketName: "Rami Levi"
-        }
-        ),
+        },
+        false
+    ),
 
     makeIngredient(
         "#4",
@@ -62,6 +66,7 @@ export const devIngredients = [
         {
             price: 20,
             supermarketName: "Rami Levi"
-        }
-        ),
+        },
+        true
+    ),
 ]

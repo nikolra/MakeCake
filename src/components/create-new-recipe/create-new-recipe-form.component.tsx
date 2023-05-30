@@ -14,7 +14,7 @@ export default function NewRecipeForm() {
     //     cost: number,
     // }[] = [];
 
-    const [ingredients, setIngredients] = useState(devIngredients);//TODO: initial value should be an empty array
+    const [ingredients, setIngredients] = useState(devIngredients);//TODO: Tomer - initial value should be an empty array
     const [recipeCost, setRecipeCost] = useState();
 
     const [ingredientName, setIngredientName] = useState();
@@ -24,7 +24,7 @@ export default function NewRecipeForm() {
 
     function sendDataToBackend() {
         console.log(`Submit clicked`);
-        //TODO: implement integration with backend
+        //TODO: Tomer integrate with create new recipe lambda
     }
 
     function removeIngredient(name: string) {

@@ -3,26 +3,22 @@ import '../../App.css';
 import './create-new-ingredient-form.style.css';
 import InputField from "../outlinedd-input-field/input-field.component";
 import NumericInputField from "../numeric-input-field/input-field.component";
-import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 export default function NewIngredientForm() {
-//TODO: avgCost
+
     const [ingredientName, setIngredientName] = useState();
     const [minPrice, setMinPrice] = useState();
     const [maxPrice, setMaxPrice] = useState();
     const [code, setCode] = useState();
+    const [minPriceStore, setMinPriceStore] = useState();
+    const [maxPriceStore, setMaxPriceStore] = useState();
+    const navigate = useNavigate();
 
     async function sendDataToBackend() {
-        await axios.post("https://e1gdwg1tvk.execute-api.us-east-1.amazonaws.com",
-            {
-                name: ingredientName,
-                minPrice: minPrice,
-                maxPrice: maxPrice,
-                code: code
-            }
-        );
         console.log(`Submit clicked`);
-        //TODO: should calculate avg price??
+        navigate('/ingredients');
+        //TODO: Amit integrate create new ingredient (manual?)
     }
 
     return (
@@ -40,11 +36,11 @@ export default function NewIngredientForm() {
                     </div>
 
                     <div className="ingredient-input-field ingredient-multiple-input-fields-line">
-                    <InputField setValueDelegate={setIngredientName} label="Store Name" width={290}/>
+                    <InputField setValueDelegate={setMaxPriceStore} label="Store Name" width={290}/>
                     <NumericInputField setValueDelegate={setMaxPrice} label="Highest Price"/>
                 </div>
                 <div className="ingredient-input-field ingredient-multiple-input-fields-line">
-                    <InputField setValueDelegate={setIngredientName} label="Store Name" width={290}/>
+                    <InputField setValueDelegate={setMinPriceStore} label="Store Name" width={290}/>
                     <NumericInputField setValueDelegate={setMinPrice} label="Lowest Price"/>
                 </div>
             </div>

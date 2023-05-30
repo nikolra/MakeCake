@@ -1,0 +1,93 @@
+.new-ingredient-input-fields{
+    /*margin-left: 50vh;*/
+}
+
+.new-ingredient-widget-container{
+    width: 45%;
+    height: 60%;
+}
+
+.new-ingredients-header-title-row{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    padding-left: 40%;
+}
+
+.new-ingredients-header-text{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.ingredient-create-button{
+    padding-top: 18%;
+    /*padding-right: 10%;*/
+}
+
+.ingredient-input-field{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.ingredient-multiple-input-fields-line{
+    padding-left: 7vh;
+}
+
+.create-ingredient-button{
+    font-size: 24px;
+    width: 12vh;
+}
+
+.update-ingredients-button{
+    font-family: 'Roboto';
+    font-weight: 700;
+    color: var(--foreground);
+    background: #dedcdc;
+    font-size: 18px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 15vh;
+    align-self: end;
+    height: 46px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    text-decoration: none;
+    /*padding-top: 18%;*/
+}
+
+.update-ingredients-button:hover{
+    cursor: pointer;
+    background: var(--button-gradient);
+}
+
+
+.update-ingredients-button-container{
+    align-self: end;
+    height: 46px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 10px;
+    padding-top: 6vh;
+}
+
+.buttons-container-row{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+}

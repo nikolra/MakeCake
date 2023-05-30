@@ -5,6 +5,7 @@ import RecipeDelegate from './recipes-delegate/recipe-delegate.component'
 import {devRecipes} from "./dev-data";
 import SearchField from "../search-field/search-field.component";
 import NavigationButtonComponent from "../navigation-button/navigation-button.component";
+import {ToastContainer} from "react-toastify";
 
 interface IRecipeProps{
     className: string,
@@ -14,6 +15,7 @@ interface IRecipeProps{
 
 export default function Recipes({className, header, description}: IRecipeProps) {
 
+    //TODO: Tomer should use ingredients from DB and not devRecipes
     const [recipes, setRecipes] = useState(devRecipes);
     const [filteredRecipes, setFilteredRecipes] = useState(recipes);
     const [searchString, setSearchString] = useState('');
@@ -21,9 +23,7 @@ export default function Recipes({className, header, description}: IRecipeProps) 
     useEffect( () => {
         const filtered = recipes.filter((recipe) => {
             const name = recipe.name;
-
             console.log(name, searchString, name.includes(searchString))
-
             return name.includes(searchString);
         })
         setFilteredRecipes(filtered)
@@ -68,6 +68,7 @@ export default function Recipes({className, header, description}: IRecipeProps) 
                 </div>
             </div>
             <NavigationButtonComponent to="/recipes/new" text="Add Recipe"/>
+            <ToastContainer/>
         </div>
     )
 }

@@ -4,13 +4,14 @@ import './customer-delegate.style.css'
 import {NavLink} from "react-router-dom";
 
 interface ICustomerProps{
-    data: any
+    data: any,
+    deleteDelegate: Function
 }
 
-function CustomerDelegate(props: ICustomerProps) {
+function CustomerDelegate({data, deleteDelegate}: ICustomerProps) {
 
     const [isOpened, setOpened] = useState(false)
-    const {name, phoneNumber, email, orders, address} = props.data;
+    const {name, phoneNumber, email, orders, address} = data;
 
     return (
         <div className={
@@ -33,6 +34,14 @@ function CustomerDelegate(props: ICustomerProps) {
                     <button className="expand-button">
                         <NavLink to={`/customer/edit/${email}`} className={`link active`}>Edit</NavLink>
                     </button>
+
+                    <button className="expand-button" onClick={
+                        async () => {
+                            await deleteDelegate(email);
+                        }
+                    }>
+                        Delete
+                    </button>
                     <button className="expand-button" onClick={
                         () => {
                             setOpened(!isOpened);
@@ -44,38 +53,38 @@ function CustomerDelegate(props: ICustomerProps) {
             </div>
 
             {isOpened &&
-            <div className="all-customers-delegate-customer-container op-50">
+                <div className="all-customers-delegate-customer-container op-50">
 
-                <div className="all-customers-delegate-customer-title">
-                    <div className="all-customers-delegate-customer-title-item">
-                        <span>Order ID</span>
-                    </div>
-                    <div className="all-customers-delegate-customer-title-item">
-                        <span>Order Due Date</span>
-                    </div>
-                    <div className="all-customers-delegate-customer-title-item">
-                        <span>Order Price</span>
-                    </div>
+                    <div className="all-customers-delegate-customer-title">
+                        <div className="all-customers-delegate-customer-title-item">
+                            <span>Order ID</span>
+                        </div>
+                        <div className="all-customers-delegate-customer-title-item">
+                            <span>Order Due Date</span>
+                        </div>
+                        <div className="all-customers-delegate-customer-title-item">
+                            <span>Order Price</span>
+                        </div>
 
+                    </div>
+                    {
+                        orders.map((order: any) => {
+                            return(
+                                <div className="all-customers-delegate-customer-title-value">
+                                    <div className="all-customers-delegate-customer-title-item">
+                                        <span>{order.id}</span>
+                                    </div>
+                                    <div className="all-customers-delegate-customer-title-item">
+                                        <span>{order.dueDate}</span>
+                                    </div>
+                                    <div className="all-customers-delegate-customer-title-item">
+                                        <span>{order.totalCost}₪</span>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
                 </div>
-                {
-                    orders.map((order: any) => {
-                        return(
-                            <div className="all-customers-delegate-customer-title-value">
-                                <div className="all-customers-delegate-customer-title-item">
-                                    <span>{order.id}</span>
-                                </div>
-                                <div className="all-customers-delegate-customer-title-item">
-                                    <span>{order.dueDate}</span>
-                                </div>
-                                <div className="all-customers-delegate-customer-title-item">
-                                    <span>{order.totalCost}₪</span>
-                                </div>
-                            </div>
-                        )
-                    })
-                }
-            </div>
             }
         </div>
     );

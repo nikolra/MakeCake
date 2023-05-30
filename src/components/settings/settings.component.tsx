@@ -3,6 +3,7 @@ import '../dashboard-widgets/widgets.style.css'
 import './settings.style.css'
 import InputField from "../outlinedd-input-field/input-field.component";
 import LabeledField from "../labeled-input/labeled-input.component";
+import {ToastContainer} from "react-toastify";
 
 interface IOrderProps{
     className?: string
@@ -10,14 +11,14 @@ interface IOrderProps{
 
 export default function SettingsComponent({className}: IOrderProps) {
 
+    //TODO: Amit should use the data of the connected user and not hard codded data
     const [username, setName] = useState('Ariana Broflowski');
-
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
 
     const sendDataToBackend = () => {
-
+        //TODO: Amit implement change password using cognito
     }
 
     // useEffect( () => {
@@ -38,7 +39,6 @@ export default function SettingsComponent({className}: IOrderProps) {
                 <LabeledField title='Password' inputClassName={"password-field-input"} placeholder='Enter your current password' type="password" required={true} onChange={ (e : any) => { setOldPassword(e.target.value)} }/>
                 <LabeledField title='Password' inputClassName={"password-field-input"} placeholder='Enter your new password password' type="password" required={true} onChange={ (e : any) => { setNewPassword(e.target.value)} }/>
                 <LabeledField title='Password' inputClassName={"password-field-input"} placeholder='Enter new password again' type="password" required={true} onChange={ (e : any) => { setRepeatPassword(e.target.value)} }/>
-
                 <div className="settings-header-title-row">
 
                 </div>
@@ -49,7 +49,7 @@ export default function SettingsComponent({className}: IOrderProps) {
                     <button className='update-settings-button button button-gradient' onClick={sendDataToBackend}>Update</button>
                 </div>
             </div>
-
+            <ToastContainer/>
         </div>
     )
 }

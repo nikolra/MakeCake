@@ -3,7 +3,9 @@ import '../../App.css';
 import './create-new-customer-form.style.css';
 import InputField from "../outlinedd-input-field/input-field.component";
 import axios from 'axios';
-
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {useNavigate} from "react-router-dom";
 
 export default function NewCustomerForm() {
 
@@ -11,7 +13,7 @@ export default function NewCustomerForm() {
     const [phoneNumber, setPhoneNumber] = useState();
     const [email, setEmail] = useState();
     const [address, setAddress] = useState();
-
+    const navigate = useNavigate();
 
     async function sendDataToBackend() {
         try {
@@ -21,14 +23,23 @@ export default function NewCustomerForm() {
                 email_address: email,
                 address: address
             };
-
-            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/customer', payload);
-            console.log(JSON.stringify(response));
-            console.log(response.data);
+            toast.promise(async ()=> {
+                navigate('/customers');
+                console.log('create customer:', payload);
+                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/customer', payload);
+                console.log('create customer response status:', response.status);
+                console.log('create customer response data:', response.data);
+                console.log(JSON.stringify(response));
+                console.log(response.data);
+            }, {
+                // @ts-ignore
+                loading: 'Loading',
+                success: `Created customer ${customerName}, ${email}`,
+                error: `Error creating customer ${customerName}, ${email}`
+            });
         } catch (error) {
             console.error(JSON.stringify(error));
         }
-        console.log(`Submit clicked`);
     }
 
     return (

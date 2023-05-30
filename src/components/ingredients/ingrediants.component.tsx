@@ -5,6 +5,7 @@ import IngredientDelegate from './ingredients-delegate/ingrediant-delegate.compo
 import {devIngredients} from "./dev-data";
 import SearchField from "../search-field/search-field.component";
 import NavigationButtonComponent from "../navigation-button/navigation-button.component";
+import {ToastContainer} from "react-toastify";
 
 interface IIngredientProps{
     className: string,
@@ -14,6 +15,7 @@ interface IIngredientProps{
 
 export default function Ingredients({className, header, description}: IIngredientProps) {
 
+    //TODO: Amit should use ingredients from DB and not devIngredients
     const [ingredients, setIngredients] = useState(devIngredients);
     const [filteredIngredients, setFilteredIngredients] = useState(ingredients);
     const [searchString, setSearchString] = useState('');
@@ -21,17 +23,15 @@ export default function Ingredients({className, header, description}: IIngredien
     useEffect( () => {
         const filtered = ingredients.filter((ingredient) => {
             const name = ingredient.name;
-
             console.log(name, searchString, name.includes(searchString))
-
             return name.includes(searchString);
         })
         setFilteredIngredients(filtered)
-    }, [ingredients, searchString])
+    }, [ingredients, searchString]);
 
     const updateIngredients = () => {
         console.log(`updateIngredients called`);
-        //TODO: implement
+        //TODO: Amit integrate with automated ingredients lambda
     }
     return (
         <div className= {`dashboard-widget-container all-ingredients-widget ${className}`}>
@@ -77,6 +77,7 @@ export default function Ingredients({className, header, description}: IIngredien
                 </div>
                 <NavigationButtonComponent to="/ingredients/new" text="Add Ingredient" fontClassName={"height-button"}/>
             </div>
+            <ToastContainer/>
         </div>
     )
 }
