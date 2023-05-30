@@ -17,26 +17,33 @@ export default function Login() {
 
     const tryLogin = async () => {
         const body = {
-                email: email,
-                password: password
+            email: email,
+            password: password
         };
 
         console.log(body);
-
-        return await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', {email:"amitle111@gmail.com", password: "Aa*12345"} )
+        return axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', {
+            email: "amitle111@gmail.com",
+            password: "Aa*12345"
+        }, {
+            headers: {
+                'Access-Control-Allow-Origin': 'http://3.224.189.195',
+                // Add any other required headers here
+            }
+        })
             .then((response) => {
                 console.log(JSON.stringify(response));
-            // Assuming the response contains a token field
-            const token = response.data.token;
-            if (token) {
-                navigate('/dashboard');
-            } else {
-                console.error('Login failed');
-                // Additional error handling code if needed
-            }
-        }).catch(error => {
-            console.error('Error during login:', error)
-        });
+                // Assuming the response contains a token field
+                const token = response.data.token;
+                if (token) {
+                    navigate('/dashboard');
+                } else {
+                    console.error('Login failed');
+                    // Additional error handling code if needed
+                }
+            }).catch(error => {
+                console.error('Error during login:', error)
+            });
     };
 
 
