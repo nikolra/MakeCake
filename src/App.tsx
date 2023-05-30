@@ -18,6 +18,7 @@ import AddIngredient from "./pages/ingredients/add-ingredient.page";
 import AddRecipePage from "./pages/recipes/add-recipe.page";
 import EditRecipePage from "./pages/recipes/edit-recipe.page";
 import EditCustomerPage from "./pages/customers/edit-customer.page";
+import EditIngredientPage from "./pages/ingredients/edit-ingredient.page";
 
 function App() {
     return (
@@ -39,6 +40,7 @@ function App() {
                 <Route path="recipe/edit/:id" element={<EditRecipePage/>}/>
                 <Route path="ingredients" element={<Ingredients/>}/>
                 <Route path="ingredients/new" element={<AddIngredient/>}/>
+                <Route path="ingredients/edit/:id" element={<EditIngredientPage/>}/>
                 <Route path="settings" element={<Settings/>}/>
             </Route>
         </Routes>

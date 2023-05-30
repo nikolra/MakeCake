@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 
 import './ingrediant-delegate.style.css'
+import {NavLink} from "react-router-dom";
 
 interface IIngredientProps {
     data: any
@@ -8,7 +9,7 @@ interface IIngredientProps {
 
 function IngredientDelegate(props: IIngredientProps) {
     const [isOpened, setOpened] = useState(false)
-    const {id, name, minCost, maxCost, avgCost} = props.data;
+    const {id, name, minCost, maxCost, avgCost, isManual} = props.data;
 
     return (
         <div className={
@@ -36,27 +37,35 @@ function IngredientDelegate(props: IIngredientProps) {
             </div>
 
             {isOpened &&
-            <div className="all-ingredient-delegate-recipe-container op-50">
+                <div className="all-ingredient-delegate-recipe-container op-50">
 
-                <div className="all-ingredient-delegate-recipe-title">
-                    <div className="all-ingredient-delegate-recipe-title-item">
-                        <span>Min Price</span>
+                    <div className="all-ingredient-delegate-recipe-title">
+                        <div className="all-ingredient-delegate-recipe-title-item">
+                            <span>Min Price</span>
+                        </div>
+                        <div className="all-ingredient-delegate-recipe-title-item">
+                            <span>Max Price</span>
+                        </div>
                     </div>
-                    <div className="all-ingredient-delegate-recipe-title-item">
-                        <span>Max Price</span>
-                    </div>
+                    {
+                        <div className="all-ingredient-delegate-recipe-title-value">
+                            <div className="all-ingredient-delegate-recipe-title-item">
+                                <span>{minCost.supermarketName} - {minCost.price}₪</span>
+                            </div>
+                            <div className="all-ingredient-delegate-recipe-title-item">
+                                <span>{maxCost.supermarketName} - {maxCost.price}₪</span>
+                            </div>
+                            {isManual &&
+                                <div className="all-ingredient-delegate-recipe-title-item align-right">
+                                    <button className="expand-button">
+                                        <NavLink to={`/ingredients/edit/${id}`} className={`link active`}>Edit</NavLink>
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    }
+
                 </div>
-                {
-                    <div className="all-ingredient-delegate-recipe-title-value">
-                        <div className="all-ingredient-delegate-recipe-title-item">
-                            <span>{minCost.supermarketName} - {minCost.price}₪</span>
-                        </div>
-                        <div className="all-ingredient-delegate-recipe-title-item">
-                            <span>{maxCost.supermarketName} - {maxCost.price}₪</span>
-                        </div>
-                    </div>
-                }
-            </div>
             }
 
         </div>
