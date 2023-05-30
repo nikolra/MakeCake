@@ -15,15 +15,14 @@ export default function Login() {
 
     const tryLogin = async () => {
         const body = {
-            params: {
                 email: email,
                 password: password
-            }
         };
 
         console.log(body);
 
-        return axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', body).then((response) => {
+        return axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', body )
+            .then((response) => {
             console.log(JSON.stringify(response));
 
             // Assuming the response contains a token field
