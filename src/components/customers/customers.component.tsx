@@ -37,18 +37,16 @@ export default function Customers({ className, header, description }: ICustomerP
         fetchCustomerDetails();
     }, []);
 
-    const deleteCustomer = async (customerEmail:string) => {
+    const deleteCustomer = (customerEmail:string) => {
         // console.log('Deleting customer:', customerEmail);
         // const payload = {
         //     email_address: customerEmail
         // };
         // toast.promise(async () => {
         //     navigate('/customers');
-        //     //console.log('Deleting customer:', customerEmail);
-        //     // @ts-ignore
-        //     const response = await axios.delete('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/deletecustomer',payload);
-        //     const response2 = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/customer', payload);
-        //
+        //     console.log('Deleting customer:', customerEmail);
+        //     const response = await axios.delete('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/deletecustomer',
+        //         {data: payload});
         //     console.log('Delete customer response status:', response.status);
         //     console.log('Delete customer response data:', response.data);
         //
@@ -58,13 +56,10 @@ export default function Customers({ className, header, description }: ICustomerP
         //     success: `Delete customer ${customerEmail}`,
         //     error: `Error deleting customer ${customerEmail}`
         // });
-        // console.log(customers);
-        // const arr= customers.filter(customer=>customer.email!==customerEmail);
+        // const updatedCustomers= customers.filter(customer=>customer.email!==customerEmail);
         // //TODO: EDEN - implement customer delete. should be with a toaster like in create
         // // You should use setCustomers method to update the new customers list
-        // //await fetchCustomerDetails();
-        // console.log(arr);
-        // setCustomers(arr);
+        // setCustomers(updatedCustomers);
     }
 
     const fetchCustomerDetails = async () => {
