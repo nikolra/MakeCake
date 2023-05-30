@@ -7,6 +7,7 @@ import SearchField from '../search-field/search-field.component';
 import NavigationButtonComponent from '../navigation-button/navigation-button.component';
 import axios from 'axios';
 import {ToastContainer} from "react-toastify";
+import {devCustomers} from "./dev-data";
 
 interface ICustomerProps {
     className: string;
@@ -34,6 +35,12 @@ export default function Customers({ className, header, description }: ICustomerP
     useEffect(() => {
         fetchCustomerDetails();
     }, []);
+
+    const deleteCustomer = async (customerEmail:string) => {
+        //TODO: EDEN - implement customer delete. should be with a toaster like in create
+        // You should use setCustomers method to update the new customers list
+        setCustomers(devCustomers);
+    }
 
     const fetchCustomerDetails = async () => {
         try {
@@ -106,7 +113,7 @@ export default function Customers({ className, header, description }: ICustomerP
             <div className="customers-list-container">
                 <div className="customers-list">
                     {filteredCustomers.map((customer) => {
-                        return <CustomerDelegate key={customer.name} data={customer} />;
+                        return <CustomerDelegate key={customer.name} data={customer} deleteDelegate={deleteCustomer}/>;
                     })}
                 </div>
             </div>

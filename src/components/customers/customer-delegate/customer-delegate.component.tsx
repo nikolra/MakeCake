@@ -4,13 +4,14 @@ import './customer-delegate.style.css'
 import {NavLink} from "react-router-dom";
 
 interface ICustomerProps{
-    data: any
+    data: any,
+    deleteDelegate: Function
 }
 
-function CustomerDelegate(props: ICustomerProps) {
+function CustomerDelegate({data, deleteDelegate}: ICustomerProps) {
 
     const [isOpened, setOpened] = useState(false)
-    const {name, phoneNumber, email, orders, address} = props.data;
+    const {name, phoneNumber, email, orders, address} = data;
 
     return (
         <div className={
@@ -35,8 +36,8 @@ function CustomerDelegate(props: ICustomerProps) {
                     </button>
 
                     <button className="expand-button" onClick={
-                        () => {
-                            //TODO: EDEN - implement customer delete. should be with a toaster like in create
+                        async () => {
+                            await deleteDelegate(email);
                         }
                     }>
                         Delete
