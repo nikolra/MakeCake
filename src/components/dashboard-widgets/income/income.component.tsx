@@ -86,31 +86,31 @@ export default function Income() {
 
     const rangeChanged = (rangeString: string) => {
         /// DEMONSTRATION CODE //////
-        fetch(`https://mockend.com/llOzzeell/konditor/${rangeString}`)
-            .then((response) => {
-                return response.json()
-            })
-            .then((result) => {
-                let totalForRange = 0;
-                chartData.x = [];
-                chartData.y = [];
-                for(const res of result){
-                    chartData.y.push(res.label)
-                    chartData.x.push(res.value)
-                    totalForRange += res.value
-                }
-                setTotal(totalForRange);
-                setData({
-                    labels: chartData.y,
-                    datasets: [
-                        {
-                            data: chartData.x,
-                            backgroundColor: chartColor,
-                            borderRadius: chartBorderRadius
-                        }
-                    ]
-                });
-            })
+        // fetch(`https://mockend.com/llOzzeell/konditor/${rangeString}`)
+        //     .then((response) => {
+        //         return response.json()
+        //     })
+        //     .then((result) => {
+        //         let totalForRange = 0;
+        //         chartData.x = [];
+        //         chartData.y = [];
+        //         for(const res of result){
+        //             chartData.y.push(res.label)
+        //             chartData.x.push(res.value)
+        //             totalForRange += res.value
+        //         }
+        //         setTotal(totalForRange);
+        //         setData({
+        //             labels: chartData.y,
+        //             datasets: [
+        //                 {
+        //                     data: chartData.x,
+        //                     backgroundColor: chartColor,
+        //                     borderRadius: chartBorderRadius
+        //                 }
+        //             ]
+        //         });
+        //     })
         //////////////////////////////
         setRange(rangeString);
     }
