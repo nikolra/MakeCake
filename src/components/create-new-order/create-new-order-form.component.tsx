@@ -43,11 +43,15 @@ export default function NewOrderForm() {
     function setDateFromPicker(value: any) {
         setDueDate(value);
     }
+
+    const options = [ //TODO: Nikol - should be deleted
+        "Nikol", "Eden", "Amit", "Tomer"
+    ]
     return (
         <div className="dashboard-widget-container new-order-widget all-orders-container inputs-container">
             <div className="input-fields">
                 <div className={"new-order-customer-name"}>
-                    <ComboBox setValueDelegate={setCustomerName} label="Customer Name"/>
+                    <ComboBox setValueDelegate={setCustomerName} label="Customer Name" options={options}/>
                 </div>
                 <DatePicker setValueDelegate={setDateFromPicker}/>
             </div>

@@ -1,0 +1,68 @@
+.popup-content {
+    margin: auto;
+    background: rgb(255, 255, 255);
+    width: 50%;
+    padding: 5px;
+    border-radius: 12px;
+    border: none;
+}
+
+.popup-arrow {
+    color: rgb(255, 255, 255);
+}
+
+[role='tooltip'].popup-content {
+    width: 200px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
+}
+
+.popup-overlay {
+    background: rgba(0, 0, 0, 0.5);
+
+}
+[data-popup='tooltip'].popup-overlay {
+    background: transparent;
+}
+.actions{
+    padding-left: 80vh;
+}
+
+.close {
+    justify-self: flex-end;
+    height: 3.5vh;
+    border-radius: 12px;
+    border: none;
+    font-size: 3vh;
+    font-family: 'Roboto';
+    font-weight: 650;
+    color: var(--foreground);
+    background: #dedcdc;
+}
+
+.close:hover{
+    background: var(--button-gradient);
+    cursor: pointer;
+}
+
+.popup-send-button {
+    justify-self: flex-end;
+    height: 6vh;
+    border-radius: 12px;
+    border: none;
+    font-size: 3vh;
+    font-family: 'Roboto';
+    font-weight: 550;
+    color: var(--foreground);
+    background: #dedcdc;
+}
+
+.popup-send-button:hover{
+    background: var(--button-gradient);
+    cursor: pointer;
+}
+
+.header{
+    font-size: 3vh;
+    font-family: 'Roboto';
+    font-weight: 500;
+}

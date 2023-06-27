@@ -2,15 +2,18 @@ import React, {useState} from 'react';
 
 import './customer-delegate.style.css'
 import {NavLink} from "react-router-dom";
+import PopUp from '../../popup/popup.component'
+import 'reactjs-popup/dist/index.css';
 
-interface ICustomerProps{
+interface ICustomerProps {
     data: any,
     deleteDelegate: Function
 }
 
 function CustomerDelegate({data, deleteDelegate}: ICustomerProps) {
 
-    const [isOpened, setOpened] = useState(false)
+    const [isOpened, setOpened] = useState(false);
+    const [templates, setTemplates] = useState(["sms1", "sms2"]);
     const {name, phoneNumber, email, orders, address} = data;
 
     return (
@@ -28,7 +31,7 @@ function CustomerDelegate({data, deleteDelegate}: ICustomerProps) {
                     <span>{email}</span>
                 </div>
                 <div className="customer-delegate-table-container">
-                    <span>{address? address : ""}</span>
+                    <span>{address ? address : ""}</span>
                 </div>
                 <div className="all-customers-delegate-table-container align-right">
                     <button className="expand-button">
@@ -65,11 +68,10 @@ function CustomerDelegate({data, deleteDelegate}: ICustomerProps) {
                         <div className="all-customers-delegate-customer-title-item">
                             <span>Order Price</span>
                         </div>
-
                     </div>
                     {
                         orders.map((order: any) => {
-                            return(
+                            return (
                                 <div className="all-customers-delegate-customer-title-value">
                                     <div className="all-customers-delegate-customer-title-item">
                                         <span>{order.id}</span>
@@ -80,6 +82,8 @@ function CustomerDelegate({data, deleteDelegate}: ICustomerProps) {
                                     <div className="all-customers-delegate-customer-title-item">
                                         <span>{order.totalCost}₪</span>
                                     </div>
+                                    <PopUp buttonText="SMS" dropdownValues={templates} order={order} customerName={name}
+                                           customerPhoneNumber={phoneNumber} customerEmail={email} customerAddress={address}/>
                                 </div>
                             )
                         })

@@ -4,12 +4,13 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 interface IProps {
     setValueDelegate: Function,
-    label: string
+    label: string,
+    options: string[]
 }
 
-const ComboBox = ({setValueDelegate, label}: IProps) => {
+const ComboBox = ({setValueDelegate, label, options}: IProps) => {
     const [names, setNames] = useState(options);
-    const [value, setValue] = React.useState<string | null>(options[0]);
+    const [value, setValue] = React.useState<string | null>("");
     return (
         <div className="combo-box">
             <Autocomplete
@@ -27,9 +28,5 @@ const ComboBox = ({setValueDelegate, label}: IProps) => {
         </div>
     )
 }
-
-const options = [
-    "Nikol", "Eden", "Amit", "Tomer"
-]
 
 export default ComboBox;
