@@ -19,6 +19,7 @@ import AddRecipePage from "./pages/recipes/add-recipe.page";
 import EditRecipePage from "./pages/recipes/edit-recipe.page";
 import EditCustomerPage from "./pages/customers/edit-customer.page";
 import EditIngredientPage from "./pages/ingredients/edit-ingredient.page";
+import EditOrderPage from "./pages/orders/edit-order.page";
 
 function App() {
     return (
@@ -32,7 +33,7 @@ function App() {
                 <Route path="dashboard" element={<Dashboard/>}/>
                 <Route path="orders" element={<Orders/>}/>
                 <Route path="orders/new" element={<AddOrder/>}/>
-                <Route path="orders/edit/:id" element={<EditRecipePage/>}/>
+                <Route path="orders/edit/:id" element={<EditOrderPage/>}/>
                 <Route path="customers" element={<Customers/>}/>
                 <Route path="customers/new" element={<AddCustomer/>}/>
                 <Route path="customer/edit/:email" element={<EditCustomerPage/>}/>

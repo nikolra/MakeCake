@@ -103,7 +103,7 @@ export default function EditOrderForm({id} : IProps) {
             </div>
 
             <div className="submit-button-container">
-                <button className='button button-gradient' onClick={sendDataToBackend}>Create</button>
+                <button className='button button-gradient' onClick={sendDataToBackend}>Update</button>
             </div>
         </div>
     )
