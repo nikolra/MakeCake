@@ -9,23 +9,23 @@ import NavigationButtonComponent from '../navigation-button/navigation-button.co
 import { ToastContainer } from 'react-toastify';
 
 interface IOrderProps {
-    className: string;
-    header: string;
-    description: string;
+    className: string,
+    header: string,
+    description: string
 }
 
 type OrderType = {
-    id: string;
-    dueDate: string;
+    id: string,
+    dueDate: string,
     customer: {
-        id: string;
-        name: string;
+        id: string,
+        name: string
     };
     recipes: Array<{
-        id: string;
-        name: string;
-        total: string;
-        quantity: string;
+        id: string,
+        name: string,
+        total: string,
+        quantity: string
     }>;
 };
 
