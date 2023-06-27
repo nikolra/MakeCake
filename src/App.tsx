@@ -32,6 +32,7 @@ function App() {
                 <Route path="dashboard" element={<Dashboard/>}/>
                 <Route path="orders" element={<Orders/>}/>
                 <Route path="orders/new" element={<AddOrder/>}/>
+                <Route path="orders/edit/:id" element={<EditRecipePage/>}/>
                 <Route path="customers" element={<Customers/>}/>
                 <Route path="customers/new" element={<AddCustomer/>}/>
                 <Route path="customer/edit/:email" element={<EditCustomerPage/>}/>

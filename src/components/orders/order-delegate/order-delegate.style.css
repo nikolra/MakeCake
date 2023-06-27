@@ -15,7 +15,7 @@
 .order-delegate-container{
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr 1fr;
+    grid-template-columns: 2fr 2fr 2fr 1fr;
     grid-template-rows: repeat(1, 60px);
 }
 
@@ -63,7 +63,7 @@
 
 .order-delegate-recipe-title{
     display: grid;
-    grid-template-columns: 5fr 1fr 1fr;
+    grid-template-columns: 2fr 2fr 2fr 1fr;
     grid-template-rows: repeat(1, 40px);
     width: 100%;
     font-size: 14px;
@@ -82,7 +82,7 @@
 
 .order-delegate-recipe-title-value{
     display: grid;
-    grid-template-columns: 5fr 1fr 1fr;
+    grid-template-columns: 2fr 2fr 2fr 1fr;
     grid-template-rows: repeat(1, 40px);
     width: 100%;
     font-size: 14px;

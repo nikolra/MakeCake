@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
 import '../../App.css';
-import './create-new-order-form.style.css';
+import './update-order-form.style.css';
 import InputField from "../standart-input-field/input-field.component";
-import {makeRecipe} from "./dev-data";
-import RecipeDelegate from "./recipe-delegate/recipe-delegate.component";
+import {makeRecipe} from "../create-new-order/dev-data";
+import RecipeDelegate from "../create-new-order/recipe-delegate/recipe-delegate.component";
 import DatePicker from "../date-picker/date-picker.component";
 import ComboBox from "../combo-box/combo-box.component";
 
+interface IProps {
+    id: string;
+}
 
-export default function NewOrderForm() {
+export default function EditOrderForm({id} : IProps) {
 
     const devRecipes:{
         name: string,
@@ -16,8 +19,10 @@ export default function NewOrderForm() {
         ingredientsCost: number,
         totalCost: number
     }[] = [];
-
-    const [recipes, setRecipes] = useState(devRecipes);//TODO: initial value should be an empty array
+    //TODO: tomer - implement get order by id
+    const order = {};
+    //TODO: Tomer - all initial values should be according to the chose order
+    const [recipes, setRecipes] = useState(devRecipes);
     const [customerName, setCustomerName] = useState();
     const [recipeName, setRecipeName] = useState();
     const [dueDate, setDueDate] = useState();
@@ -44,14 +49,11 @@ export default function NewOrderForm() {
         setDueDate(value);
     }
 
-    const options = [ //TODO: Nikol - should be deleted
-        "Nikol", "Eden", "Amit", "Tomer"
-    ]
     return (
         <div className="dashboard-widget-container new-order-widget all-orders-container inputs-container">
             <div className="input-fields">
                 <div className={"new-order-customer-name"}>
-                    <ComboBox setValueDelegate={setCustomerName} label="Customer Name" options={options}/>
+                    <ComboBox setValueDelegate={setCustomerName} label="Customer Name" options={[]} isDisabled={true}/>
                 </div>
                 <DatePicker setValueDelegate={setDateFromPicker}/>
             </div>
