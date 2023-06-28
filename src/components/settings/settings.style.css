@@ -1,27 +1,43 @@
+:root {
+    --button-gradient: linear-gradient(90.76deg, #ff5b57 1.46%, #FF8E5F 99.62%);
+    --foreground: #3f3f3f;
+    --widget-radius: 20px;
+    --dashboard-widgets-color: #fffbfb;
+    --widget-line-separator: #dadada;
+}
+
 .settings-widget{
-    height: 700px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    height: 6vh;
     width: 1100px;
+    background-color: var(--dashboard-widgets-color);
+    border-radius: var(--widget-radius);
+    box-shadow: rgba(0, 0, 0, 0.15) 0 5px 15px 0;
+    padding: 40px;
+    content: "";
+    display: table;
+    clear: both;
 }
 
 .settings-header{
-    /*height: 80%;*/
     width: 100%;
     padding: 0 20px 0 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
 }
 
 .settings-header-title-row{
+    padding-top: 3vh;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
     gap: 10px;
-    width: 100%;
+    width: 50%;
+}
+
+.settings-header-title-col{
+    float: left;
+    width: 50%;
+    height: 90%;
+    padding: 10px;
+    justify-content: flex-end;
 }
 
 .settings-header-find-container{
@@ -78,26 +94,57 @@
     margin-top: 5px;
 }
 
-.settings-update-button-container{
+.settings-button-container{
     align-self: end;
     height: 46px;
     display: flex;
     justify-content: start;
     align-items: center;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
-.settings-update-button{
-    padding-top: 20%;
-    padding-right: 10%;
+.settings-update-button-container{
+    /*margin-top: 10px;*/
+    padding-left: 44%;
 }
 
-.update-settings-button{
+.settings-add-template-button-container {
+    /*margin-top: 10px;*/
+    padding-left: 85%;
+}
+
+.settings-button {
+    cursor: pointer;
+    background-image: var(--button-gradient);
+    border: none;
     font-size: 24px;
     width: 12vh;
+    height: 65px;
+    border-radius: 10px;
+    font-family: 'Roboto Condensed';
+    font-weight: 700;
+    color: var(--foreground);
+    text-decoration: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-button:hover{
+    cursor: pointer;
+    background-color: var(--borders-transparent);
+    opacity: 0.9;
+}
+
+.settings-button:active{
+    scale: 0.99;
 }
 
 .password-field-input{
     width: 300px;
+}
+
+.setting-label-field {
+    padding-top: 5px;
 }

@@ -104,25 +104,3 @@
     flex-direction: column;
     align-items: flex-start;
 }
-
-.add-recipe-to-order-button{
-    margin-top: 10px;
-    align-self: end;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    height: 46px;
-    border-radius: 12px;
-    border: none;
-    font-size: 18px;
-    font-family: 'Roboto';
-    font-weight: 700;
-    color: var(--foreground);
-    background: #dedcdc;
-    /*padding-top: 2px;*/
-    /*padding-left: 16px;*/
-    /*padding-right: 10px;*/
-    padding-bottom: 6px;
-    width: 15vh;
-}

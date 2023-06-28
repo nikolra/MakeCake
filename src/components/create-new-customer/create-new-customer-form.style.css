@@ -27,11 +27,12 @@
 }
 
 .customer-create-button{
-    padding-top: 20%;
+    /*padding-top: 20%;*/
     padding-right: 10%;
 }
 
 .customer-input-field{
+    padding-top: 5px;
     display: flex;
 }
 

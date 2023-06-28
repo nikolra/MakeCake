@@ -85,6 +85,7 @@ export default function Income() {
     }, []);
 
     const rangeChanged = (rangeString: string) => {
+        //TODO: eden with nikol
         /// DEMONSTRATION CODE //////
         // fetch(`https://mockend.com/llOzzeell/konditor/${rangeString}`)
         //     .then((response) => {

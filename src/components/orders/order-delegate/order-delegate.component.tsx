@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 
 import './order-delegate.style.css'
+import {NavLink} from "react-router-dom";
 
-interface IOrderProps{
+interface IOrderProps {
     data: any
 }
 
@@ -12,7 +13,7 @@ function OrderDelegate(props: IOrderProps) {
 
     return (
         <div className={
-            `order-delegate-main-container order-delegate-text ${ isOpened ? "order-delegate-opened" : "" }`
+            `order-delegate-main-container order-delegate-text ${isOpened ? "order-delegate-opened" : ""}`
         }>
             <div className="order-delegate-container">
                 <div className="order-delegate-table-container">
@@ -25,6 +26,9 @@ function OrderDelegate(props: IOrderProps) {
                     <span>{totalCost}₪</span>
                 </div>
                 <div className="order-delegate-table-container align-right">
+                        <button className="expand-button">
+                            <NavLink to={`/orders/edit/${id}`} className={`link active`}>Edit</NavLink>
+                        </button>
                     <button className="expand-button" onClick={
                         () => {
                             setOpened(!isOpened)
@@ -50,18 +54,19 @@ function OrderDelegate(props: IOrderProps) {
                         </div>
                     </div>
                     {
-                        recipes.map((r: any) => {
-                            return(
+                        recipes.map((recipe: any) => {
+                            return (
                                 <div className="order-delegate-recipe-title-value">
                                     <div className="order-delegate-recipe-title-item">
-                                        <span>{r.name}</span>
+                                        <span>{recipe.name}</span>
                                     </div>
                                     <div className="order-delegate-recipe-title-item">
-                                        <span>{r.quantity}</span>
+                                        <span>{recipe.quantity}</span>
                                     </div>
                                     <div className="order-delegate-recipe-title-item">
-                                        <span>{r.total}₪</span>
+                                        <span>{recipe.total}₪</span>
                                     </div>
+
                                 </div>
                             )
                         })

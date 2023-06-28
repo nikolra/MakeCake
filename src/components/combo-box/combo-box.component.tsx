@@ -4,18 +4,22 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 interface IProps {
     setValueDelegate: Function,
-    label: string
+    initialValue?: string,
+    label: string,
+    options: string[],
+    isDisabled?: boolean
 }
 
-const ComboBox = ({setValueDelegate, label}: IProps) => {
+const ComboBox = ({setValueDelegate, label, options, initialValue = "", isDisabled = false}: IProps) => {
     const [names, setNames] = useState(options);
-    const [value, setValue] = React.useState<string | null>(options[0]);
+    const [value, setValue] = React.useState<string | null>(initialValue);
     return (
         <div className="combo-box">
             <Autocomplete
                 disablePortal
                 id="combo-box-demo"
                 value={value}
+                disabled = {isDisabled}
                 onChange={(event: any, newValue: string | null) => {
                     setValue(newValue);
                     setValueDelegate(newValue);
@@ -27,9 +31,5 @@ const ComboBox = ({setValueDelegate, label}: IProps) => {
         </div>
     )
 }
-
-const options = [
-    "Nikol", "Eden", "Amit", "Tomer"
-]
 
 export default ComboBox;

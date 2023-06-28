@@ -38,7 +38,7 @@ export const devOrders = [
         ] ),
 
     makeOrder(
-        "#2",
+        "2",
         new Date().toISOString().split("T")[0],
         300,
         makeCustomer("c2", "Bob Thornton"),
@@ -49,7 +49,7 @@ export const devOrders = [
         ] ),
 
     makeOrder(
-        "#3",
+        "3",
         new Date().toISOString().split("T")[0],
         240,
         makeCustomer("c3", "Jill Anderson"),
@@ -60,7 +60,7 @@ export const devOrders = [
         ] ),
 
     makeOrder(
-        "#4",
+        "4",
         new Date().toISOString().split("T")[0],
         440,
         makeCustomer("c4", "Eva Fender"),

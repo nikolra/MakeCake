@@ -1,81 +1,59 @@
 import React, {useState} from 'react';
 import '../../App.css';
-import './create-new-order-form.style.css';
+import './update-order-form.style.css';
 import InputField from "../standart-input-field/input-field.component";
-import {makeRecipe} from "./dev-data";
-import RecipeDelegate from "./recipe-delegate/recipe-delegate.component";
+import {makeRecipe} from "../create-new-order/dev-data";
+import RecipeDelegate from "../create-new-order/recipe-delegate/recipe-delegate.component";
 import DatePicker from "../date-picker/date-picker.component";
 import ComboBox from "../combo-box/combo-box.component";
-import dayjs from 'dayjs';
-import axios from "axios";
 
+interface IProps {
+    id: string;
+}
 
-export default function NewOrderForm() {
+export default function EditOrderForm({id} : IProps) {
 
-    type RecipeType = {
-        name: string;
-        quantity: number;
-        ingredientsCost: number;
-        totalCost: number;
-    };
+    const devRecipes:{
+        name: string,
+        quantity: number,
+        ingredientsCost: number,
+        totalCost: number
+    }[] = [];
+    //TODO: tomer - implement get order by id
+    const order = {};
+    //TODO: Tomer - all initial values should be according to the chose order
+    const [recipes, setRecipes] = useState(devRecipes);
+    const [customerName, setCustomerName] = useState();
+    const [recipeName, setRecipeName] = useState();
+    const [dueDate, setDueDate] = useState();
+    const [quantity, setQuantity] = useState();
 
-    const [recipes, setRecipes] = useState<Array<{ name: string, quantity: number, ingredientsCost: number, totalCost: number }>>([]);
-    const [customerName, setCustomerName] = useState('yankale@gmail.com');///TODO eden need to do a getter that will return all the customers seller has
-    const [recipeName, setRecipeName] = useState("");
-    const [dueDate, setDueDate] = useState(dayjs());
-    const [quantity, setQuantity] = useState(0);
-    const [ingredientsCost, setIngredientsCost] = useState(0);
-    const [totalCost, setTotalCost] = useState(0);
-    //const [myRecipes,setAllMyRecipes] = useState(<Array<{}>>([]));
+    const [ingredientsCost, setIngredientsCost] = useState();
+    const [totalCost, setTotalCost] = useState();
 
-    async function sendDataToBackend() {
+    function sendDataToBackend() {
         console.log(`Submit clicked`);
-        try{
-            const orderData = {
-                seller_email: "tomer@gmail.com",
-                buyer_email: customerName,
-                order: recipes.map((recipe: RecipeType) => {
-                    return {
-                        recipe_name: recipe.name,
-                        recipe_price: recipe.ingredientsCost.toString(),
-                        recipe_quantity: recipe.quantity.toString()
-                    }
-                })
-            };
-            //console.log('before response');
-            //console.log(orderData);
-            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order', orderData);
-            const apiData = JSON.parse(response.data);
-            console.log(response);
-            console.log('after response');
-        }
-        catch(error)
-        {
-            return error;
-        }
+        //TODO: Tomer integrate create new order
     }
 
     function addRecipeToOrder() {
-        setRecipes([...recipes, makeRecipe(recipeName, quantity, ingredientsCost, totalCost)]);
-        setRecipeName("");
-        setQuantity(0);
-        setIngredientsCost(0);
-        setTotalCost(0);
-        //console.log(recipes);
+        console.log(`addRecipe clicked`);
+        console.log(`name: ${recipeName}`);
+        console.log(`quantity: ${quantity}`);
+        console.log(`ingredientsCost: ${ingredientsCost}`);
+        console.log(`totalCost: ${totalCost}`);
+        setRecipes([...recipes,makeRecipe(recipeName, quantity, ingredientsCost, totalCost)]);
     }
 
     function setDateFromPicker(value: any) {
         setDueDate(value);
     }
 
-    const options = [ //TODO: Nikol - should be deleted
-        "Nikol", "Eden", "Amit", "Tomer"
-    ]
     return (
         <div className="dashboard-widget-container new-order-widget all-orders-container inputs-container">
             <div className="input-fields">
                 <div className={"new-order-customer-name"}>
-                    <ComboBox setValueDelegate={setCustomerName} label="Customer Name" options={options}/>
+                    <ComboBox setValueDelegate={setCustomerName} label="Customer Name" options={[]} isDisabled={true}/>
                 </div>
                 <DatePicker setValueDelegate={setDateFromPicker}/>
             </div>
@@ -125,7 +103,7 @@ export default function NewOrderForm() {
             </div>
 
             <div className="submit-button-container">
-                <button className='button button-gradient' onClick={sendDataToBackend}>Create</button>
+                <button className='button button-gradient' onClick={sendDataToBackend}>Update</button>
             </div>
         </div>
     )
