@@ -1,33 +1,89 @@
 import React, {useEffect, useState} from 'react'
 import '../dashboard-widgets/widgets.style.css'
 import './recipes.style.css'
+import './dev-data';
 import RecipeDelegate from './recipes-delegate/recipe-delegate.component'
-import {devRecipes} from "./dev-data";
 import SearchField from "../search-field/search-field.component";
 import NavigationButtonComponent from "../navigation-button/navigation-button.component";
 import {ToastContainer} from "react-toastify";
+import axios from "axios";
 
-interface IRecipeProps{
+interface IRecipeProps {
     className: string,
     header: string,
     description: string
 }
 
+type IngredientType = {
+    id: string;
+    name: string;
+    minCost: string;
+    avgCost: string;
+    maxCost: string;
+    ingredient_quantity: string;
+};
+
+type RecipeType = {
+    id: string;
+    name: string;
+    price:string
+    ingredients: IngredientType[];
+    totalCost: string;
+};
+
 export default function Recipes({className, header, description}: IRecipeProps) {
 
-    //TODO: Tomer should use ingredients from DB and not devRecipes
-    const [recipes, setRecipes] = useState(devRecipes);
-    const [filteredRecipes, setFilteredRecipes] = useState(recipes);
+    const [recipes, setRecipes] = useState<RecipeType[]>([]);
+    const [filteredRecipes, setFilteredRecipes] = useState<RecipeType[]>([]);
     const [searchString, setSearchString] = useState('');
 
-    useEffect( () => {
-        const filtered = recipes.filter((recipe) => {
-            const name = recipe.name;
-            console.log(name, searchString, name.includes(searchString))
-            return name.includes(searchString);
-        })
-        setFilteredRecipes(filtered)
-    }, [recipes, searchString])
+
+
+    const fetchRecipes = async () => {
+        try {
+            let index=0;
+            const payload = {user_identifier: 'tomer@gmail.com'};
+            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user_recipes', {params:payload});
+            const responseData = JSON.parse(response.data.body);
+            console.log(responseData)
+            const transformedRecipes = responseData.map((recipeData: any, index: number) => createRecipeFromData(recipeData, ++index));
+            console.log('setting recipes');
+            setRecipes(transformedRecipes);
+            console.log(transformedRecipes);
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+        }
+    };
+    useEffect(() => {
+        fetchRecipes();
+    }, []);
+
+    const createRecipeFromData = (recipeData: any, recipeId: number) => {
+        let ingredientCounter=0;
+        const ingredients = recipeData.ingredients?.L.map((ingredientData: any) => {
+            console.log();
+            const ingredientId = `${++ingredientCounter}`;
+            const ingredientName = ingredientData.M.ingredient_name?.S;
+            console.log(ingredientData.M.ingredient_price);
+            const ingredientPrice= ingredientData.M.ingredient_price?.S ? parseFloat(ingredientData.M.ingredient_price.S) : 0;
+            const ingredientQuantity = ingredientData.M.ingredient_quantity?.S ? parseFloat(ingredientData.M.ingredient_quantity.S) : 0;
+            return { id: `${ingredientData.M.ingredient_code.S}`, name: ingredientName, minCost: ingredientPrice,avgCost:ingredientPrice,maxCost:ingredientPrice, quantity: ingredientQuantity };
+        });
+
+        const totalCost = ingredients.reduce((total: number, ingredient: IngredientType) => {
+            if (ingredient) {
+                return total + (parseFloat(ingredient.minCost) * parseFloat(ingredient.ingredient_quantity));
+            }
+            return total;
+        }, 0);
+
+        return { id: `${recipeId}`, name: recipeData.recipe_name?.S,price:recipeData.recipe_price || 0, ingredients, totalCost };
+    };
+
+    useEffect(() => {
+        const filtered = recipes.filter((recipe) => recipe.name.toLowerCase().includes(searchString));
+        setFilteredRecipes(filtered);
+    }, [recipes, searchString]);
 
     return (
         <div className= {`dashboard-widget-container all-recipes-widget ${className}`}>

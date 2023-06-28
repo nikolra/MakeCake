@@ -3,31 +3,72 @@ import '../../App.css';
 import './create-new-recipe-form.style.css';
 import InputField from "../standart-input-field/input-field.component";
 import OutlinedInputField from "../outlinedd-input-field/input-field.component";
-import {devIngredients, makeIngredient} from "./dev-data";
+//import {devIngredients, makeIngredient} from "./dev-data";
 import IngredientDelegate from "./ingredient-delegate/ingredient-delegate.component";
+import axios from 'axios';
 
 export default function NewRecipeForm() {
 
-    // const devIngredients:{
-    //     name: string,
-    //     quantity: number,
-    //     cost: number,
-    // }[] = [];
+    type IngredientType = {
+         code: string,
+         name: string,
+         cost: string
+         quantity: string,
+         automated: boolean,
+     };
 
-    const [ingredients, setIngredients] = useState(devIngredients);//TODO: Tomer - initial value should be an empty array
-    const [recipeCost, setRecipeCost] = useState();
 
-    const [ingredientName, setIngredientName] = useState();
-    const [recipeName, setRecipeName] = useState();
-    const [quantity, setQuantity] = useState();
-    const [cost, setCost] = useState();
-
-    function sendDataToBackend() {
-        console.log(`Submit clicked`);
-        //TODO: Tomer integrate with create new recipe lambda
+    const ImakeIngredient = (name:string, quantity:string, cost:string,automated:string="true",code:string='0') => {
+        return {
+            code: code,
+            name: name,
+            cost: quantity,
+            quantity: quantity,
+            automated: automated
+        }
     }
 
-    function removeIngredient(name: string) {
+    const [ingredients, setIngredients] = useState<Array<{ code: any, name: any, cost: any,quantity: any, automated: any }>>([]);
+    const [recipeCost, setRecipeCost] = useState();
+
+    const [ingredientName, setIngredientName] = useState('');
+    const [recipeName, setRecipeName] = useState('');
+    const [quantity, setQuantity] = useState('');
+    const [cost, setCost] = useState('');
+
+    async function sendDataToBackend() {
+        console.log(`Submit clicked`);
+
+        try{
+            const recipeData = {
+                user_identifier: "tomer@gmail.com",
+                recipe_name: recipeName,
+                recipe_price: '50',
+                ingredients: ingredients.map((ingredient: IngredientType) => {
+                    return {
+                        ingredient_code: ingredient.code.toString(),
+                        ingredient_name: ingredient.name.toString(),
+                        ingredient_price: ingredient.cost.toString(),
+                        ingredient_quantity: ingredient.quantity.toString(),
+                        is_automated_ingredient:ingredient.automated.toString()
+                    }
+                })
+            };
+            //console.log(recipeData);
+            //console.log('before response');
+            console.log(recipeData);
+            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe', recipeData);
+            console.log(response.data.body);
+            console.log('recipe created');
+        }
+        catch(error)
+        {
+            return error;
+        }
+
+    }
+
+    async function removeIngredient(name: string) {
         console.log(`remove name: ${name}`);
         const index = ingredients.findIndex(ingredient => ingredient.name === name);
         const newIngredients = [...ingredients];
@@ -40,7 +81,7 @@ export default function NewRecipeForm() {
         console.log(`name: ${ingredientName}`);
         console.log(`quantity: ${quantity}`);
         console.log(`cost: ${cost}`);
-        setIngredients([...ingredients,makeIngredient(ingredientName, quantity, cost)]);
+        setIngredients([...ingredients,ImakeIngredient(ingredientName, quantity, cost)]);
     }
 
     return (
@@ -79,12 +120,12 @@ export default function NewRecipeForm() {
                         <div className="ingredients-input ">
                                 <InputField placeholder='Name' onChange={(e: any) => {setIngredientName(e.target.value)}}/>
                                 <InputField placeholder='Quantity' onChange={(e: any) => {setQuantity(e.target.value)}}/>
-                                <InputField placeholder='Ingredients Cost' onChange={(e: any) => {setCost(e.target.value)}}/>{/*TODO: should not be editable and cost comes from ingrediants data*/}
+                                <InputField placeholder='Ingredients Cost' onChange={(e: any) => {setCost(e.target.value)}}/>{/*TODO: should not be editable and cost comes from ingredients data*/}
                         </div>
                         <div className="recipes-list">
                             {
                                 ingredients.map((ingredient) => {
-                                    return <IngredientDelegate removeDelegate={removeIngredient} key={ingredient.name} name={ingredient.name} quantity={ingredient.quantity.toString()} cost={ingredient.avgCost.toString()}/>
+                                    return <IngredientDelegate removeDelegate={removeIngredient} key={ingredient.name} name={ingredient.name} quantity={ingredient.quantity.toString()} cost={ingredient.cost.toString()}/>
                                 })
                             }
                         </div>

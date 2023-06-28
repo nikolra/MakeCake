@@ -1,4 +1,4 @@
-const makeOrder = (id, dueDate, totalCost, customer, recipes) => {
+export const makeOrder = (id, dueDate, totalCost, customer, recipes) => {
     return {
         id: id,
         dueDate: dueDate,
@@ -8,14 +8,14 @@ const makeOrder = (id, dueDate, totalCost, customer, recipes) => {
     }
 }
 
-const makeCustomer = (id, name) =>{
+export const makeCustomer = (id, name) =>{
     return {
         id: id,
         name: name
     }
 }
 
-const makeRecipe = (id, name, total, quantity) =>{
+export const makeRecipe = (id, name, total, quantity) =>{
     return {
         id: id,
         name: name,
@@ -23,9 +23,11 @@ const makeRecipe = (id, name, total, quantity) =>{
         quantity: quantity
     }
 }
+
+
 export const devOrders = [
     makeOrder(
-        "#1",
+        "1",
         new Date().toISOString().split("T")[0],
         480,
         makeCustomer("c1", "Hanna Wilson"),
