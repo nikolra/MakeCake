@@ -33,6 +33,7 @@ export default function NewOrderForm() {
         try{
             const orderData = {
                 seller_email: "tomer@gmail.com",
+                due_date: dueDate.toISOString().split('T')[0],
                 buyer_email: customerName,
                 order: recipes.map((recipe: RecipeType) => {
                     return {

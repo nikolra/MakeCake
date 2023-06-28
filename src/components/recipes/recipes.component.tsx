@@ -17,18 +17,18 @@ interface IRecipeProps {
 type IngredientType = {
     id: string;
     name: string;
-    minCost: string;
-    avgCost: string;
-    maxCost: string;
-    ingredient_quantity: string;
+    minCost: number;
+    avgCost: number;
+    maxCost: number;
+    ingredient_quantity: number;
 };
 
 type RecipeType = {
     id: string;
     name: string;
-    price:string
+    price:number
     ingredients: IngredientType[];
-    totalCost: string;
+    totalCost: number;
 };
 
 export default function Recipes({className, header, description}: IRecipeProps) {
@@ -72,7 +72,7 @@ export default function Recipes({className, header, description}: IRecipeProps) 
 
         const totalCost = ingredients.reduce((total: number, ingredient: IngredientType) => {
             if (ingredient) {
-                return total + (parseFloat(ingredient.minCost) * parseFloat(ingredient.ingredient_quantity));
+                return total + (ingredient.minCost*ingredient.ingredient_quantity);
             }
             return total;
         }, 0);
