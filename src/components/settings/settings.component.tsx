@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import '../dashboard-widgets/widgets.style.css'
 import './settings.style.css'
 import InputField from "../outlinedd-input-field/input-field.component";
