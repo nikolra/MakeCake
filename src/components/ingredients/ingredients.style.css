@@ -88,7 +88,8 @@
 
 .add-ingredient-button{
     height: 46px;
-    width: 130px;
+    /*width: 130px;*/
+    width: 17vh;
     padding-left: 8px;
     padding-top: 15px;
     font-size: 50px;

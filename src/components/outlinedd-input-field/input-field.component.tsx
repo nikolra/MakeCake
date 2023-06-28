@@ -19,7 +19,7 @@ const InputField: React.FC<IProps> = ({setValueDelegate, label, width, value, di
             sx={{
                 width: width,
                 maxWidth: '100%',
-                m: 1
+                m: '0 0 6px 0'
             }}
         >
             <TextField disabled={disabled} fullWidth id="outlined-basic" label={label} variant="outlined" defaultValue={value}

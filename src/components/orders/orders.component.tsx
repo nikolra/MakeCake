@@ -79,7 +79,7 @@ export default function Orders({ className, header, description }: IOrderProps) 
         const orderRecipes = orderData.order.L.map(createRecipeFromData);
         const orderDate = orderData['due_date'].S;
         const customer = { id: `c${orderId}`, name: orderData.buyer_email.S };
-        return { id: `#${orderId.toString()}`, dueDate: orderDate, customer: customer, recipes: orderRecipes,totalCost:orderCost };
+        return { id: orderId, dueDate: orderDate, customer: customer, recipes: orderRecipes,totalCost:orderCost };
     };
 
 

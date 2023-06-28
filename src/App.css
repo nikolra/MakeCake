@@ -110,6 +110,12 @@ body{
 
 .button:hover{
     cursor: pointer;
+    background-color: var(--borders-transparent);
+    opacity: 0.9;
+}
+
+.button:active {
+    scale: 0.99;
 }
 
 .button-gradient{
@@ -122,11 +128,4 @@ body{
     color: var(--borders);
 }
 
-.button:active {
-    scale: 0.99;
-}
 
-.button:hover {
-    background-color: var(--borders-transparent);
-    opacity: 0.9;
-}
