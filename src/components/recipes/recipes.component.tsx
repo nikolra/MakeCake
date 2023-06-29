@@ -45,11 +45,11 @@ export default function Recipes({className, header, description}: IRecipeProps) 
             const payload = {user_identifier: 'tomer@gmail.com'};
             const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user_recipes', {params:payload});
             const responseData = JSON.parse(response.data.body);
-            console.log(responseData)
+            //console.log(responseData)
             const transformedRecipes = responseData.map((recipeData: any, index: number) => createRecipeFromData(recipeData, ++index));
-            console.log('setting recipes');
+            //console.log('setting recipes');
             setRecipes(transformedRecipes);
-            console.log(transformedRecipes);
+            //console.log(transformedRecipes);
         } catch (error) {
             console.error('Error fetching orders:', error);
         }
@@ -61,13 +61,11 @@ export default function Recipes({className, header, description}: IRecipeProps) 
     const createRecipeFromData = (recipeData: any, recipeId: number) => {
         let ingredientCounter=0;
         const ingredients = recipeData.ingredients?.L.map((ingredientData: any) => {
-            console.log();
             const ingredientId = `${++ingredientCounter}`;
-            const ingredientName = ingredientData.M.ingredient_name?.S;
-            console.log(ingredientData.M.ingredient_price);
-            const ingredientPrice= ingredientData.M.ingredient_price?.S ? parseFloat(ingredientData.M.ingredient_price.S) : 0;
-            const ingredientQuantity = ingredientData.M.ingredient_quantity?.S ? parseFloat(ingredientData.M.ingredient_quantity.S) : 0;
-            return { id: `${ingredientData.M.ingredient_code.S}`, name: ingredientName, minCost: ingredientPrice,avgCost:ingredientPrice,maxCost:ingredientPrice, quantity: ingredientQuantity };
+            const ingredientName = ingredientData.M.ingredient_name.S;
+            const ingredientPrice= ingredientData.M.ingredient_price.N;
+            const ingredientQuantity = ingredientData.M.ingredient_quantity.N;
+            return { id: `${ingredientData.M.ingredient_code.S}`, name: ingredientName, minCost: ingredientPrice,avgCost:ingredientPrice,maxCost:ingredientPrice, ingredient_quantity: ingredientQuantity };
         });
 
         const totalCost = ingredients.reduce((total: number, ingredient: IngredientType) => {
@@ -76,7 +74,7 @@ export default function Recipes({className, header, description}: IRecipeProps) 
             }
             return total;
         }, 0);
-
+        //console.log(totalCost);
         return { id: `${recipeId}`, name: recipeData.recipe_name?.S,price:recipeData.recipe_price || 0, ingredients, totalCost };
     };
 

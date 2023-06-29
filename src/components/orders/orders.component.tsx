@@ -6,6 +6,7 @@ import OrderDelegate from './order-delegate/order-delegate.component';
 import { devOrders, makeOrder, makeCustomer, makeRecipe } from './dev-data';
 import SearchField from '../search-field/search-field.component';
 import NavigationButtonComponent from '../navigation-button/navigation-button.component';
+import {useNavigate} from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import { Auth } from 'aws-amplify';
 
@@ -16,6 +17,7 @@ interface IOrderProps {
 }
 
 type OrderType = {
+    seller:string;
     id: string;
     dueDate: string;
     customer: {
@@ -36,11 +38,10 @@ export default function Orders({ className, header, description }: IOrderProps) 
     const [searchString, setSearchString] = useState('');
     const [isLoading, setIsLoading] = useState(true); // new loading state
     const [error, setError] = useState(null); // new error state
-    let recipeCounter=0;
+
 
     const fetchOrders = async () => {
         try {
-            let index = 0;
             //const user = await Auth.currentAuthenticatedUser();
             //const payload = { seller_email: user.attributes.email };
             const payload = { seller_email: 'tomer@gmail.com'};
@@ -48,7 +49,7 @@ export default function Orders({ className, header, description }: IOrderProps) 
             const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get-all-my-orders', {params:payload});
             const apiData = JSON.parse(response.data.body);
             console.log(apiData);
-            const transformedOrders = apiData.map((orderData: any, index: number) => createOrderFromData(orderData, ++index));
+            const transformedOrders = apiData.map((orderData: any) => createOrderFromData(orderData));
             setOrders(transformedOrders);
         } catch (error) {
             console.error('Error fetching orders:', error);
@@ -69,20 +70,20 @@ export default function Orders({ className, header, description }: IOrderProps) 
     }, [orders, searchString]);
 
 
-    const createOrderFromData = (orderData: any, orderId: number) => {
-        let orderCost = 0;
+    const createOrderFromData = (orderData: any) => {
+        let orderCost=0;
         const createRecipeFromData = (recipeData: any) => {
-            const recipeId = ++recipeCounter;
             const recipeName = recipeData.M.recipe_name.S;
             const recipePrice = recipeData.M.recipe_price.S;
             const recipeQuantity = recipeData.M.recipe_quantity.S;
             orderCost+= parseInt(recipePrice)*parseInt(recipeQuantity);
-            return { id: recipeId, name: recipeName, total: recipePrice, quantity: recipeQuantity };
+            return { id: '', name: recipeName, total: recipePrice, quantity: recipeQuantity };
         };
         const orderRecipes = orderData.order.L.map(createRecipeFromData);
         const orderDate = orderData['due_date'].S;
-        const customer = { id: `${orderId}`, name: orderData.buyer_email.S };
-        return { id: `${orderId.toString()}`, dueDate: orderDate, customer: customer, recipes: orderRecipes,totalCost:orderCost };
+        //console.log(`order id:${orderData.id}`);
+        const customer = { id: orderData.order_id.S, name: orderData.buyer_email.S };
+        return { id: orderData.order_id.S, dueDate: orderDate, customer: customer, recipes: orderRecipes,totalCost:orderCost };
     };
 
 

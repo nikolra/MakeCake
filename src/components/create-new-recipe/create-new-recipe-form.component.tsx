@@ -3,9 +3,10 @@ import '../../App.css';
 import './create-new-recipe-form.style.css';
 import InputField from "../standart-input-field/input-field.component";
 import OutlinedInputField from "../outlinedd-input-field/input-field.component";
-//import {devIngredients, makeIngredient} from "./dev-data";
 import IngredientDelegate from "./ingredient-delegate/ingredient-delegate.component";
 import axios from 'axios';
+import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
 
 export default function NewRecipeForm() {
 
@@ -18,7 +19,7 @@ export default function NewRecipeForm() {
      };
 
 
-    const ImakeIngredient = (name:string, quantity:string, cost:string,automated:string="true",code:string='0') => {
+    const ImakeIngredient = (name:string, quantity:string, cost:string,automated:string='1',code:string='0') => {
         return {
             code: code,
             name: name,
@@ -30,42 +31,47 @@ export default function NewRecipeForm() {
 
     const [ingredients, setIngredients] = useState<Array<{ code: any, name: any, cost: any,quantity: any, automated: any }>>([]);
     const [recipeCost, setRecipeCost] = useState();
-
     const [ingredientName, setIngredientName] = useState('');
     const [recipeName, setRecipeName] = useState('');
     const [quantity, setQuantity] = useState('');
     const [cost, setCost] = useState('');
+    const navigate = useNavigate();
 
     async function sendDataToBackend() {
         console.log(`Submit clicked`);
 
-        try{
+        try {
             const recipeData = {
                 user_identifier: "tomer@gmail.com",
                 recipe_name: recipeName,
                 recipe_price: '50',
                 ingredients: ingredients.map((ingredient: IngredientType) => {
                     return {
-                        ingredient_code: ingredient.code.toString(),
-                        ingredient_name: ingredient.name.toString(),
-                        ingredient_price: ingredient.cost.toString(),
-                        ingredient_quantity: ingredient.quantity.toString(),
-                        is_automated_ingredient:ingredient.automated.toString()
+                        ingredient_code: ingredient.code,
+                        ingredient_name: ingredient.name,
+                        ingredient_price: ingredient.cost,
+                        ingredient_quantity: ingredient.quantity,
+                        is_automated_ingredient: ingredient.automated
                     }
                 })
             };
-            //console.log(recipeData);
-            //console.log('before response');
-            console.log(recipeData);
-            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe', recipeData);
-            console.log(response.data.body);
-            console.log('recipe created');
+            toast.promise(async () => {
+                console.log(recipeData);
+                console.log(recipeData);
+                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe', recipeData);
+                navigate('/recipes');
+                console.log(response.data.body);
+                console.log('recipe created');
+            }, {
+                pending: 'Loading',
+                success: `Created order `,
+                error: `Error creating order`
+            });
         }
         catch(error)
         {
             return error;
         }
-
     }
 
     async function removeIngredient(name: string) {

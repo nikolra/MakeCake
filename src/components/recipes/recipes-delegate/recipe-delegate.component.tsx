@@ -9,7 +9,7 @@ interface IRecipeProps {
 
 function RecipeDelegate(props: IRecipeProps) {
     const [isOpened, setOpened] = useState(false)
-    const {id, name, avgCost, ingredients} = props.data;
+    const {id, name, totalCost:avgCost, ingredients} = props.data;
 
     return (
         <div className={
@@ -24,7 +24,6 @@ function RecipeDelegate(props: IRecipeProps) {
                 </div>
                 <div className="all-recipes-delegate-table-container">
                     <span>{avgCost}₪</span>
-                    {/*TODO: should be the sum of all ingredients avgCost*/}
                 </div>
                 <div className="all-recipes-delegate-table-container align-right">
                     <button className="expand-button" onClick={
