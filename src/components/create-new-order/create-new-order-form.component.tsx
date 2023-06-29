@@ -8,8 +8,8 @@ import DatePicker from "../date-picker/date-picker.component";
 import ComboBox from "../combo-box/combo-box.component";
 import dayjs from 'dayjs';
 import axios from "axios";
-
-
+import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
 export default function NewOrderForm() {
 
     type RecipeType = {
@@ -19,6 +19,11 @@ export default function NewOrderForm() {
         totalCost: number;
     };
 
+    type CustomerType = {
+        name: string;
+        email: string;
+    };
+
     const [recipes, setRecipes] = useState<Array<{ name: string, quantity: number, ingredientsCost: number, totalCost: number }>>([]);
     const [customerName, setCustomerName] = useState('yankale@gmail.com');///TODO eden need to do a getter that will return all the customers seller has
     const [recipeName, setRecipeName] = useState("");
@@ -26,15 +31,38 @@ export default function NewOrderForm() {
     const [quantity, setQuantity] = useState(0);
     const [ingredientsCost, setIngredientsCost] = useState(0);
     const [totalCost, setTotalCost] = useState(0);
-    //const [myRecipes,setAllMyRecipes] = useState(<Array<{}>>([]));
+    const [myCustomers,setCustomers]=useState([]);
+    const navigate = useNavigate();
+
+    async function getMyCustomers(){
+/*
+        try {
+            const payload={seller_email_address: 'tomer@gmail.com'}
+            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/getallcustomers',{params:payload});
+            setCustomers()
+        }
+*/
+
+
+    }
+
+    function generateNumericID() {
+        const min = 1000000000000000; // Minimum 16-digit number
+        const max = 9999999999999999; // Maximum 16-digit number
+        const numericID = Math.floor(Math.random() * (max - min + 1)) + min;
+        return numericID.toString();
+    }
 
     async function sendDataToBackend() {
         console.log(`Submit clicked`);
+        const order_Id=generateNumericID();
         try{
+            console.log(order_Id);
             const orderData = {
                 seller_email: "tomer@gmail.com",
-                due_date: dueDate.toISOString().split('T')[0],
+                order_id: order_Id,
                 buyer_email: customerName,
+                due_date: dueDate.toISOString().split('T')[0],
                 order: recipes.map((recipe: RecipeType) => {
                     return {
                         recipe_name: recipe.name,
@@ -43,12 +71,15 @@ export default function NewOrderForm() {
                     }
                 })
             };
-            //console.log('before response');
-            //console.log(orderData);
-            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order', orderData);
-            const apiData = JSON.parse(response.data);
-            console.log(response);
-            console.log('after response');
+             toast.promise(async ()=> {
+                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order', orderData);
+                 navigate('/orders');
+                //console.log(JSON.stringify(response));
+            }, {
+                pending: 'Loading',
+                success: `Created order `,
+                error: `Error creating order`
+            });
         }
         catch(error)
         {
@@ -56,27 +87,29 @@ export default function NewOrderForm() {
         }
     }
 
+
     function addRecipeToOrder() {
         setRecipes([...recipes, makeRecipe(recipeName, quantity, ingredientsCost, totalCost)]);
         setRecipeName("");
         setQuantity(0);
         setIngredientsCost(0);
         setTotalCost(0);
-        //console.log(recipes);
     }
 
     function setDateFromPicker(value: any) {
         setDueDate(value);
     }
 
-    const options = [ //TODO: Nikol - should be deleted
+    const options1 = [ //TODO: Nikol - should be deleted
         "Nikol", "Eden", "Amit", "Tomer"
     ]
+
+
     return (
         <div className="dashboard-widget-container new-order-widget all-orders-container inputs-container">
             <div className="input-fields">
                 <div className={"new-order-customer-name"}>
-                    <ComboBox setValueDelegate={setCustomerName} label="Customer Name" options={options}/>
+                    <ComboBox setValueDelegate={setCustomerName} label="Customer Name" options={options1}/>
                 </div>
                 <DatePicker setValueDelegate={setDateFromPicker}/>
             </div>
