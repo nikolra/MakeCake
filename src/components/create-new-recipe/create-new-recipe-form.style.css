@@ -1,3 +1,9 @@
+.add-ingredient-to-recipe-button{
+    padding-right: 10px;
+    height: auto;
+    padding-bottom: 2px;
+}
+
 .all-recipes-container{
     width: 95%;
     height: 90%;
@@ -99,16 +105,6 @@
 
     align-items: center;
     padding: 40px;
-}
-
-.button-container{
-    margin-top: 10px;
-    align-self: end;
-    height: 46px;
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    cursor: pointer;
 }
 
 .recipes{

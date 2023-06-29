@@ -128,4 +128,13 @@ body{
     color: var(--borders);
 }
 
+.button-container{
+    margin-top: 10px;
+    align-self: end;
+    height: 46px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+}
 

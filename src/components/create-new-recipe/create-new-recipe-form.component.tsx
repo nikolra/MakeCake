@@ -17,7 +17,6 @@ export default function NewRecipeForm() {
          automated: boolean,
      };
 
-
     const ImakeIngredient = (name:string, quantity:string, cost:string,automated:string="true",code:string='0') => {
         return {
             code: code,
@@ -30,7 +29,6 @@ export default function NewRecipeForm() {
 
     const [ingredients, setIngredients] = useState<Array<{ code: any, name: any, cost: any,quantity: any, automated: any }>>([]);
     const [recipeCost, setRecipeCost] = useState();
-
     const [ingredientName, setIngredientName] = useState('');
     const [recipeName, setRecipeName] = useState('');
     const [quantity, setQuantity] = useState('');
@@ -38,7 +36,6 @@ export default function NewRecipeForm() {
 
     async function sendDataToBackend() {
         console.log(`Submit clicked`);
-
         try{
             const recipeData = {
                 user_identifier: "tomer@gmail.com",
@@ -53,9 +50,7 @@ export default function NewRecipeForm() {
                         is_automated_ingredient:ingredient.automated.toString()
                     }
                 })
-            };
-            //console.log(recipeData);
-            //console.log('before response');
+            }
             console.log(recipeData);
             const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe', recipeData);
             console.log(response.data.body);
@@ -65,7 +60,6 @@ export default function NewRecipeForm() {
         {
             return error;
         }
-
     }
 
     async function removeIngredient(name: string) {
@@ -120,7 +114,7 @@ export default function NewRecipeForm() {
                         <div className="ingredients-input ">
                                 <InputField placeholder='Name' onChange={(e: any) => {setIngredientName(e.target.value)}}/>
                                 <InputField placeholder='Quantity' onChange={(e: any) => {setQuantity(e.target.value)}}/>
-                                <InputField placeholder='Ingredients Cost' onChange={(e: any) => {setCost(e.target.value)}}/>{/*TODO: should not be editable and cost comes from ingredients data*/}
+                                <InputField placeholder='Ingredients Cost' onChange={(e: any) => {setCost(e.target.value)}}/>{/*TODO: should not be editable*/}
                         </div>
                         <div className="recipes-list">
                             {
@@ -130,7 +124,7 @@ export default function NewRecipeForm() {
                             }
                         </div>
                     </div>
-                    <button className='button-container button-text add-item-button' onClick={addIngredient}>Add Ingredient</button>
+                    <button className='button-container button-text add-item-button add-ingredient-to-recipe-button' onClick={addIngredient}>Add Ingredient</button>
                 </div>
 
             </div>
