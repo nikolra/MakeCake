@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import '../../App.css';
 import './create-new-order-form.style.css';
-import InputField from "../standart-input-field/input-field.component";
 import {makeRecipe} from "./dev-data";
 import RecipeDelegate from "./recipe-delegate/recipe-delegate.component";
 import DatePicker from "../date-picker/date-picker.component";
@@ -10,6 +9,8 @@ import dayjs from 'dayjs';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 export default function NewOrderForm() {
 
     type RecipeType = {
@@ -28,8 +29,8 @@ export default function NewOrderForm() {
     const [customerName, setCustomerName] = useState('yankale@gmail.com');///TODO eden need to do a getter that will return all the customers seller has
     const [recipeName, setRecipeName] = useState("");
     const [dueDate, setDueDate] = useState(dayjs());
-    const [quantity, setQuantity] = useState(0);
-    const [ingredientsCost, setIngredientsCost] = useState(0);
+    const [quantity, setQuantity] = useState('');
+    const [ingredientsCost, setIngredientsCost] = useState('');
     const [totalCost, setTotalCost] = useState(0);
     const [myCustomers,setCustomers]=useState([]);
     const navigate = useNavigate();
@@ -42,8 +43,6 @@ export default function NewOrderForm() {
             setCustomers()
         }
 */
-
-
     }
 
     function generateNumericID() {
@@ -90,9 +89,9 @@ export default function NewOrderForm() {
 
     function addRecipeToOrder() {
         setRecipes([...recipes, makeRecipe(recipeName, quantity, ingredientsCost, totalCost)]);
-        setRecipeName("");
-        setQuantity(0);
-        setIngredientsCost(0);
+        setRecipeName('');
+        setQuantity('');
+        setIngredientsCost('');
         setTotalCost(0);
     }
 
@@ -140,10 +139,42 @@ export default function NewOrderForm() {
 
                     <div className="orders-list-container">
                         <div className="recipes-input ">
-                                <InputField placeholder='Name' onChange={(e: any) => {setRecipeName(e.target.value)}}/>{/* TODO: change to drop down with typing*/}
-                                <InputField placeholder='Quantity' onChange={(e: any) => {setQuantity(e.target.value)}}/>{/* TODO: Should be an Int. should be inserted only after recipe is chosen*/}
-                                <InputField placeholder='Ingredients Cost' onChange={(e: any) => {setIngredientsCost(e.target.value)}}/>{/* TODO: should be taken from the recipe*/}
-                                <InputField placeholder='Total Cost' onChange={(e: any) => {setTotalCost(e.target.value)}}/>{/* TODO: should be calculated automatically when quantity inserted*/}
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                }}
+                                onChange={(e: any) => {setRecipeName(e.target.value)}}
+                            >
+                                <TextField value={recipeName} id="standard-basic" label={'Name'} variant="standard" />
+                            </Box>{/* TODO: change to drop down with typing*/}
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                }}
+                                onChange={(e: any) => {setQuantity(e.target.value)}}
+                            >
+                                <TextField value={quantity} id="standard-basic" label={'Quantity'} variant="standard" />
+                            </Box>{/* TODO: Should be an Int. should be inserted only after recipe is chosen*/}
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                }}
+                                onChange={(e: any) => {setIngredientsCost(e.target.value)}}
+                            >
+                                <TextField value={ingredientsCost} id="standard-basic" label={'Ingredients Cost'} variant="standard" />
+                            </Box>{/* TODO: should be taken from the recipe*/}
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                }}
+                                onChange={(e: any) => {setTotalCost(e.target.value)}}
+                            >
+                                <TextField value={totalCost} id="standard-basic" label={'Total Cost'} variant="standard" />
+                            </Box>{/* TODO: should be calculated automatically when quantity inserted*/}
                         </div>
                         <div className="orders-list">
                             {
