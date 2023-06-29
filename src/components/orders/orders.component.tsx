@@ -8,7 +8,7 @@ import SearchField from '../search-field/search-field.component';
 import NavigationButtonComponent from '../navigation-button/navigation-button.component';
 import {useNavigate} from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
-import { Auth } from 'aws-amplify';
+// import { Auth } from 'aws-amplify';
 
 interface IOrderProps {
     className: string;
