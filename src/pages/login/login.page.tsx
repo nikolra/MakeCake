@@ -5,9 +5,8 @@ import LogoComponent from '../../components/logo/logo.component'
 import LabeledField from '../../components/labeled-input/labeled-input.component'
 import CheckBox from '../../components/checkbox/checkbox.component'
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-
-
+import {ToastContainer, toast} from 'react-toastify';
+import './login.style.css';
 
 export default function Login() {
 
@@ -69,10 +68,13 @@ export default function Login() {
                         </div>
                         <button className='button button-gradient' onClick={tryLogin}>Sign In</button>
                     </div>
-                    <Link className='button button-bordered' to="register">Sign Up</Link>
+                    <div>
+                        <Link className='sign-up-button button button-bordered' to="register">Sign Up</Link>
+                        <Link className='button button-bordered auth-button' to="register">Authenticate</Link>
+                    </div>
                 </div>
             </div>
-            <ToastContainer />
+            <ToastContainer/>
         </div>
     )
 }

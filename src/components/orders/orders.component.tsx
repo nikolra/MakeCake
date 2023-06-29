@@ -7,7 +7,7 @@ import { devOrders, makeOrder, makeCustomer, makeRecipe } from './dev-data';
 import SearchField from '../search-field/search-field.component';
 import NavigationButtonComponent from '../navigation-button/navigation-button.component';
 import { ToastContainer } from 'react-toastify';
-import { Auth } from 'aws-amplify';
+// import { Auth } from 'aws-amplify';
 
 interface IOrderProps {
     className: string;

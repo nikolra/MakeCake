@@ -23,7 +23,7 @@ const LabeledField: React.FC<IInputProps> = (props: IInputProps) => {
     }
 
     return (
-        <div className={ props.className + " input-container" }>
+        <div className={ props.className + " labeled-field-container" }>
             {props.title ? <span className="input-label">{props.title}</span> : null }
 
             <div className={props.inputClassName + " input-border-container"}>

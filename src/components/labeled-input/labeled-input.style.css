@@ -1,6 +1,8 @@
-.input-container{
+.labeled-field-container{
     display: flex;
     flex-direction: column;
+    margin-right: 4vw;
+    width: 100%;
 }
 
 .input-border-container{

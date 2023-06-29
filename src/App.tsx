@@ -20,6 +20,7 @@ import EditRecipePage from "./pages/recipes/edit-recipe.page";
 import EditCustomerPage from "./pages/customers/edit-customer.page";
 import EditIngredientPage from "./pages/ingredients/edit-ingredient.page";
 import EditOrderPage from "./pages/orders/edit-order.page";
+import AuthPage from "./pages/register/auth.page";
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/" element={<MainLayout/>}>
                 <Route index element={<Login/>}/>
                 <Route path="register" element={<Register/>}/>
+                <Route path="register/auth" element={<AuthPage/>}/>
                 <Route path="forgot-password" element={<PasswordRestore/>}/>
             </Route>
             <Route path="/" element={<DashboardLayout/>}>
