@@ -123,7 +123,7 @@ export default function Recipes({className, header, description}: IRecipeProps) 
                     }
                 </div>
             </div>
-            <NavigationButtonComponent to="/recipes/new" text="Add Recipe"/>
+            <NavigationButtonComponent to="/recipes/new" text="Add Recipe" fontClassName={'add-recipe-button'}/>
             <ToastContainer/>
         </div>
     )
