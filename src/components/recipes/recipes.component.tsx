@@ -37,7 +37,9 @@ export default function Recipes({className, header, description}: IRecipeProps) 
     const [filteredRecipes, setFilteredRecipes] = useState<RecipeType[]>([]);
     const [searchString, setSearchString] = useState('');
 
-
+    const deleteRecipe= (id: any) => {
+        //TODO: Tomer implement delete
+    }
 
     const fetchRecipes = async () => {
         try {
@@ -116,7 +118,7 @@ export default function Recipes({className, header, description}: IRecipeProps) 
                 <div className="all-recipes-list">
                     {
                         filteredRecipes.map((recipe) => {
-                            return <RecipeDelegate key={recipe.id} data={recipe} />
+                            return <RecipeDelegate key={recipe.id} data={recipe} deleteDelegate={deleteRecipe}/>
                         })
                     }
                 </div>

@@ -4,12 +4,14 @@ import './recipe-delegate.style.css'
 import {NavLink} from "react-router-dom";
 
 interface IRecipeProps {
-    data: any
+    data: any,
+    deleteDelegate: Function
 }
 
 function RecipeDelegate(props: IRecipeProps) {
     const [isOpened, setOpened] = useState(false)
     const {id, name, totalCost:avgCost, ingredients} = props.data;
+    const deleteDelegate = props.deleteDelegate;
 
     return (
         <div className={
@@ -26,15 +28,22 @@ function RecipeDelegate(props: IRecipeProps) {
                     <span>{avgCost}₪</span>
                 </div>
                 <div className="all-recipes-delegate-table-container align-right">
+                    <button className="expand-button">
+                        <NavLink to={`/recipe/edit/${id}`} className={`link active`}>Edit</NavLink>
+                    </button>
+                    <button className="expand-button" onClick={
+                        async () => {
+                            await deleteDelegate(id);
+                        }
+                    }>
+                        Delete
+                    </button>
                     <button className="expand-button" onClick={
                         () => {
                             setOpened(!isOpened);
                         }
                     }>
                         {!isOpened ? "Show" : "Hide"}
-                    </button>
-                    <button className="expand-button">
-                        <NavLink to={`/recipe/edit/${id}`} className={`link active`}>Edit</NavLink>
                     </button>
                 </div>
             </div>

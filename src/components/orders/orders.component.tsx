@@ -39,6 +39,9 @@ export default function Orders({ className, header, description }: IOrderProps) 
     const [isLoading, setIsLoading] = useState(true); // new loading state
     const [error, setError] = useState(null); // new error state
 
+    const deleteOrder= (id: any) => {
+        //TODO: Tomer implement delete
+    }
 
     const fetchOrders = async () => {
         try {
@@ -115,12 +118,15 @@ export default function Orders({ className, header, description }: IOrderProps) 
                     <div className="orders-header-orders-list-title-item">
                         <span>Total</span>
                     </div>
+                    <div className="orders-header-orders-list-title-item">
+                        <span>due Date</span>
+                    </div>
                 </div>
             </div>
             <div className="orders-list-container">
                 <div className="orders-list">
                     {filteredOrders.map((order) => {
-                        return <OrderDelegate key={order.id} data={order} />;
+                        return <OrderDelegate key={order.id} data={order} deleteDelegate={deleteOrder}/>;
                     })}
                 </div>
             </div>

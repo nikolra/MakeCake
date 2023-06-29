@@ -4,12 +4,14 @@ import './order-delegate.style.css'
 import {NavLink} from "react-router-dom";
 
 interface IOrderProps {
-    data: any
+    data: any,
+    deleteDelegate: Function
 }
 
 function OrderDelegate(props: IOrderProps) {
     const [isOpened, setOpened] = useState(false)
     const {id, dueDate, customer, totalCost, recipes} = props.data;
+    const deleteDelegate = props.deleteDelegate;
 
     return (
         <div className={
@@ -25,10 +27,20 @@ function OrderDelegate(props: IOrderProps) {
                 <div className="order-delegate-table-container">
                     <span>{totalCost}₪</span>
                 </div>
+                <div className="order-delegate-table-container">
+                    <span>{totalCost}₪</span> {/*duedate*/}
+                </div>
                 <div className="order-delegate-table-container align-right">
-                        <button className="expand-button">
-                            <NavLink to={`/orders/edit/${id}`} className={`link active`}>Edit</NavLink>
-                        </button>
+                    <button className="expand-button">
+                        <NavLink to={`/orders/edit/${id}`} className={`link active`}>Edit</NavLink>
+                    </button>
+                    <button className="expand-button" onClick={
+                        async () => {
+                            await deleteDelegate(id);
+                        }
+                    }>
+                        Delete
+                    </button>
                     <button className="expand-button" onClick={
                         () => {
                             setOpened(!isOpened)
