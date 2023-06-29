@@ -19,7 +19,7 @@ export default function NewRecipeForm() {
      };
 
 
-    const ImakeIngredient = (name:string, quantity:string, cost:string,automated:string='1',code:string='0') => {
+    const IMakeIngredient = (name:string, quantity:string, cost:string,automated:string='1',code:string='0') => {
         return {
             code: code,
             name: name,
@@ -86,7 +86,7 @@ export default function NewRecipeForm() {
         console.log(`name: ${ingredientName}`);
         console.log(`quantity: ${quantity}`);
         console.log(`cost: ${cost}`);
-        setIngredients([...ingredients,ImakeIngredient(ingredientName, quantity, cost)]);
+        setIngredients([...ingredients,IMakeIngredient(ingredientName, quantity, cost)]);
     }
 
     return (
@@ -125,7 +125,7 @@ export default function NewRecipeForm() {
                         <div className="ingredients-input ">
                                 <InputField placeholder='Name' onChange={(e: any) => {setIngredientName(e.target.value)}}/>
                                 <InputField placeholder='Quantity' onChange={(e: any) => {setQuantity(e.target.value)}}/>
-                                <InputField placeholder='Ingredients Cost' onChange={(e: any) => {setCost(e.target.value)}}/>{/*TODO: should not be editable*/}
+                                <InputField placeholder='Ingredients Cost' onChange={(e: any) => {setCost(e.target.value)}} disabled={true}/>
                         </div>
                         <div className="recipes-list">
                             {

@@ -8,7 +8,8 @@ interface IInputProps{
     required?: boolean,
     type?: string,
     onChange?: any,
-    value?: string
+    value?: string,
+    disabled?: boolean
 }
 
 const InputField: React.FC<IInputProps> = (props: IInputProps) => {
@@ -22,7 +23,7 @@ const InputField: React.FC<IInputProps> = (props: IInputProps) => {
             }}
             onChange={props.onChange}
         >
-            <TextField id="standard-basic" label={props.placeholder} variant="standard" />
+            <TextField disabled={props.disabled} id="standard-basic" label={props.placeholder} variant="standard" />
         </Box>
     )
 }
