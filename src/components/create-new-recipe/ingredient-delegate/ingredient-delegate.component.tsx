@@ -26,6 +26,12 @@ function IngredientDelegate(props: IIngredientProps) {
                 <div className="ingredient-delegate-table-container">
                     <span>{cost}₪</span>
                 </div>
+                <div className="ingredient-delegate-table-container">
+                    <span>{cost}₪</span>
+                </div>
+                <div className="ingredient-delegate-table-container">
+                    <span>{cost}₪</span>
+                </div>
                 <div className="ingredient-delegate-table-container align-right">
                     <button className="expand-button" onClick={() => {
                         props.removeDelegate(name);

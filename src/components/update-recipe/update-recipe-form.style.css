@@ -37,7 +37,7 @@
 
 .ingredients-header-ingredients-list-title{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 2fr 2fr 2fr 2fr 1fr;
     grid-template-rows: repeat(1, 30px);
     width: 100%;
     border-bottom: 2px solid var(--widget-line-separator);
@@ -114,6 +114,6 @@
     padding-top: 1vw;
     width: 100%;
     display: grid;
-    grid-template-columns:  1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns:  2fr 2fr 2fr 2fr 2fr 1fr;
     grid-template-rows: repeat(1, 60px);
 }
