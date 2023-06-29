@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import '../../App.css';
 import './create-new-recipe-form.style.css';
-import InputField from "../standart-input-field/input-field.component";
 import OutlinedInputField from "../outlinedd-input-field/input-field.component";
 import IngredientDelegate from "./ingredient-delegate/ingredient-delegate.component";
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 
 export default function NewRecipeForm() {
 
@@ -30,7 +31,7 @@ export default function NewRecipeForm() {
     }
 
     const [ingredients, setIngredients] = useState<Array<{ code: any, name: any, cost: any,quantity: any, automated: any }>>([]);
-    const [recipeCost, setRecipeCost] = useState();
+    const [recipeCost, setRecipeCost] = useState('');
     const [ingredientName, setIngredientName] = useState('');
     const [recipeName, setRecipeName] = useState('');
     const [quantity, setQuantity] = useState('');
@@ -92,6 +93,11 @@ export default function NewRecipeForm() {
         console.log(`cost: ${avgCost}`);
         console.log(`cost: ${maxCost}`);
         setIngredients([...ingredients,IMakeIngredient(ingredientName, quantity, avgCost)]);
+        setIngredientName('');
+        setMaxCost("");
+        setQuantity("");
+        setMinCost("");
+        setAvgCost('');
     }
 
     return (
@@ -133,12 +139,52 @@ export default function NewRecipeForm() {
                     </div>
 
                     <div className="new-recipe-ingredients-list-container">
-                        <div className="new-recipe-ingredients-input ">
-                                <InputField placeholder='Name' onChange={(e: any) => {setIngredientName(e.target.value)}}/>
-                                <InputField placeholder='Quantity' onChange={(e: any) => {setQuantity(e.target.value)}}/>
-                                <InputField placeholder='Min Cost' onChange={(e: any) => {setMinCost(e.target.value)}} disabled={true}/>
-                                <InputField placeholder='Avg Cost' onChange={(e: any) => {setAvgCost(e.target.value)}} disabled={true}/>
-                                <InputField placeholder='Max Cost' onChange={(e: any) => {setMaxCost(e.target.value)}} disabled={true}/>
+                        <div className="new-recipe-ingredients-input">
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': {m: 1, width: '25ch'},
+                                }}
+                                onChange={(e: any) => {setIngredientName(e.target.value)}}
+                            >
+                                <TextField id="standard-basic" label={"Name"} variant="standard" value={ingredientName}/>
+                            </Box>
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': {m: 1, width: '25ch'},
+                                }}
+                                onChange={(e: any) => {setQuantity(e.target.value)}}
+                            >
+                                <TextField id="standard-basic" label={"Quantity"} variant="standard" value={quantity}/>
+                            </Box>
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': {m: 1, width: '25ch'},
+                                }}
+                                onChange={(e: any) => {setMinCost(e.target.value)}}
+                            >
+                                <TextField disabled={true} id="standard-basic" label={'Min Cost'} variant="standard" value={minCost}/>
+                            </Box>
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': {m: 1, width: '25ch'},
+                                }}
+                                onChange={(e: any) => {setAvgCost(e.target.value)}}
+                            >
+                                <TextField disabled={true} id="standard-basic" label={'Avg Cost'} variant="standard" value={avgCost}/>
+                            </Box>
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': {m: 1, width: '25ch'},
+                                }}
+                                onChange={(e: any) => {setMaxCost(e.target.value)}}
+                            >
+                                <TextField disabled={true} id="standard-basic" label={'Max Cost'} variant="standard" value={maxCost}/>
+                            </Box>
                         </div>
                         <div className="recipes-list">
                             {
