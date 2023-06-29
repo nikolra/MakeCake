@@ -34,7 +34,10 @@ export default function NewRecipeForm() {
     const [ingredientName, setIngredientName] = useState('');
     const [recipeName, setRecipeName] = useState('');
     const [quantity, setQuantity] = useState('');
-    const [cost, setCost] = useState('');
+    const [minCost, setMinCost] = useState('');
+    const [avgCost, setAvgCost] = useState('');
+    const [maxCost, setMaxCost] = useState('');
+
     const navigate = useNavigate();
 
     async function sendDataToBackend() {
@@ -85,8 +88,10 @@ export default function NewRecipeForm() {
         console.log(`addIngredient clicked`);
         console.log(`name: ${ingredientName}`);
         console.log(`quantity: ${quantity}`);
-        console.log(`cost: ${cost}`);
-        setIngredients([...ingredients,IMakeIngredient(ingredientName, quantity, cost)]);
+        console.log(`cost: ${minCost}`);
+        console.log(`cost: ${avgCost}`);
+        console.log(`cost: ${maxCost}`);
+        setIngredients([...ingredients,IMakeIngredient(ingredientName, quantity, avgCost)]);
     }
 
     return (
@@ -109,23 +114,31 @@ export default function NewRecipeForm() {
                 </div>
 
                 <div className="ingredients-widget">
-                    <div className="ingredients-header-ingredients-list-title">
-                        <div className="ingredients-header-list-title">
+                    <div className="new-recipe-ingredients-header-ingredients-list-title">
+                        <div className="new-recipe-ingredients-header-list-title">
                             <span>Name</span>
                         </div>
-                        <div className="ingredients-header-list-title">
+                        <div className="new-recipe-ingredients-header-list-title">
                             <span>Quantity</span>
                         </div>
-                        <div className="ingredients-header-list-title">
-                            <span>Cost</span>
+                        <div className="new-recipe-ingredients-header-list-title">
+                            <span>Min Cost</span>
+                        </div>
+                        <div className="new-recipe-ingredients-header-list-title">
+                            <span>Avg Cost</span>
+                        </div>
+                        <div className="new-recipe-ingredients-header-list-title">
+                            <span>Max Cost</span>
                         </div>
                     </div>
 
                     <div className="ingredients-list-container">
-                        <div className="ingredients-input ">
+                        <div className="new-recipe-ingredients-input ">
                                 <InputField placeholder='Name' onChange={(e: any) => {setIngredientName(e.target.value)}}/>
                                 <InputField placeholder='Quantity' onChange={(e: any) => {setQuantity(e.target.value)}}/>
-                                <InputField placeholder='Ingredients Cost' onChange={(e: any) => {setCost(e.target.value)}} disabled={true}/>
+                                <InputField placeholder='Min Cost' onChange={(e: any) => {setMinCost(e.target.value)}} disabled={true}/>
+                                <InputField placeholder='Avg Cost' onChange={(e: any) => {setAvgCost(e.target.value)}} disabled={true}/>
+                                <InputField placeholder='Max Cost' onChange={(e: any) => {setMaxCost(e.target.value)}} disabled={true}/>
                         </div>
                         <div className="recipes-list">
                             {
