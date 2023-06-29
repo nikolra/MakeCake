@@ -132,7 +132,7 @@ export default function NewRecipeForm() {
                         </div>
                     </div>
 
-                    <div className="ingredients-list-container">
+                    <div className="new-recipe-ingredients-list-container">
                         <div className="new-recipe-ingredients-input ">
                                 <InputField placeholder='Name' onChange={(e: any) => {setIngredientName(e.target.value)}}/>
                                 <InputField placeholder='Quantity' onChange={(e: any) => {setQuantity(e.target.value)}}/>
