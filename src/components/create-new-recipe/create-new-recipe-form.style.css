@@ -1,19 +1,24 @@
-.add-ingredient-to-recipe-button{
+.add-ingredient-to-recipe-button {
     padding-right: 10px;
     height: auto;
     padding-bottom: 2px;
 }
 
-.all-recipes-container{
+.all-recipes-container {
     width: 95%;
     height: 90%;
 }
 
-.new-recipe-input-fields{
+.new-recipe-input-fields {
     display: flex;
 }
 
-.recipes-header-text{
+.new-recipe-ingredient-name {
+    padding-right: 10vh;
+    padding-left: 3vh;
+}
+
+.recipes-header-text {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -21,7 +26,7 @@
     gap: 10px;
 }
 
-.ingredients-header-title-row{
+.ingredients-header-title-row {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -30,7 +35,7 @@
     padding-top: 10px;
 }
 
-.recipes-in-new-recipe-header{
+.recipes-in-new-recipe-header {
     /*height: 100px;*/
     width: 100%;
     padding: 20px;
@@ -41,9 +46,9 @@
     gap: 20px;
 }
 
-.ingredients-header-ingredients-list-title{
+.ingredients-header-ingredients-list-title {
     display: grid;
-    grid-template-columns: 3fr 3fr 2fr ;
+    grid-template-columns: 3fr 3fr 2fr;
     grid-template-rows: repeat(1, 30px);
     width: 100%;
     border-bottom: 2px solid var(--widget-line-separator);
@@ -63,14 +68,14 @@
     justify-content: flex-start;
 }
 
-.ingredients-list-container{
+.ingredients-list-container {
     margin-bottom: 3px;
     width: 100%;
     flex: 1;
     overflow: auto;
 }
 
-.submit-button-container{
+.submit-button-container {
     align-self: end;
     height: 46px;
     display: flex;
@@ -79,11 +84,12 @@
     cursor: pointer;
     margin-top: 10px;
 }
-.new-recipe-customer-name{
+
+.new-recipe-customer-name {
     padding-top: 15px;
 }
 
-.new-recipe-widget{
+.new-recipe-widget {
     margin-top: 10vh;
     margin-bottom: 10vh;
     height: 85%;
@@ -93,7 +99,7 @@
     align-items: flex-start;
 }
 
-.ingredients-widget{
+.ingredients-widget {
     height: 90%;
     width: inherit;
     display: flex;
@@ -107,7 +113,7 @@
     padding: 40px;
 }
 
-.recipes{
+.recipes {
     height: 80%;
     width: 100%;
     padding: 0 20px 0 20px;
@@ -116,7 +122,7 @@
     align-items: flex-start;
 }
 
-.ingredients-input{
+.ingredients-input {
     padding-top: 1vw;
     width: 100%;
     display: grid;
