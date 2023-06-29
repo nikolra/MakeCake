@@ -87,7 +87,7 @@ export default function Orders({ className, header, description }: IOrderProps) 
 
 
     return (
-        <div className={`dashboard-widget-container orders-widget ${className}`}>
+        <div className={`dashboard-orders-widget-container orders-widget ${className}`}>
             <div className="orders-header">
                 <div className="orders-header-title-row">
                     <div className="orders-header-text">
@@ -123,7 +123,7 @@ export default function Orders({ className, header, description }: IOrderProps) 
                     })}
                 </div>
             </div>
-            <NavigationButtonComponent to="/orders/new" text="Add Order" />
+            <NavigationButtonComponent to="/orders/new" text="Add Order"/>
             <ToastContainer />
         </div>
     );

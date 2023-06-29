@@ -117,7 +117,7 @@ export default function Income() {
     }
 
     return (
-        <div className="dashboard-widget-container income-widget">
+        <div className="dashboard-widget-container dashboard-widget-col-container income-widget">
             <div className="income-header">
                 <div className="income-header-text">
                     <span className="widget-title-text">Income</span>
