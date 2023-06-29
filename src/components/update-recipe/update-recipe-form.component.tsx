@@ -43,7 +43,9 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
 
     const [ingredientName, setIngredientName] = useState();
     const [quantity, setQuantity] = useState();
-    const [cost, setCost] = useState();
+    const [minCost, setMinCost] = useState('');
+    const [avgCost, setAvgCost] = useState('');
+    const [maxCost, setMaxCost] = useState('');
 
     function sendDataToBackend() {
         console.log(`Submit clicked`);
@@ -62,8 +64,10 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
         console.log(`addIngredient clicked`);
         console.log(`name: ${ingredientName}`);
         console.log(`quantity: ${quantity}`);
-        console.log(`cost: ${cost}`);
-        setIngredients([...ingredients,makeIngredient(ingredientName, quantity, cost)]);
+        console.log(`cost: ${minCost}`);
+        console.log(`cost: ${avgCost}`);
+        console.log(`cost: ${maxCost}`);
+        setIngredients([...ingredients,makeIngredient(ingredientName, quantity, avgCost)]);
     }
 
     return (
@@ -94,8 +98,14 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                         <div className="ingredients-header-list-title">
                             <span>Quantity</span>
                         </div>
-                        <div className="ingredients-header-list-title">
-                            <span>Cost</span>
+                        <div className="new-recipe-ingredients-header-list-title">
+                            <span>Min Cost</span>
+                        </div>
+                        <div className="new-recipe-ingredients-header-list-title">
+                            <span>Avg Cost</span>
+                        </div>
+                        <div className="new-recipe-ingredients-header-list-title">
+                            <span>Max Cost</span>
                         </div>
                     </div>
 
@@ -103,7 +113,9 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                         <div className="ingredients-input ">
                                 <InputField placeholder='Name' onChange={(e: any) => {setIngredientName(e.target.value)}}/>
                                 <InputField placeholder='Quantity' onChange={(e: any) => {setQuantity(e.target.value)}}/>
-                                <InputField placeholder='Ingredients Cost' onChange={(e: any) => {setCost(e.target.value)}}/>{/*TODO: should not be editable and cost comes from ingrediants data*/}
+                                <InputField placeholder='Min Cost' onChange={(e: any) => {setMinCost(e.target.value)}} disabled={true}/>
+                                <InputField placeholder='Avg Cost' onChange={(e: any) => {setAvgCost(e.target.value)}} disabled={true}/>
+                                <InputField placeholder='Max Cost' onChange={(e: any) => {setMaxCost(e.target.value)}} disabled={true}/>
                         </div>
                         <div className="recipes-list">
                             {
