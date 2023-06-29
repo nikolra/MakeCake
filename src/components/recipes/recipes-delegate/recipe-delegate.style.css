@@ -63,7 +63,7 @@
 
 .all-recipes-delegate-recipe-title{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: repeat(1, 40px);
     width: 100%;
     font-size: 14px;
@@ -82,7 +82,7 @@
 
 .all-recipes-delegate-recipe-title-value{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: repeat(1, 40px);
     width: 100%;
     font-size: 14px;

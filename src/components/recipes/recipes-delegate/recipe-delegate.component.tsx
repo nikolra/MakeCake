@@ -50,6 +50,9 @@ function RecipeDelegate(props: IRecipeProps) {
                         <span>Ingredient Name</span>
                     </div>
                     <div className="all-recipes-delegate-recipe-title-item">
+                        <span>Quantity</span>
+                    </div>
+                    <div className="all-recipes-delegate-recipe-title-item">
                         <span>Lowest Price</span>
                     </div>
                     <div className="all-recipes-delegate-recipe-title-item">
@@ -70,13 +73,16 @@ function RecipeDelegate(props: IRecipeProps) {
                                     <span>{ingredient.name}</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.minCost.price}₪</span>
+                                    <span>{ingredient.ingredient_quantity}</span>
+                                </div>
+                                <div className="all-recipes-delegate-recipe-title-item">
+                                    <span>{ingredient.minCost}₪</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
                                     <span>{ingredient.avgCost}₪</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.maxCost.price}₪</span>
+                                    <span>{ingredient.maxCost}₪</span>
                                 </div>
                             </div>
                         )
