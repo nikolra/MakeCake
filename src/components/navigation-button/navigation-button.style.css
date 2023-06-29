@@ -8,6 +8,8 @@
     color: var(--foreground);
     background: #dedcdc;
     padding-top: 2px;
+    padding-left: 0.75vh;
+    width: 14.5vh;
 }
 
 .height-button{
