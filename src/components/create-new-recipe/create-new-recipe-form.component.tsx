@@ -194,7 +194,7 @@ export default function NewRecipeForm() {
                             }
                         </div>
                     </div>
-                    <button className='button-container button-text add-item-button add-ingredient-to-recipe-button' onClick={addIngredient}>Add Ingredient</button>
+                    <button className='button-container button-text add-item-button add-ingredient-to-recipe-button' onClick={addIngredient}>Add</button>
                 </div>
 
             </div>

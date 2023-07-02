@@ -125,13 +125,13 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                             }
                         </div>
                     </div>
-                    <button className='button-container button-text add-item-button' onClick={addIngredient}>Add Ingredient</button>
+                    <button className='add-ingredient-to-recipe-button button-container button-text add-item-button' onClick={addIngredient}>Add</button>
                 </div>
 
             </div>
 
             <div className="submit-button-container">
-                <button className='button button-gradient' onClick={sendDataToBackend}>Create</button>
+                <button className='button button-gradient' onClick={sendDataToBackend}>Update</button>
             </div>
         </div>
     )
