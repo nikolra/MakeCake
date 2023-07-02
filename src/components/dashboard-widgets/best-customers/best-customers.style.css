@@ -1,0 +1,101 @@
+.calendar-container {
+    height: 85%;
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.best-customers-header{
+    /*height: 80%;*/
+    width: 100%;
+    padding: 0 20px 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.best-customers-header-title-row{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+}
+
+.best-customers-header-text{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.best-customers-header-orders-list-title{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: repeat(1, 30px);
+    width: 100%;
+    padding: 0 20px;
+    border-bottom: 2px solid var(--widget-line-separator);
+}
+
+.best-customers-header-orders-list-title-item{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 14px;
+    font-family: 'Roboto';
+    font-weight: 700;
+    color: var(--foreground);
+    opacity: 0.5;
+    gap: 5px;
+}
+
+.best-customers-list-container{
+    margin-bottom: 3px;
+    width: 100%;
+    flex: 1;
+    overflow: auto;
+}
+
+.best-customers-list{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+
+.best-customers-delegate-main-container{
+    display: flex;
+    flex-direction: column;
+    justify-self: flex-start;
+    align-items: center;
+    border-radius: 16px;
+    background-color: #f5f3f3;
+    padding: 0 20px;
+    width: 100%;
+}
+
+.best-customers-delegate-text{
+    font-size: 14px;
+    font-family: 'Roboto';
+    font-weight: 700;
+    color: var(--foreground);
+}
+
+.best-customers-delegate-container{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: repeat(1, 60px);
+}
+
+.best-customers-delegate-table-container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+}
