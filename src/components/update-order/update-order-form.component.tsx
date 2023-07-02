@@ -1,35 +1,49 @@
 import React, {useState} from 'react';
 import '../../App.css';
 import './update-order-form.style.css';
-import InputField from "../standart-input-field/input-field.component";
 import {makeRecipe} from "../create-new-order/dev-data";
 import RecipeDelegate from "../create-new-order/recipe-delegate/recipe-delegate.component";
 import DatePicker from "../date-picker/date-picker.component";
 import ComboBox from "../combo-box/combo-box.component";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 
 interface IProps {
     id: string;
 }
 
+const devRecipes:{
+    name: string,
+    quantity: number,
+    ingredientsCost: number,
+    totalCost: number
+}[] = [];
+
 export default function EditOrderForm({id} : IProps) {
 
-    const devRecipes:{
-        name: string,
-        quantity: number,
-        ingredientsCost: number,
-        totalCost: number
-    }[] = [];
+
     //TODO: tomer - implement get order by id
     const order = {};
     //TODO: Tomer - all initial values should be according to the chose order
-    const [recipes, setRecipes] = useState(devRecipes);
-    const [customerName, setCustomerName] = useState();
-    const [recipeName, setRecipeName] = useState();
-    const [dueDate, setDueDate] = useState();
-    const [quantity, setQuantity] = useState();
+    const [recipes, setRecipes] = useState(devRecipes); //TODO: Tomer - should be order.recipes
+    const [customerName, setCustomerName] = useState(""); //TODO: Tomer - should be order.customerName
+    const [dueDate, setDueDate] = useState(""); //TODO: Tomer - should be order.dueDate
 
-    const [ingredientsCost, setIngredientsCost] = useState();
-    const [totalCost, setTotalCost] = useState();
+    const [recipeName, setRecipeName] = useState("");
+    const [quantity, setQuantity] = useState(0);
+    const [ingredientsCost, setIngredientsCost] = useState();//TODO: Tomer - should we have all 3 prices?
+    const [totalCost, setTotalCost] = useState(0);
+
+    const options1 = [ //TODO: Eden - remove after integration
+        "Nikol", "Eden", "Amit", "Tomer"
+    ]
+    const [myCustomers,setCustomers]=useState(options1); //TODO: Eden - should be initializes to all customer names for the user that is currently logged in. (Consider saving change customer name to customer email)
+    const [myRecipes,setMyRecipes]=useState(options1); //TODO: Tomer - should be initializes to all recipes names for the user that is currently logged in
+
+    const deleteRecipeFromOrder = () =>{
+        //TODO: Nikol implement
+    }
 
     function sendDataToBackend() {
         console.log(`Submit clicked`);
@@ -53,9 +67,9 @@ export default function EditOrderForm({id} : IProps) {
         <div className="dashboard-widget-container new-order-widget all-orders-container inputs-container">
             <div className="input-fields">
                 <div className={"new-order-customer-name"}>
-                    <ComboBox setValueDelegate={setCustomerName} label="Customer Name" options={[]} isDisabled={true}/>
+                    <ComboBox setValueDelegate={setCustomerName} label="Customer Name" options={[]} isDisabled={true} initialValue={customerName}/>
                 </div>
-                <DatePicker setValueDelegate={setDateFromPicker}/>
+                <DatePicker setValueDelegate={setDateFromPicker} initValue={dueDate}/>
             </div>
 
             <div className="orders">
@@ -83,16 +97,52 @@ export default function EditOrderForm({id} : IProps) {
                     </div>
 
                     <div className="orders-list-container">
-                        <div className="recipes-input ">
-                                <InputField placeholder='Name' onChange={(e: any) => {setRecipeName(e.target.value)}}/>{/* TODO: change to drop down with typing*/}
-                                <InputField placeholder='Quantity' onChange={(e: any) => {setQuantity(e.target.value)}}/>{/* TODO: Should be an Int. should be inserted only after recipe is chosen*/}
-                                <InputField placeholder='Ingredients Cost' onChange={(e: any) => {setIngredientsCost(e.target.value)}}/>{/* TODO: should be taken from the recipe*/}
-                                <InputField placeholder='Total Cost' onChange={(e: any) => {setTotalCost(e.target.value)}}/>{/* TODO: should be calculated automatically when quantity inserted*/}
+                        <div className="recipes-input">
+                            <Autocomplete
+                                disablePortal
+                                id="comcbo-box-demo"
+                                onChange={(event: any, newValue: string | null) => {
+                                    if(newValue)
+                                        setRecipeName(newValue);
+                                    else setRecipeName("");
+
+                                }}
+                                options={myRecipes}
+                                sx={{width: 235, padding: "8px 0 0 0"}}
+                                renderInput={(params) => <TextField {...params} label={"Name"} variant="standard"/>}
+                            />
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                }}
+                                onChange={(e: any) => {setQuantity(e.target.value)}}
+                            >
+                                <TextField value={quantity} id="standard-basic" label={'Quantity'} variant="standard" />
+                            </Box>{/* TODO: Tomer - Should be an Int. should be inserted only after recipe is chosen*/}
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                }}
+                                onChange={(e: any) => {setIngredientsCost(e.target.value)}}
+                            >
+                                <TextField value={ingredientsCost} id="standard-basic" label={'Ingredients Cost'} variant="standard" />
+                            </Box>{/* TODO: Tomer - should be taken from the recipe*/}
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                }}
+                                onChange={(e: any) => {setTotalCost(e.target.value)}}
+                            >
+                                <TextField value={totalCost} id="standard-basic" label={'Total Cost'} variant="standard" />
+                            </Box>{/* TODO: Tomer - should be calculated automatically when quantity inserted*/}
                         </div>
                         <div className="orders-list">
                             {
                                 recipes.map((recipe) => {
-                                    return <RecipeDelegate key={recipe.name} name={recipe.name} quantity={recipe.quantity.toString()} ingredientsCost={recipe.ingredientsCost.toString()} totalCost={recipe.totalCost.toString()}/>
+                                    return <RecipeDelegate removeDelegate={deleteRecipeFromOrder} key={recipe.name} name={recipe.name} quantity={recipe.quantity.toString()} ingredientsCost={recipe.ingredientsCost.toString()} totalCost={recipe.totalCost.toString()}/>
                                 })
                             }
                         </div>

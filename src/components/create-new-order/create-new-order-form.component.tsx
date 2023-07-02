@@ -11,6 +11,7 @@ import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import Autocomplete from "@mui/material/Autocomplete";
 export default function NewOrderForm() {
 
     type RecipeType = {
@@ -25,16 +26,26 @@ export default function NewOrderForm() {
         email: string;
     };
 
-    const [recipes, setRecipes] = useState<Array<{ name: string, quantity: number, ingredientsCost: number, totalCost: number }>>([]);
+    const options1 = [ //TODO: Eden - remove after integration
+        "Nikol", "Eden", "Amit", "Tomer"
+    ]
+
     const [customerName, setCustomerName] = useState('yankale@gmail.com');///TODO eden need to do a getter that will return all the customers seller has
-    const [recipeName, setRecipeName] = useState("");
     const [dueDate, setDueDate] = useState(dayjs());
+    const [orderRecipes, setOrderRecipes] = useState<Array<{ name: string, quantity: number, ingredientsCost: number, totalCost: number }>>([]);
+
+    const [recipeName, setRecipeName] = useState("");
     const [quantity, setQuantity] = useState('');
-    const [ingredientsCost, setIngredientsCost] = useState('');
+    const [ingredientsCost, setIngredientsCost] = useState('');//TODO: Tomer - should we have all 3 prices?
     const [totalCost, setTotalCost] = useState(0);
-    const [myCustomers,setCustomers]=useState([]);
+    const [myCustomers,setCustomers]=useState(options1); //TODO: Eden - should be initializes to all customer names for the user that is currently logged in. (Consider saving change customer name to customer email)
+    const [myRecipes,setMyRecipes]=useState(options1); //TODO: Tomer - should be initializes to all recipes names for the user that is currently logged in
+
     const navigate = useNavigate();
 
+    const deleteRecipeFromOrder = () =>{
+        //TODO: Nikol implement
+    }
     async function getMyCustomers(){
 /*
         try {
@@ -50,6 +61,7 @@ export default function NewOrderForm() {
         const max = 9999999999999999; // Maximum 16-digit number
         const numericID = Math.floor(Math.random() * (max - min + 1)) + min;
         return numericID.toString();
+        //TODO: Tomer - please use a hash function to generate something smaller
     }
 
     async function sendDataToBackend() {
@@ -62,7 +74,7 @@ export default function NewOrderForm() {
                 order_id: order_Id,
                 buyer_email: customerName,
                 due_date: dueDate.toISOString().split('T')[0],
-                order: recipes.map((recipe: RecipeType) => {
+                order: orderRecipes.map((recipe: RecipeType) => {
                     return {
                         recipe_name: recipe.name,
                         recipe_price: recipe.ingredientsCost.toString(),
@@ -86,9 +98,8 @@ export default function NewOrderForm() {
         }
     }
 
-
     function addRecipeToOrder() {
-        setRecipes([...recipes, makeRecipe(recipeName, quantity, ingredientsCost, totalCost)]);
+        setOrderRecipes([...orderRecipes, makeRecipe(recipeName, quantity, ingredientsCost, totalCost)]);
         setRecipeName('');
         setQuantity('');
         setIngredientsCost('');
@@ -99,16 +110,11 @@ export default function NewOrderForm() {
         setDueDate(value);
     }
 
-    const options1 = [ //TODO: Nikol - should be deleted
-        "Nikol", "Eden", "Amit", "Tomer"
-    ]
-
-
     return (
         <div className="dashboard-widget-container new-order-widget all-orders-container inputs-container">
             <div className="input-fields">
                 <div className={"new-order-customer-name"}>
-                    <ComboBox setValueDelegate={setCustomerName} label="Customer Name" options={options1}/>
+                    <ComboBox setValueDelegate={setCustomerName} label="Customer Name" options={myCustomers}/>
                 </div>
                 <DatePicker setValueDelegate={setDateFromPicker}/>
             </div>
@@ -122,7 +128,7 @@ export default function NewOrderForm() {
                 </div>
 
                 <div className="recipes-widget">
-                    <div className="recipes-header-recipes-list-title">
+                    <div className="create-recipe-header-recipes-list-title">
                         <div className="recipes-header-list-title">
                             <span>Name</span>
                         </div>
@@ -139,15 +145,19 @@ export default function NewOrderForm() {
 
                     <div className="orders-list-container">
                         <div className="recipes-input ">
-                            <Box
-                                component="div"
-                                sx={{
-                                    '& > :not(style)': { m: 1, width: '25ch' },
+                            <Autocomplete
+                                disablePortal
+                                id="comcbo-box-demo"
+                                onChange={(event: any, newValue: string | null) => {
+                                    if(newValue)
+                                        setRecipeName(newValue);
+                                    else setRecipeName("");
+
                                 }}
-                                onChange={(e: any) => {setRecipeName(e.target.value)}}
-                            >
-                                <TextField value={recipeName} id="standard-basic" label={'Name'} variant="standard" />
-                            </Box>{/* TODO: change to drop down with typing*/}
+                                options={myRecipes}
+                                sx={{width: 235, padding: "8px 0 0 0"}}
+                                renderInput={(params) => <TextField {...params} label={"Name"} variant="standard"/>}
+                            />
                             <Box
                                 component="div"
                                 sx={{
@@ -156,7 +166,7 @@ export default function NewOrderForm() {
                                 onChange={(e: any) => {setQuantity(e.target.value)}}
                             >
                                 <TextField value={quantity} id="standard-basic" label={'Quantity'} variant="standard" />
-                            </Box>{/* TODO: Should be an Int. should be inserted only after recipe is chosen*/}
+                            </Box>{/* TODO: Tomer - Should be an Int. should be inserted only after recipe is chosen*/}
                             <Box
                                 component="div"
                                 sx={{
@@ -165,7 +175,7 @@ export default function NewOrderForm() {
                                 onChange={(e: any) => {setIngredientsCost(e.target.value)}}
                             >
                                 <TextField value={ingredientsCost} id="standard-basic" label={'Ingredients Cost'} variant="standard" />
-                            </Box>{/* TODO: should be taken from the recipe*/}
+                            </Box>{/* TODO: Tomer -should be taken from the recipe*/}
                             <Box
                                 component="div"
                                 sx={{
@@ -174,17 +184,17 @@ export default function NewOrderForm() {
                                 onChange={(e: any) => {setTotalCost(e.target.value)}}
                             >
                                 <TextField value={totalCost} id="standard-basic" label={'Total Cost'} variant="standard" />
-                            </Box>{/* TODO: should be calculated automatically when quantity inserted*/}
+                            </Box>{/* TODO: Tomer -should be calculated automatically when quantity inserted*/}
                         </div>
                         <div className="orders-list">
                             {
-                                recipes.map((recipe) => {
-                                    return <RecipeDelegate key={recipe.name} name={recipe.name} quantity={recipe.quantity.toString()} ingredientsCost={recipe.ingredientsCost.toString()} totalCost={recipe.totalCost.toString()}/>
+                                orderRecipes.map((recipe) => {
+                                    return <RecipeDelegate removeDelegate={deleteRecipeFromOrder} key={recipe.name} name={recipe.name} quantity={recipe.quantity.toString()} ingredientsCost={recipe.ingredientsCost.toString()} totalCost={recipe.totalCost.toString()}/>
                                 })
                             }
                         </div>
                     </div>
-                    <button className='add-recipe-to-order-button' onClick={addRecipeToOrder}>Add recipe</button> {/*TODO: when clicked should init the recipe input line*/}
+                    <button className='add-recipe-to-order-button' onClick={addRecipeToOrder}>Add recipe</button>
                 </div>
 
             </div>

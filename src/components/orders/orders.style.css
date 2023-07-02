@@ -85,13 +85,16 @@
     justify-content: flex-start;
     align-items: flex-start;
     gap: 5px;
-    margin-top: 5px;
+    /*margin-top: 5px;*/
+    padding-left: 10px;
+    padding-top: 1vw;
 }
 
 .recipes-input{
+    padding-left: 20px;
     padding-top: 1vw;
     width: 100%;
     display: grid;
-    grid-template-columns: 3fr 4fr 4fr 1fr;
+    grid-template-columns: 2fr 2fr 2fr 2fr 1fr;
     grid-template-rows: repeat(1, 60px);
 }

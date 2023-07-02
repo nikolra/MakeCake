@@ -6,11 +6,12 @@ interface IRecipeProps{
     name: string,
     quantity: string,
     ingredientsCost: string,
-    totalCost: string
+    totalCost: string,
+    removeDelegate: Function
 }
 
 function RecipeDelegate(props: IRecipeProps) {
-    const {name, quantity, ingredientsCost, totalCost} = props;
+    const {name, quantity, ingredientsCost, totalCost, removeDelegate} = props;
 
     return (
         <div className={
@@ -28,6 +29,13 @@ function RecipeDelegate(props: IRecipeProps) {
                 </div>
                 <div className="recipe-delegate-table-container">
                     <span>{totalCost}₪</span>
+                </div>
+                <div className="recipe-delegate-table-container align-right">
+                    <button className="expand-button" onClick={() => {
+                        props.removeDelegate(name);
+                    }}>
+                        <span>Remove</span>
+                    </button>
                 </div>
             </div>
 

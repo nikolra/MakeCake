@@ -27,9 +27,9 @@
     gap: 20px;
 }
 
-.recipes-header-recipes-list-title{
+.create-recipe-header-recipes-list-title{
     display: grid;
-    grid-template-columns: 3fr 4fr 4fr 2fr ;
+    grid-template-columns: 2fr 2fr 2fr 2fr 1fr;
     grid-template-rows: repeat(1, 30px);
     width: 100%;
     border-bottom: 2px solid var(--widget-line-separator);

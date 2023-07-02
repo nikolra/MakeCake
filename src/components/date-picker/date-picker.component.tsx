@@ -7,12 +7,13 @@ import dayjs, {Dayjs} from 'dayjs';
 import './date-picker.style.css'
 
 interface IProps {
-    setValueDelegate: Function
+    setValueDelegate: Function,
+    initValue?: string
 }
 
-export default function BasicDatePicker({setValueDelegate}: IProps) {
+export default function BasicDatePicker({setValueDelegate, initValue}: IProps) {
 
-    const [value, setValue] = React.useState<Dayjs | null>(dayjs((new Date()).toISOString().split('T')[0]));
+    const [value, setValue] = React.useState<Dayjs | null>(initValue?dayjs(initValue):dayjs((new Date()).toISOString().split('T')[0]));
 
     return (
         <div className="date-picker">
