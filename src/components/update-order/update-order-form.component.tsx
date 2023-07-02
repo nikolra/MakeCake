@@ -31,8 +31,8 @@ export default function EditOrderForm({id} : IProps) {
     const [dueDate, setDueDate] = useState(""); //TODO: Tomer - should be order.dueDate
 
     const [recipeName, setRecipeName] = useState("");
-    const [quantity, setQuantity] = useState(0);
-    const [ingredientsCost, setIngredientsCost] = useState();//TODO: Tomer - should we have all 3 prices?
+    const [quantity, setQuantity] = useState('');
+    const [ingredientsCost, setIngredientsCost] = useState('');//TODO: Tomer - should we have all 3 prices?
     const [totalCost, setTotalCost] = useState(0);
 
     const options1 = [ //TODO: Eden - remove after integration
@@ -57,8 +57,11 @@ export default function EditOrderForm({id} : IProps) {
         console.log(`ingredientsCost: ${ingredientsCost}`);
         console.log(`totalCost: ${totalCost}`);
         setRecipes([...recipes,makeRecipe(recipeName, quantity, ingredientsCost, totalCost)]);
+        setRecipeName('');
+        setQuantity('');
+        setIngredientsCost('');
+        setTotalCost(0);
     }
-
     function setDateFromPicker(value: any) {
         setDueDate(value);
     }
@@ -100,8 +103,10 @@ export default function EditOrderForm({id} : IProps) {
                         <div className="recipes-input">
                             <Autocomplete
                                 disablePortal
+                                value={recipeName}
                                 id="comcbo-box-demo"
                                 onChange={(event: any, newValue: string | null) => {
+                                    console.log(`New Value: ${newValue}`);
                                     if(newValue)
                                         setRecipeName(newValue);
                                     else setRecipeName("");
