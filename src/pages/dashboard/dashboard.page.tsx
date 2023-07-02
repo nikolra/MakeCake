@@ -10,7 +10,7 @@ export default function Dashboard() {
   return (
     <div className="data-container dashboard-container">
         <div className="dashboard-content">
-            <Orders className="today-orders" header="Today orders" description="Orders for today"/>
+            <Orders className="today-orders" header="Today orders" description="Orders for today" isDashboard={true}/>
             <WeekOrders/>
             <Income/>
             <ToastContainer/>

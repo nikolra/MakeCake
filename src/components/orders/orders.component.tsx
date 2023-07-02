@@ -3,7 +3,6 @@ import '../dashboard-widgets/widgets.style.css';
 import './orders.style.css';
 import axios from 'axios';
 import OrderDelegate from './order-delegate/order-delegate.component';
-import { devOrders, makeOrder, makeCustomer, makeRecipe } from './dev-data';
 import SearchField from '../search-field/search-field.component';
 import NavigationButtonComponent from '../navigation-button/navigation-button.component';
 import {useNavigate} from "react-router-dom";
@@ -14,6 +13,7 @@ interface IOrderProps {
     className: string;
     header: string;
     description: string;
+    isDashboard?: boolean;
 }
 
 type OrderType = {
@@ -32,12 +32,13 @@ type OrderType = {
     }>;
 };
 
-export default function Orders({ className, header, description }: IOrderProps) {
+export default function Orders({ className, header, description, isDashboard }: IOrderProps) {
     const [orders, setOrders] = useState<OrderType[]>([]);
     const [filteredOrders, setFilteredOrders] = useState<OrderType[]>([]);
     const [searchString, setSearchString] = useState('');
     const [isLoading, setIsLoading] = useState(true); // new loading state
     const [error, setError] = useState(null); // new error state
+    const navigate = useNavigate();
 
     const deleteOrder= (id: any) => {
         //TODO: Tomer implement delete
@@ -53,6 +54,10 @@ export default function Orders({ className, header, description }: IOrderProps) 
             const apiData = JSON.parse(response.data.body);
             console.log(apiData);
             const transformedOrders = apiData.map((orderData: any) => createOrderFromData(orderData));
+            if(isDashboard)
+            {
+                //TODO: Tomer - filter orders to be only today orders
+            }
             setOrders(transformedOrders);
         } catch (error) {
             console.error('Error fetching orders:', error);
