@@ -30,7 +30,7 @@ export default function Ingredients({className, header, description}: IIngredien
     }, [ingredients, searchString]);
 
     const updateIngredients = () => {
-        console.log(`updateIngredients called`);
+        console.log(`update Ingredients called`);
         //TODO: Amit integrate with automated ingredients lambda
     }
     return (
@@ -75,7 +75,7 @@ export default function Ingredients({className, header, description}: IIngredien
                 <div className="update-ingredients-button-container align-right">
                     <button className='update-ingredients-button' onClick={updateIngredients}>update ingredients</button>
                 </div>
-                <NavigationButtonComponent to="/ingredients/new" text="Add Ingredient" fontClassName="add-ingredient-button"/>
+                <NavigationButtonComponent to="/ingredients/new" text="Add Ingredient" fontClassName="update-ingredients-button-container"/>
             </div>
             <ToastContainer/>
         </div>

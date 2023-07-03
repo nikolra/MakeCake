@@ -136,7 +136,7 @@ export default function Customers({ className, header, description }: ICustomerP
                     })}
                 </div>
             </div>
-            <NavigationButtonComponent to="/customers/new" text="Add Customer" fontClassName="add-customer-button"/>
+            <NavigationButtonComponent to="/customers/new" text="Add Customer" fontClassName="add-customer-button" spanClass={'add-customer-span'}/>
             <ToastContainer/>
         </div>
     );

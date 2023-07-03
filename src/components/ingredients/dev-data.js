@@ -11,7 +11,7 @@ const makeIngredient = (id, name, avgCost, minCost, maxCost, isManual) => {
 
 export const devIngredients = [
     makeIngredient(
-        "#1",
+        "1",
         "Sugar",
         6.5,
         {
@@ -26,7 +26,7 @@ export const devIngredients = [
     ),
 
     makeIngredient(
-        "#2",
+        "2",
         "Salt",
         3.5,
         {
@@ -41,7 +41,7 @@ export const devIngredients = [
     ),
 
     makeIngredient(
-        "#3",
+        "3",
         "Chocolate",
         52,
         {
@@ -56,7 +56,7 @@ export const devIngredients = [
     ),
 
     makeIngredient(
-        "#4",
+        "4",
         "Coffee",
         18,
         {

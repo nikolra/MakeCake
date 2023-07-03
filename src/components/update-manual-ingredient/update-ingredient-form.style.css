@@ -1,10 +1,10 @@
-.new-ingredient-input-fields{
+.update-ingredient-input-fields{
     /*margin-left: 50vh;*/
 }
 
 .new-ingredient-widget-container{
     width: 45%;
-    height: 60%;
+    height: 50%;
 }
 
 .new-ingredients-header-title-row{

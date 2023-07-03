@@ -6,19 +6,21 @@ import TextField from '@mui/material/TextField';
 interface IProps {
     label: string,
     setValueDelegate: Function,
-    value?: number
+    value?: number,
+    width?: number
 }
 
-const InputField: React.FC<IProps> = ({setValueDelegate, label, value}: IProps) => {
+const InputField: React.FC<IProps> = ({setValueDelegate, label, value, width}: IProps) => {
     const [errorString, setErrorString] = useState('');
 
+    const actualWidth = width ? width : 250
     return (
         <Box
             component="div"
             sx={{
-                width: 250,
+                width: {actualWidth},
                 maxWidth: '100%',
-                m: 1
+                m: '0 0 6px 0'
             }}
         >
             <TextField

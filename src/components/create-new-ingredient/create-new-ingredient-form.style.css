@@ -4,7 +4,7 @@
 
 .new-ingredient-widget-container{
     width: 45%;
-    height: 60%;
+    height: 50%;
 }
 
 .new-ingredients-header-title-row{
@@ -26,9 +26,16 @@
     gap: 10px;
 }
 
-.ingredient-create-button{
-    padding-top: 18%;
+.new-ingredient-create-button{
+    /*padding-top: 18%;*/
     /*padding-right: 10%;*/
+    align-self: end;
+    height: 46px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 10px;
 }
 
 .ingredient-input-field{
