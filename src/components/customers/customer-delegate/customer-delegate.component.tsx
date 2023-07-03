@@ -35,9 +35,8 @@ function CustomerDelegate({data, deleteDelegate}: ICustomerProps) {
                 </div>
                 <div className="all-customers-delegate-table-container align-right">
                     <button className="expand-button">
-                        <NavLink to={`/customer/edit/${email}`} className={`link active`}>Edit</NavLink>
+                        <NavLink to={`/customers/edit/${email}`} className={`link active`}>Edit</NavLink>
                     </button>
-
                     <button className="expand-button" onClick={
                         async () => {
                             await deleteDelegate(email);

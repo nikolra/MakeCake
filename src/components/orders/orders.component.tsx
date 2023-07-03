@@ -135,7 +135,7 @@ export default function Orders({ className, header, description, isDashboard }: 
                     })}
                 </div>
             </div>
-            <NavigationButtonComponent to="/orders/new" text="Add Order"/>
+            <NavigationButtonComponent to="/orders/new" text="Add Order" spanClass={'add-order-span'}/>
             <ToastContainer />
         </div>
     );
