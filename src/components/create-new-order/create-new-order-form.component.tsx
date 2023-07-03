@@ -18,7 +18,7 @@ export default function NewOrderForm() {
         name: string;
         quantity: number;
         ingredientsCost: number;
-        totalCost: number;
+        totalCost: string;
     };
 
     type CustomerType = {
@@ -32,28 +32,38 @@ export default function NewOrderForm() {
 
     const [customerName, setCustomerName] = useState('yankale@gmail.com');///TODO eden need to do a getter that will return all the customers seller has
     const [dueDate, setDueDate] = useState(dayjs());
-    const [orderRecipes, setOrderRecipes] = useState<Array<{ name: string, quantity: number, ingredientsCost: number, totalCost: number }>>([]);
+    const [orderRecipes, setOrderRecipes] = useState<Array<{
+        name: string,
+        quantity: number,
+        ingredientsCost: number,
+        totalCost: string
+    }>>([]);
 
     const [recipeName, setRecipeName] = useState("");
     const [quantity, setQuantity] = useState('');
     const [ingredientsCost, setIngredientsCost] = useState('');//TODO: Tomer - should we have all 3 prices?
-    const [totalCost, setTotalCost] = useState(0);
-    const [myCustomers,setCustomers]=useState(options1); //TODO: Eden - should be initializes to all customer names for the user that is currently logged in. (Consider saving change customer name to customer email)
-    const [myRecipes,setMyRecipes]=useState(options1); //TODO: Tomer - should be initializes to all recipes names for the user that is currently logged in
+    const [totalCost, setTotalCost] = useState('');
+    const [myCustomers, setCustomers] = useState(options1); //TODO: Eden - should be initializes to all customer names for the user that is currently logged in. (Consider saving change customer name to customer email)
+    const [myRecipes, setMyRecipes] = useState(options1); //TODO: Tomer - should be initializes to all recipes names for the user that is currently logged in
 
     const navigate = useNavigate();
 
-    const deleteRecipeFromOrder = () =>{
-        //TODO: Nikol implement
+    const deleteRecipeFromOrder = (recipeName: string) => {
+        console.log(`remove name: ${recipeName}`);
+        const index = orderRecipes.findIndex(recipe => recipe.name === recipeName);
+        const newOrders = [...orderRecipes];
+        newOrders.splice(index, 1);
+        setOrderRecipes(newOrders);
     }
-    async function getMyCustomers(){
-/*
-        try {
-            const payload={seller_email_address: 'tomer@gmail.com'}
-            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/getallcustomers',{params:payload});
-            setCustomers()
-        }
-*/
+
+    async function getMyCustomers() {
+        /*
+                try {
+                    const payload={seller_email_address: 'tomer@gmail.com'}
+                    const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/getallcustomers',{params:payload});
+                    setCustomers()
+                }
+        */
     }
 
     function generateNumericID() {
@@ -66,8 +76,8 @@ export default function NewOrderForm() {
 
     async function sendDataToBackend() {
         console.log(`Submit clicked`);
-        const order_Id=generateNumericID();
-        try{
+        const order_Id = generateNumericID();
+        try {
             console.log(order_Id);
             const orderData = {
                 seller_email: "tomer@gmail.com",
@@ -82,18 +92,16 @@ export default function NewOrderForm() {
                     }
                 })
             };
-             toast.promise(async ()=> {
+            toast.promise(async () => {
                 const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order', orderData);
-                 navigate('/orders');
+                navigate('/orders');
                 //console.log(JSON.stringify(response));
             }, {
                 pending: 'Loading',
                 success: `Created order `,
                 error: `Error creating order`
             });
-        }
-        catch(error)
-        {
+        } catch (error) {
             return error;
         }
     }
@@ -103,7 +111,7 @@ export default function NewOrderForm() {
         setRecipeName('');
         setQuantity('');
         setIngredientsCost('');
-        setTotalCost(0);
+        setTotalCost('');
     }
 
     function setDateFromPicker(value: any) {
@@ -150,7 +158,7 @@ export default function NewOrderForm() {
                                 id="comcbo-box-demo"
                                 value={recipeName}
                                 onChange={(event: any, newValue: string | null) => {
-                                    if(newValue)
+                                    if (newValue)
                                         setRecipeName(newValue);
                                     else setRecipeName("");
 
@@ -162,35 +170,56 @@ export default function NewOrderForm() {
                             <Box
                                 component="div"
                                 sx={{
-                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                    '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
-                                onChange={(e: any) => {setQuantity(e.target.value)}}
+                                onChange={(e: any) => {
+                                    setQuantity(e.target.value)
+                                }}
                             >
-                                <TextField value={quantity} id="standard-basic" label={'Quantity'} variant="standard" />
+                                <TextField variant="standard" id="standard-number" label={'Quantity'} type="number"
+                                           defaultValue={quantity} value={quantity}
+                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
+                                />
                             </Box>{/* TODO: Tomer - Should be an Int. should be inserted only after recipe is chosen*/}
+
                             <Box
                                 component="div"
                                 sx={{
-                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                    '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
-                                onChange={(e: any) => {setIngredientsCost(e.target.value)}}
+                                onChange={(e: any) => {
+                                    setIngredientsCost(e.target.value)
+                                }}
                             >
-                                <TextField value={ingredientsCost} id="standard-basic" label={'Ingredients Cost'} variant="standard" />
+                                <TextField variant="standard" id="standard-number" label={'Ingredients Cost'} type="number"
+                                           defaultValue={ingredientsCost} value={ingredientsCost}
+                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
+                                />
                             </Box>{/* TODO: Tomer -should be taken from the recipe*/}
+
                             <Box
                                 component="div"
                                 sx={{
-                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                    '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
-                                onChange={(e: any) => {setTotalCost(e.target.value)}}
+                                onChange={(e: any) => {
+                                    setTotalCost(e.target.value)
+                                }}
                             >
-                                <TextField value={totalCost} id="standard-basic" label={'Total Cost'} variant="standard" />
-                            </Box>{/* TODO: Tomer -should be calculated automatically when quantity inserted*/}
+                                <TextField variant="standard" id="standard-number" label={'Total Cost'} type="number"
+                                           defaultValue={totalCost} value={totalCost}
+                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
+                                />
+                            </Box>{/* TODO: Tomer - should be calculated automatically when quantity inserted. Do we need 3?*/}
+
                         </div>
                         <div className="orders-list">
                             {
                                 orderRecipes.map((recipe) => {
-                                    return <RecipeDelegate removeDelegate={deleteRecipeFromOrder} key={recipe.name} name={recipe.name} quantity={recipe.quantity.toString()} ingredientsCost={recipe.ingredientsCost.toString()} totalCost={recipe.totalCost.toString()}/>
+                                    return <RecipeDelegate removeDelegate={deleteRecipeFromOrder} key={recipe.name}
+                                                           name={recipe.name} quantity={recipe.quantity.toString()}
+                                                           ingredientsCost={recipe.ingredientsCost.toString()}
+                                                           totalCost={recipe.totalCost.toString()}/>
                                 })
                             }
                         </div>

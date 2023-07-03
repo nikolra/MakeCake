@@ -17,7 +17,7 @@ const devRecipes:{
     name: string,
     quantity: number,
     ingredientsCost: number,
-    totalCost: number
+    totalCost: string
 }[] = [];
 
 export default function EditOrderForm({id} : IProps) {
@@ -33,7 +33,7 @@ export default function EditOrderForm({id} : IProps) {
     const [recipeName, setRecipeName] = useState("");
     const [quantity, setQuantity] = useState('');
     const [ingredientsCost, setIngredientsCost] = useState('');//TODO: Tomer - should we have all 3 prices?
-    const [totalCost, setTotalCost] = useState(0);
+    const [totalCost, setTotalCost] = useState('');
 
     const options1 = [ //TODO: Eden - remove after integration
         "Nikol", "Eden", "Amit", "Tomer"
@@ -41,8 +41,12 @@ export default function EditOrderForm({id} : IProps) {
     const [myCustomers,setCustomers]=useState(options1); //TODO: Eden - should be initializes to all customer names for the user that is currently logged in. (Consider saving change customer name to customer email)
     const [myRecipes,setMyRecipes]=useState(options1); //TODO: Tomer - should be initializes to all recipes names for the user that is currently logged in
 
-    const deleteRecipeFromOrder = () =>{
-        //TODO: Nikol implement
+    const deleteRecipeFromOrder = (recipeName: string) => {
+        console.log(`remove name: ${recipeName}`);
+        const index = recipes.findIndex(recipe => recipe.name === recipeName);
+        const newOrders = [...recipes];
+        newOrders.splice(index, 1);
+        setRecipes(newOrders);
     }
 
     function sendDataToBackend() {
@@ -60,7 +64,7 @@ export default function EditOrderForm({id} : IProps) {
         setRecipeName('');
         setQuantity('');
         setIngredientsCost('');
-        setTotalCost(0);
+        setTotalCost('');
     }
     function setDateFromPicker(value: any) {
         setDueDate(value);
