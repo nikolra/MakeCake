@@ -7,7 +7,8 @@ interface IOrderProps {
 }
 
 function BestCustomersDelegate(props: IOrderProps) {
-    const {name, numberOfOrders, number} = props.data;
+    const {name, orders, number} = props.data;
+    console.log(props.data);
 
     return (
         <div className='best-customers-delegate-main-container best-customers-delegate-text'>
@@ -19,7 +20,7 @@ function BestCustomersDelegate(props: IOrderProps) {
                     <span>{name}</span>
                 </div>
                 <div className="best-customers-delegate-table-container">
-                    <span>{numberOfOrders}</span>
+                    <span>{orders}</span>
                 </div>
             </div>
         </div>

@@ -57,8 +57,8 @@ export default function NewOrderForm() {
     }
 
     function generateNumericID() {
-        const min = 1000000000000000; // Minimum 16-digit number
-        const max = 9999999999999999; // Maximum 16-digit number
+        const min = 1000000000000; // Minimum 16-digit number
+        const max = 9999999999999; // Maximum 16-digit number
         const numericID = Math.floor(Math.random() * (max - min + 1)) + min;
         return numericID.toString();
         //TODO: Tomer - please use a hash function to generate something smaller
