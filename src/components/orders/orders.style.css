@@ -98,3 +98,7 @@
     grid-template-columns: 2fr 2fr 2fr 2fr 1fr;
     grid-template-rows: repeat(1, 60px);
 }
+
+.add-order-span{
+    padding-bottom: 25px;
+}

@@ -6,6 +6,9 @@ import OutlinedInputField from "../outlinedd-input-field/input-field.component";
 import {makeIngredient} from "../create-new-recipe/dev-data";
 import IngredientDelegate from "../create-new-recipe/ingredient-delegate/ingredient-delegate.component";
 import {devRecipes} from "../recipes/dev-data"
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 
 interface IRecipeProps {
     id: string
@@ -35,14 +38,18 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
     //     ingredients: IIngredient[],
     //     avgCost: number,
     // }
-    //TODO: get all recipe data by id
+    //TODO: Tomer - get all recipe data by id
+
+    const arr: any[] = []; //TODO: Amit - delete this after integration
+    const [myIngredients, setMyIngredients] = useState(arr); //TODO: Amit - should be initialized to all ingredients name on page load
+
 
     const [ingredients, setIngredients] = useState(recipe.ingredients);
     const [recipeCost, setRecipeCost] = useState(recipe.avgCost);
     const [recipeName, setRecipeName] = useState(recipe.name);
 
-    const [ingredientName, setIngredientName] = useState();
-    const [quantity, setQuantity] = useState();
+    const [ingredientName, setIngredientName] = useState('');
+    const [quantity, setQuantity] = useState(0);
     const [minCost, setMinCost] = useState('');
     const [avgCost, setAvgCost] = useState('');
     const [maxCost, setMaxCost] = useState('');
@@ -68,6 +75,11 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
         console.log(`cost: ${avgCost}`);
         console.log(`cost: ${maxCost}`);
         setIngredients([...ingredients,makeIngredient(ingredientName, quantity, avgCost)]);
+        setIngredientName('');
+        setMaxCost("");
+        setQuantity(0);
+        setMinCost("");
+        setAvgCost('');
     }
 
     return (
@@ -111,11 +123,56 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
 
                     <div className="ingredients-list-container">
                         <div className="ingredients-input ">
-                                <InputField placeholder='Name' onChange={(e: any) => {setIngredientName(e.target.value)}}/>
-                                <InputField placeholder='Quantity' onChange={(e: any) => {setQuantity(e.target.value)}}/>
-                                <InputField placeholder='Min Cost' onChange={(e: any) => {setMinCost(e.target.value)}} disabled={true}/>
-                                <InputField placeholder='Avg Cost' onChange={(e: any) => {setAvgCost(e.target.value)}} disabled={true}/>
-                                <InputField placeholder='Max Cost' onChange={(e: any) => {setMaxCost(e.target.value)}} disabled={true}/>
+                            <Autocomplete
+                                disablePortal
+                                id="comcbo-box-demo"
+                                value={ingredientName}
+                                onChange={(event: any, newValue: string | null) => {
+                                    if(newValue)
+                                        setIngredientName(newValue);
+                                    else setIngredientName("");
+
+                                }}
+                                options={myIngredients}
+                                sx={{width: 235, padding: "8px 0 0 0"}}
+                                renderInput={(params) => <TextField {...params} label={"Name"} variant="standard"/>}
+                            />
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': {m: 1, width: '25ch'},
+                                }}
+                                onChange={(e: any) => {setQuantity(e.target.value)}}
+                            >
+                                <TextField id="standard-basic" label={"Quantity"} variant="standard" value={quantity}/>
+                            </Box>
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': {m: 1, width: '25ch'},
+                                }}
+                                onChange={(e: any) => {setMinCost(e.target.value)}}
+                            >
+                                <TextField disabled={true} id="standard-basic" label={'Min Cost'} variant="standard" value={minCost}/>
+                            </Box>
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': {m: 1, width: '25ch'},
+                                }}
+                                onChange={(e: any) => {setAvgCost(e.target.value)}}
+                            >
+                                <TextField disabled={true} id="standard-basic" label={'Avg Cost'} variant="standard" value={avgCost}/>
+                            </Box>
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': {m: 1, width: '25ch'},
+                                }}
+                                onChange={(e: any) => {setMaxCost(e.target.value)}}
+                            >
+                                <TextField disabled={true} id="standard-basic" label={'Max Cost'} variant="standard" value={maxCost}/>
+                            </Box>
                         </div>
                         <div className="recipes-list">
                             {

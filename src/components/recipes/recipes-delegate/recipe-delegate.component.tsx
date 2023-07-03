@@ -29,7 +29,7 @@ function RecipeDelegate(props: IRecipeProps) {
                 </div>
                 <div className="all-recipes-delegate-table-container align-right">
                     <button className="expand-button">
-                        <NavLink to={`/recipe/edit/${id}`} className={`link active`}>Edit</NavLink>
+                        <NavLink to={`/recipes/edit/${id}`} className={`link active`}>Edit</NavLink>
                     </button>
                     <button className="expand-button" onClick={
                         async () => {

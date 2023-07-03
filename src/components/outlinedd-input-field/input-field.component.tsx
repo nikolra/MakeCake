@@ -8,18 +8,20 @@ interface IProps {
     setValueDelegate: Function,
     width: number,
     value?: string,
-    disabled?: boolean
+    disabled?: boolean,
+    margin?: string
 }
 
-const InputField: React.FC<IProps> = ({setValueDelegate, label, width, value, disabled = false}: IProps) => {
+const InputField: React.FC<IProps> = ({setValueDelegate, label, width, value, disabled = false, margin}: IProps) => {
     const [errorString, setErrorString] = useState('');
+    const m = margin ? margin : '0 0 6px 0';
     return (
         <Box
             component="div"
             sx={{
                 width: width,
                 maxWidth: '100%',
-                m: '0 0 6px 0'
+                m: m
             }}
         >
             <TextField disabled={disabled} fullWidth id="outlined-basic" label={label} variant="outlined" defaultValue={value}

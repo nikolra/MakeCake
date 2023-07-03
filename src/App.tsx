@@ -38,10 +38,10 @@ function App() {
                 <Route path="orders/edit/:id" element={<EditOrderPage/>}/>
                 <Route path="customers" element={<Customers/>}/>
                 <Route path="customers/new" element={<AddCustomer/>}/>
-                <Route path="customer/edit/:email" element={<EditCustomerPage/>}/>
+                <Route path="customers/edit/:email" element={<EditCustomerPage/>}/>
                 <Route path="recipes" element={<Recipes/>}/>
                 <Route path="recipes/new" element={<AddRecipePage/>}/>
-                <Route path="recipe/edit/:id" element={<EditRecipePage/>}/>
+                <Route path="recipes/edit/:id" element={<EditRecipePage/>}/>
                 <Route path="ingredients" element={<Ingredients/>}/>
                 <Route path="ingredients/new" element={<AddIngredient/>}/>
                 <Route path="ingredients/edit/:id" element={<EditIngredientPage/>}/>

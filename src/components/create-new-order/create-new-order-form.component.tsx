@@ -148,6 +148,7 @@ export default function NewOrderForm() {
                             <Autocomplete
                                 disablePortal
                                 id="comcbo-box-demo"
+                                value={recipeName}
                                 onChange={(event: any, newValue: string | null) => {
                                     if(newValue)
                                         setRecipeName(newValue);
