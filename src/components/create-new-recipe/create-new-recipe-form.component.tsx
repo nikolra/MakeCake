@@ -8,6 +8,7 @@ import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 
 export default function NewRecipeForm() {
 
@@ -29,15 +30,19 @@ export default function NewRecipeForm() {
             automated: automated
         }
     }
+    const arr: any[] = []; //TODO: Amit - delete this after integration
+    const [myIngredients, setMyIngredients] = useState(arr); //TODO: Amit - should be initialized to all ingredients name on page load
 
-    const [ingredients, setIngredients] = useState<Array<{ code: any, name: any, cost: any,quantity: any, automated: any }>>([]);
-    const [recipeCost, setRecipeCost] = useState('');
-    const [ingredientName, setIngredientName] = useState('');
     const [recipeName, setRecipeName] = useState('');
+    const [recipeCost, setRecipeCost] = useState('');
+    const [ingredients, setIngredients] = useState<Array<{ code: any, name: any, cost: any,quantity: any, automated: any }>>([]);
+
+    const [ingredientName, setIngredientName] = useState('');
     const [quantity, setQuantity] = useState('');
     const [minCost, setMinCost] = useState('');
     const [avgCost, setAvgCost] = useState('');
     const [maxCost, setMaxCost] = useState('');
+
 
     const navigate = useNavigate();
 
@@ -140,15 +145,20 @@ export default function NewRecipeForm() {
 
                     <div className="new-recipe-ingredients-list-container">
                         <div className="new-recipe-ingredients-input">
-                            <Box
-                                component="div"
-                                sx={{
-                                    '& > :not(style)': {m: 1, width: '25ch'},
+                            <Autocomplete
+                                disablePortal
+                                id="comcbo-box-demo"
+                                value={ingredientName}
+                                onChange={(event: any, newValue: string | null) => {
+                                    if(newValue)
+                                        setIngredientName(newValue);
+                                    else setIngredientName("");
+
                                 }}
-                                onChange={(e: any) => {setIngredientName(e.target.value)}}
-                            >
-                                <TextField id="standard-basic" label={"Name"} variant="standard" value={ingredientName}/>
-                            </Box>
+                                options={myIngredients}
+                                sx={{width: 235, padding: "8px 0 0 0"}}
+                                renderInput={(params) => <TextField {...params} label={"Name"} variant="standard"/>}
+                            />
                             <Box
                                 component="div"
                                 sx={{
