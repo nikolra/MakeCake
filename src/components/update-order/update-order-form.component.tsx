@@ -120,33 +120,52 @@ export default function EditOrderForm({id} : IProps) {
                                 sx={{width: 235, padding: "8px 0 0 0"}}
                                 renderInput={(params) => <TextField {...params} label={"Name"} variant="standard"/>}
                             />
+
                             <Box
                                 component="div"
                                 sx={{
-                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                    '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
-                                onChange={(e: any) => {setQuantity(e.target.value)}}
+                                onChange={(e: any) => {
+                                    setQuantity(e.target.value)
+                                }}
                             >
-                                <TextField value={quantity} id="standard-basic" label={'Quantity'} variant="standard" />
+                                <TextField variant="standard" id="standard-number" label={'Quantity'} type="number"
+                                           defaultValue={quantity} value={quantity}
+                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
+                                />
                             </Box>{/* TODO: Tomer - Should be an Int. should be inserted only after recipe is chosen*/}
+
                             <Box
                                 component="div"
                                 sx={{
-                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                    '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
-                                onChange={(e: any) => {setIngredientsCost(e.target.value)}}
+                                onChange={(e: any) => {
+                                    setIngredientsCost(e.target.value)
+                                }}
                             >
-                                <TextField value={ingredientsCost} id="standard-basic" label={'Ingredients Cost'} variant="standard" />
-                            </Box>{/* TODO: Tomer - should be taken from the recipe*/}
+                                <TextField variant="standard" id="standard-number" label={'Ingredients Cost'} type="number"
+                                           defaultValue={ingredientsCost} value={ingredientsCost}
+                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
+                                />
+                            </Box>{/* TODO: Tomer -should be taken from the recipe*/}
+
                             <Box
                                 component="div"
                                 sx={{
-                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                    '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
-                                onChange={(e: any) => {setTotalCost(e.target.value)}}
+                                onChange={(e: any) => {
+                                    setTotalCost(e.target.value)
+                                }}
                             >
-                                <TextField value={totalCost} id="standard-basic" label={'Total Cost'} variant="standard" />
-                            </Box>{/* TODO: Tomer - should be calculated automatically when quantity inserted*/}
+                                <TextField variant="standard" id="standard-number" label={'Total Cost'} type="number"
+                                           defaultValue={totalCost} value={totalCost}
+                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
+                                />
+                            </Box>{/* TODO: Tomer - should be calculated automatically when quantity inserted. Do we need 3?*/}
+
                         </div>
                         <div className="orders-list">
                             {
