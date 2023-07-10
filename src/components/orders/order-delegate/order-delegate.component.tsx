@@ -28,7 +28,7 @@ function OrderDelegate(props: IOrderProps) {
                     <span>{totalCost}₪</span>
                 </div>
                 <div className="order-delegate-table-container">
-                    <span>{totalCost}₪</span> {/*duedate*/}
+                    <span>{dueDate}</span>
                 </div>
                 <div className="order-delegate-table-container align-right">
                     <button className="expand-button">
