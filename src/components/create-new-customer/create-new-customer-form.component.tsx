@@ -23,9 +23,11 @@ export default function NewCustomerForm() {
 
     async function sendDataToBackend() {
         if(!isValidEmail)
-            await toast.error(`Please enter a valid email address`);
+            toast.error(`Please enter a valid email address`);
         else if(!customerName)
-            await toast.error(`Please enter customer name`);
+            toast.error(`Please enter customer name`);
+        else if(!isValidNumber)
+            toast.error(`Please enter a valid phone number`);
         else try {
             const payload = {
                 name: customerName,

@@ -4,8 +4,10 @@ import './update-customer-form.style.css';
 import InputField from "../outlinedd-input-field/input-field.component";
 import {devCustomers} from "../customers/dev-data";
 import axios from "axios";
-import {toast} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import {useNavigate} from "react-router-dom";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 
 interface ICustomerProps {
     email: string;
@@ -24,6 +26,7 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
     const [customer, setCustomer] = useState<ICustomer | null>(null);
     const [customerName, setCustomerName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
+    const [isValidNumber, setIsValidNumber] = useState(true);
     const [address, setAddress] = useState("");
     const navigate = useNavigate();
 
@@ -49,9 +52,19 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
         fetchCustomer();
     }, [email]);
 
+    const phoneNumberValidator = (phone: string) :boolean => {
+        const phoneNumberRegex = /\b[0245]\d{2}-\d{7}\b/;
+        const regex = new RegExp(phoneNumberRegex);
+        return regex.test(phone) || phone == "";
+    }
+
     async function sendDataToBackend() {
         console.log("customerName:",customerName);
-        try {
+        if(!customerName)
+            toast.error(`Please enter customer name`);
+        else if(!isValidNumber)
+            toast.error(`Please enter a valid phone number`);
+        else try {
             const payload = {
                 name: customerName,
                 phone_number: phoneNumber,
@@ -88,7 +101,28 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
                 </div>
 
                 <div className="customer-input-field">
-                    <InputField setValueDelegate={setPhoneNumber} label="Phone Number" width={500} value={phoneNumber} />
+
+                    <Box
+                        component="div"
+                        sx={{
+                            width: 500,
+                            maxWidth: '100%',
+                            m: '0 0 6px 0',
+                            border: !isValidNumber ? '1px solid #ff0000': "",
+                            ':focus-within': {
+                                border: !isValidNumber ?'1px solid #ff0000' :  "",
+                                "border-radius": "4px"
+                            }
+                        }}
+                    >
+                        <TextField fullWidth id="outlined-basic" label={"Phone Number"} variant="outlined" defaultValue={phoneNumber} value={phoneNumber}
+                                   onChange={(e: any) => {
+                                       const value = e.target.value
+                                       setIsValidNumber(phoneNumberValidator(value));
+                                       setPhoneNumber(value)
+                                   }}/>
+                    </Box>
+
                 </div>
 
                 <div className="customer-input-field">
@@ -102,6 +136,7 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
             <div className="submit-button-container customer-create-button">
                 <button className='create-customer-button button button-gradient' onClick={sendDataToBackend}>Update</button>
             </div>
+            <ToastContainer/>
         </div>
     );
 }
