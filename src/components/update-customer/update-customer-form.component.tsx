@@ -22,7 +22,6 @@ interface ICustomer {
 
 export default function UpdateCustomerForm({email} : ICustomerProps) {
 
-    //TODO: Eden, should find the customer to edit from DB and not from devCustomers
     const [customer, setCustomer] = useState<ICustomer | null>(null);
     const [customerName, setCustomerName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
@@ -34,6 +33,7 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
     useEffect(() => {
         async function fetchCustomer() {
             try {
+                //TODO: Eden, Consider using the lambda that Amit created to get a single customer from DDB
                 const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/getallcustomers');
                 const customers = response.data;
                 const customerData = customers.find((customer: { email: string; }) => customer.email === email);
