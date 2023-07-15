@@ -164,10 +164,17 @@ export default function NewRecipeForm() {
                                 sx={{
                                     '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
-                                onChange={(e: any) => {setQuantity(e.target.value)}}
+                                onChange={(e: any) => {
+                                    setQuantity(e.target.value)
+                                }}
                             >
-                                <TextField id="standard-basic" label={"Quantity"} variant="standard" value={quantity}/>
+                                <TextField variant="standard" id="standard-number" label={'Quantity'} type="number"
+                                           defaultValue={quantity} value={quantity}
+                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
+                                />
                             </Box>
+
+
                             <Box
                                 component="div"
                                 sx={{
