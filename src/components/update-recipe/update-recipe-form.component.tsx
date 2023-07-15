@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import '../../App.css';
 import './update-recipe-form.style.css';
-import InputField from "../standart-input-field/input-field.component";
 import OutlinedInputField from "../outlinedd-input-field/input-field.component";
 import {makeIngredient} from "../create-new-recipe/dev-data";
 import IngredientDelegate from "../create-new-recipe/ingredient-delegate/ingredient-delegate.component";
@@ -9,6 +8,7 @@ import {devRecipes} from "../recipes/dev-data"
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import {toast, ToastContainer} from "react-toastify";
 
 interface IRecipeProps {
     id: string
@@ -56,6 +56,8 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
 
     function sendDataToBackend() {
         console.log(`Submit clicked`);
+        if(ingredients.length === 0 || !ingredients)
+            toast.error(`Please add at least one ingredient`);
         //TODO: Tomer - implement integration with backend gor recipe update
     }
 
@@ -68,18 +70,24 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
     }
 
     function addIngredient() {
-        console.log(`addIngredient clicked`);
-        console.log(`name: ${ingredientName}`);
-        console.log(`quantity: ${quantity}`);
-        console.log(`cost: ${minCost}`);
-        console.log(`cost: ${avgCost}`);
-        console.log(`cost: ${maxCost}`);
-        setIngredients([...ingredients,makeIngredient(ingredientName, quantity, avgCost)]);
-        setIngredientName('');
-        setMaxCost("");
-        setQuantity(0);
-        setMinCost("");
-        setAvgCost('');
+        if(ingredientName === "" || !ingredientName)
+            toast.error(`Please choose ingredient`);
+        else if(quantity === 0 || !ingredientName)
+            toast.error(`Please choose quantity greater that 0`);
+        else {
+            console.log(`addIngredient clicked`);
+            console.log(`name: ${ingredientName}`);
+            console.log(`quantity: ${quantity}`);
+            console.log(`cost: ${minCost}`);
+            console.log(`cost: ${avgCost}`);
+            console.log(`cost: ${maxCost}`);
+            setIngredients([...ingredients, makeIngredient(ingredientName, quantity, avgCost)]);
+            setIngredientName('');
+            setMaxCost("");
+            setQuantity(0);
+            setMinCost("");
+            setAvgCost('');
+        }
     }
 
     return (
@@ -142,9 +150,14 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                                 sx={{
                                     '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
-                                onChange={(e: any) => {setQuantity(e.target.value)}}
+                                onChange={(e: any) => {
+                                    setQuantity(e.target.value)
+                                }}
                             >
-                                <TextField id="standard-basic" label={"Quantity"} variant="standard" value={quantity}/>
+                                <TextField variant="standard" id="standard-number" label={'Quantity'} type="number"
+                                           defaultValue={quantity} value={quantity}
+                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
+                                />
                             </Box>
                             <Box
                                 component="div"
@@ -190,6 +203,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
             <div className="submit-button-container">
                 <button className='button button-gradient' onClick={sendDataToBackend}>Update</button>
             </div>
+            <ToastContainer/>
         </div>
     )
 }

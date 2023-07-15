@@ -16,12 +16,12 @@ export default function NewRecipeForm() {
          code: string,
          name: string,
          cost: string
-         quantity: string,
+         quantity: number,
          automated: boolean,
      };
 
 
-    const IMakeIngredient = (name:string, quantity:string, cost:string,automated:string='1',code:string='0') => {
+    const IMakeIngredient = (name:string, quantity:number, cost:string,automated:string='1',code:string='0') => {
         return {
             code: code,
             name: name,
@@ -38,7 +38,7 @@ export default function NewRecipeForm() {
     const [ingredients, setIngredients] = useState<Array<{ code: any, name: any, cost: any,quantity: any, automated: any }>>([]);
 
     const [ingredientName, setIngredientName] = useState('');
-    const [quantity, setQuantity] = useState('');
+    const [quantity, setQuantity] = useState(0);
     const [minCost, setMinCost] = useState('');
     const [avgCost, setAvgCost] = useState('');
     const [maxCost, setMaxCost] = useState('');
@@ -48,7 +48,9 @@ export default function NewRecipeForm() {
 
     async function sendDataToBackend() {
         console.log(`Submit clicked`);
-        try {
+        if(ingredients.length === 0 || !ingredients)
+            toast.error(`Please add at least one ingredient`);
+        else try {
             const recipeData = {
                 user_identifier: "tomer@gmail.com",
                 recipe_name: recipeName,
@@ -91,18 +93,24 @@ export default function NewRecipeForm() {
     }
 
     function addIngredient() {
-        console.log(`addIngredient clicked`);
-        console.log(`name: ${ingredientName}`);
-        console.log(`quantity: ${quantity}`);
-        console.log(`cost: ${minCost}`);
-        console.log(`cost: ${avgCost}`);
-        console.log(`cost: ${maxCost}`);
-        setIngredients([...ingredients,IMakeIngredient(ingredientName, quantity, avgCost)]);
-        setIngredientName('');
-        setMaxCost("");
-        setQuantity("");
-        setMinCost("");
-        setAvgCost('');
+        if(ingredientName === "" || !ingredientName)
+            toast.error(`Please choose ingredient`);
+        else if(quantity === 0 || !ingredientName)
+            toast.error(`Please choose quantity greater that 0`);
+        else {
+            console.log(`addIngredient clicked`);
+            console.log(`name: ${ingredientName}`);
+            console.log(`quantity: ${quantity}`);
+            console.log(`cost: ${minCost}`);
+            console.log(`cost: ${avgCost}`);
+            console.log(`cost: ${maxCost}`);
+            setIngredients([...ingredients, IMakeIngredient(ingredientName, quantity, avgCost)]);
+            setIngredientName('');
+            setMaxCost("");
+            setQuantity(0);
+            setMinCost("");
+            setAvgCost('');
+        }
     }
 
     return (
@@ -173,8 +181,6 @@ export default function NewRecipeForm() {
                                            inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
                                 />
                             </Box>
-
-
                             <Box
                                 component="div"
                                 sx={{
