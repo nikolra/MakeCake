@@ -29,7 +29,6 @@ export default function NewIngredientForm() {
 
     const codeValidator = (barcode: string) => {
         return /^-?\d+$/.test(barcode);
-
     }
 
     return (

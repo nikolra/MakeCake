@@ -8,7 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import {useNavigate} from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-// import isEmail from 'validator/lib/isEmail';
 import validator from 'validator';
 
 export default function NewCustomerForm() {
