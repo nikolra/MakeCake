@@ -19,7 +19,7 @@
 .widget-title-text-secondary{
     font-size: 14px;
     font-family: 'Roboto';
-    font-weight: 100;
+    font-weight: 400;
     color: var(--foreground);
     opacity: 0.8;
 }
