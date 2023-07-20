@@ -36,15 +36,20 @@ export default function NewRecipeForm() {
     const [recipeName, setRecipeName] = useState('');
     const [recipeCost, setRecipeCost] = useState('');
     const [ingredients, setIngredients] = useState<Array<{ code: any, name: any, cost: any,quantity: any, automated: any }>>([]);
-
     const [ingredientName, setIngredientName] = useState('');
     const [quantity, setQuantity] = useState(0);
     const [minCost, setMinCost] = useState('');
     const [avgCost, setAvgCost] = useState('');
     const [maxCost, setMaxCost] = useState('');
-
-
     const navigate = useNavigate();
+
+    function generateNumericID() {
+        const min = 100000000; // Minimum 16-digit number
+        const max = 999999999; // Maximum 16-digit number
+        const numericID = Math.floor(Math.random() * (max - min + 1)) + min;
+        return numericID.toString();
+        //TODO: Tomer - please use a hash function to generate something smaller  || hash function is problematic since it will have to contain letters, I can do it but it will look ugly like this "43hfgdf43hf"
+    }
 
     async function sendDataToBackend() {
         console.log(`Submit clicked`);
@@ -52,8 +57,9 @@ export default function NewRecipeForm() {
             toast.error(`Please add at least one ingredient`);
         else try {
             const recipeData = {
-                user_identifier: "tomer@gmail.com",
-                recipe_name: recipeName,
+                user_email: "tomer@gmail.com",
+                recipe_Id:generateNumericID(),
+                recipe_name: 'chocolate cake'/*recipeName*/,
                 recipe_price: '50',
                 ingredients: ingredients.map((ingredient: IngredientType) => {
                     return {
@@ -67,9 +73,8 @@ export default function NewRecipeForm() {
             };
             toast.promise(async () => {
                 console.log(recipeData);
-                console.log(recipeData);
                 const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe', recipeData);
-                navigate('/recipes');
+               //navigate('/recipes');
                 console.log(response.data.body);
                 console.log('recipe created');
             }, {
@@ -77,6 +82,8 @@ export default function NewRecipeForm() {
                 success: `Created order `,
                 error: `Error creating order`
             });
+            navigate('/recipes')
+            console.log(`new recipe added`);
         }
         catch(error)
         {

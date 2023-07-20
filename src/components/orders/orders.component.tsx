@@ -7,6 +7,7 @@ import SearchField from '../search-field/search-field.component';
 import NavigationButtonComponent from '../navigation-button/navigation-button.component';
 import {useNavigate} from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
+import dayjs from "dayjs";
 // import { Auth } from 'aws-amplify';
 
 interface IOrderProps {
@@ -16,18 +17,25 @@ interface IOrderProps {
     isDashboard?: boolean;
 }
 
+interface RecipeItem {
+    recipe_ingredients_cost: { S: string };
+    recipe_id: { S: string };
+    user_email: { S: string };
+    recipe_name: { S: string };
+    recipe_price: { S: string };
+}
+
+
 type OrderType = {
-    seller:string;
+    seller: string;
     id: string;
     dueDate: string;
-    customer: {
-        id: string;
-        name: string;
-    };
+    customer: string;
     recipes: Array<{
         id: string;
         name: string;
         total: string;
+        totalCost: string;
         quantity: string;
     }>;
 };
@@ -40,8 +48,20 @@ export default function Orders({ className, header, description, isDashboard }: 
     const [error, setError] = useState(null); // new error state
     const navigate = useNavigate();
 
-    const deleteOrder= (id: any) => {
-        //TODO: Tomer implement delete
+    const deleteOrder= async (id: any) => {
+        try {
+            const payload = {
+                seller_email: 'tomer@gmail.com',
+                order_id: id
+            };
+            const response =await axios.delete('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_order', {params: payload});
+            await navigate('/orders');
+            console.log(response);
+        }
+        catch (error)
+        {
+            console.error(`Error deleting order ${id}:`, error);
+        }
     }
 
     const fetchOrders = async () => {
@@ -49,16 +69,18 @@ export default function Orders({ className, header, description, isDashboard }: 
             //const user = await Auth.currentAuthenticatedUser();
             //const payload = { seller_email: user.attributes.email };
             const payload = { seller_email: 'tomer@gmail.com'};
-            console.log(payload);
             const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get-all-my-orders', {params:payload});
             const apiData = JSON.parse(response.data.body);
-            console.log(apiData);
-            const transformedOrders = apiData.map((orderData: any) => createOrderFromData(orderData));
             if(isDashboard)
             {
-                //TODO: Tomer - filter orders to be only today orders
+                const transformedOrders = apiData.map((orderData:any) => createOrderFromData(orderData,true)).filter((orderData:any)=>orderData!=null);
+                setOrders(transformedOrders);
             }
-            setOrders(transformedOrders);
+            else
+            {
+                const transformedOrders = apiData.map((orderData: any) => createOrderFromData(orderData,false));
+                setOrders(transformedOrders);
+            }
         } catch (error) {
             console.error('Error fetching orders:', error);
         }
@@ -70,28 +92,42 @@ export default function Orders({ className, header, description, isDashboard }: 
 
     useEffect(() => {
         const filtered = orders.filter((order) => {
-            const name = order.customer.name.toLowerCase();
-            console.log(name, searchString, name.includes(searchString));
+            const name = order.customer;
             return name.includes(searchString);
         });
         setFilteredOrders(filtered);
     }, [orders, searchString]);
 
 
-    const createOrderFromData = (orderData: any) => {
-        let orderCost=0;
-        const createRecipeFromData = (recipeData: any) => {
-            const recipeName = recipeData.M.recipe_name.S;
-            const recipePrice = recipeData.M.recipe_price.S;
-            const recipeQuantity = recipeData.M.recipe_quantity.S;
-            orderCost+= parseInt(recipePrice)*parseInt(recipeQuantity);
-            return { id: '', name: recipeName, total: recipePrice, quantity: recipeQuantity };
+    const createRecipeFromData = (recipeData: any) => {
+        return{
+            id: recipeData.M.recipe_name.S,
+            name: recipeData.M.recipe_name.S,
+            total: recipeData.M.recipe_totalCost.S,
+            //totalCost: recipeData.M.recipe_totalCost.S,
+            quantity: recipeData.M.recipe_quantity.S
+
         };
-        const orderRecipes = orderData.order.L.map(createRecipeFromData);
-        const orderDate = orderData['due_date'].S;
-        //console.log(`order id:${orderData.id}`);
-        const customer = { id: orderData.order_id.S, name: orderData.buyer_email.S };
-        return { id: orderData.order_id.S, dueDate: orderDate, customer: customer, recipes: orderRecipes,totalCost:orderCost };
+    };
+
+    const createOrderFromData = (orderData: any,onlyTodayOrders:boolean) => {
+
+        const today = dayjs().toISOString().split('T')[0];
+        const orderDate = orderData['due_date'].S.split('T')[0];
+        if (onlyTodayOrders && today !== orderDate) {
+            return null;
+        }
+        else {
+            const orderRecipes = orderData.recipes.L.map(createRecipeFromData);
+            const customer = orderData.buyer_email.S;
+            return {
+                id: orderData.order_id.S,
+                dueDate: orderDate,
+                customer: customer,
+                recipes: orderRecipes,
+                totalCost: orderData[`order_price`].S
+            };
+        }
     };
 
 

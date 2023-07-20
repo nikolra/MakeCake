@@ -25,7 +25,7 @@ export default function WeekOrders() {
         try {
             //const user = await Auth.currentAuthenticatedUser();
             //const payload = { seller_email: user.attributes.email };
-            const payload = {seller_email: 'tomer@gmail.com',buyers:3};
+            const payload = {seller_email: 'tomer@gmail.com',buyers:5};
             const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/top_buyers', {params: payload});
             const responseData=JSON.parse(response.data.body);
             console.log(responseData)
@@ -50,7 +50,7 @@ export default function WeekOrders() {
                 </div>
                 <div className="best-customers-header-orders-list-title">
                     <div className="best-customers-header-orders-list-title-item">
-                        <span>Number</span>{/*TODO: Tomer - this represent the location of the customer on the list. 1 -> the best*/}
+                        <span>Number</span>
                     </div>
                     <div className="best-customers-header-orders-list-title-item">
                         <span>Name</span>

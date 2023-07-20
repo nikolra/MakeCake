@@ -7,6 +7,7 @@ import SearchField from "../search-field/search-field.component";
 import NavigationButtonComponent from "../navigation-button/navigation-button.component";
 import {ToastContainer} from "react-toastify";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 interface IRecipeProps {
     className: string,
@@ -36,18 +37,30 @@ export default function Recipes({className, header, description}: IRecipeProps) 
     const [recipes, setRecipes] = useState<RecipeType[]>([]);
     const [filteredRecipes, setFilteredRecipes] = useState<RecipeType[]>([]);
     const [searchString, setSearchString] = useState('');
-
-    const deleteRecipe= (id: any) => {
-        //TODO: Tomer implement delete
+    const navigate = useNavigate();
+    const deleteRecipe= async (id: any) => {
+        try {
+            let str=id.toString()
+            const payload = {
+                user_email: "tomer@gmail.com",
+                recipe_id: str
+            };
+            const response = await axios.delete('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_recipe', {params: payload});
+            console.log(response);
+            await navigate('/recipes');
+        }
+        catch (error)
+        {
+            console.error(`Error deleting recipe ${id}:`, error);
+        }
     }
 
     const fetchRecipes = async () => {
         try {
-            let index=0;
-            const payload = {user_identifier: 'tomer@gmail.com'};
+            const payload = {user_email: 'tomer@gmail.com'};
             const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user_recipes', {params:payload});
             const responseData = JSON.parse(response.data.body);
-            //console.log(responseData)
+            console.log(responseData)
             const transformedRecipes = responseData.map((recipeData: any, index: number) => createRecipeFromData(recipeData, ++index));
             //console.log('setting recipes');
             setRecipes(transformedRecipes);
@@ -76,8 +89,7 @@ export default function Recipes({className, header, description}: IRecipeProps) 
             }
             return total;
         }, 0);
-        //console.log(totalCost);
-        return { id: `${recipeId}`, name: recipeData.recipe_name?.S,price:recipeData.recipe_price || 0, ingredients, totalCost };
+        return { id: recipeId, name: recipeData.recipe_name?.S,price:recipeData.recipe_price || 0, ingredients, totalCost };
     };
 
     useEffect(() => {
