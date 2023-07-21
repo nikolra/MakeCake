@@ -10,9 +10,10 @@ interface IRecipeProps {
 
 function RecipeDelegate(props: IRecipeProps) {
     const [isOpened, setOpened] = useState(false)
-    const {id, name, totalCost:avgCost, ingredients} = props.data;
+    const {id, name, avgCost, minCost, maxCost, ingredients} = props.data;
     const deleteDelegate = props.deleteDelegate;
 
+    console.log(props.data);
     return (
         <div className={
             `all-recipes-delegate-main-container all-recipes-delegate-text ${isOpened ? "all-recipes-delegate-opened" : ""}`
@@ -25,7 +26,13 @@ function RecipeDelegate(props: IRecipeProps) {
                     <span>{name}</span>
                 </div>
                 <div className="all-recipes-delegate-table-container">
+                    <span>{minCost}₪</span>
+                </div>
+                <div className="all-recipes-delegate-table-container">
                     <span>{avgCost}₪</span>
+                </div>
+                <div className="all-recipes-delegate-table-container">
+                    <span>{maxCost}₪</span>
                 </div>
                 <div className="all-recipes-delegate-table-container align-right">
                     <button className="expand-button">
