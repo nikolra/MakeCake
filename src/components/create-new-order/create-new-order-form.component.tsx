@@ -11,6 +11,7 @@ import {toast} from "react-toastify";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
+import update = toast.update;
 export default function NewOrderForm() {
 
 
@@ -42,6 +43,7 @@ export default function NewOrderForm() {
     }
 
     interface OrderItem {
+
         seller_email: { S: string };
         buyer_email: { S: string };
         order_id: { S: string };
@@ -75,7 +77,7 @@ export default function NewOrderForm() {
 
     const navigate = useNavigate();
 
-    useEffect(()=>{fetchUserRecipes();console.log(1);},[]);
+    useEffect(()=>{fetchUserRecipes();},[]);
     useEffect(()=>{
         if(myRecipes)
         {
@@ -98,11 +100,11 @@ export default function NewOrderForm() {
 
 
     const deleteRecipeFromOrder = (recipeName: string) => {
-/*        console.log(`remove name: ${recipeName}`);
-        const index = orderRecipes.findIndex(recipe => recipe.name === recipeName);
+        console.log(orderRecipes);
+        const index = orderRecipes.findIndex(recipe => recipe.recipe_name.S === recipeName);
         const newOrders = [...orderRecipes];
         newOrders.splice(index, 1);
-        setOrderRecipes(newOrders);*/
+        setOrderRecipes(newOrders);
     }
 
     function generateNumericID() {
@@ -135,7 +137,6 @@ export default function NewOrderForm() {
                     recipe_price: Number(item.recipe_price.S),
                 };
             });
-            console.log(recipesArr);
             setMyRecipes(recipesArr);
             const recipeNames: string[] = responseData.map((recipe: { recipe_name: { S: string } }) => recipe.recipe_name.S);
             setRecipeNames(recipeNames);
@@ -143,22 +144,16 @@ export default function NewOrderForm() {
             console.error('Error fetching orders:', error);
         }
     };
-
-    const createRecipeFromData = (recipeData: any) => {
+/*    const createRecipeFromData = (recipeData: any) => {
         const recipeName = recipeData.M.recipe_name.S;
         const recipePrice = recipeData.M.recipe_price.S;
         const recipeQuantity = recipeData.M.recipe_quantity.S;
        // orderCost+= parseInt(recipePrice)*parseInt(recipeQuantity);
         return { id: '', name: recipeName, total: recipePrice, quantity: recipeQuantity };
-    };
-
+    };*/
     async function sendDataToBackend() {
-        console.log(`Submit clicked`);
-
         const order_Id = generateNumericID();
-        console.log(orderRecipes);
         try {
-            console.log(order_Id);
             const orderData = {
                 seller_email: "tomer@gmail.com",
                 order_id: order_Id,
@@ -166,10 +161,8 @@ export default function NewOrderForm() {
                 due_date: dueDate,
                 recipes: orderRecipes
             }
-                console.log('before');
                 const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order', orderData);
                 console.log(response);
-                console.log('after');
 
             }
 /*            };
@@ -188,8 +181,6 @@ export default function NewOrderForm() {
             return error;
         }
     }
-
-
     const makeRecipe = (name:string, quantity:string, ingredientsCost:string, totalCost:string = (parseFloat(quantity) * parseFloat(ingredientsCost)).toString()): OrderRecipeItem => {
         return {
             recipe_name: { S: name },
@@ -198,14 +189,32 @@ export default function NewOrderForm() {
             recipe_totalCost: { S: totalCost },
         }
     }
+
+    function recipeExistInOrders(orderRecipes:any,quantity:string, ingredientsCost:string, totalCost:string){ //TODO  if the recipe exist it update it values
+       const recipe = orderRecipes.find((recipe:any) => recipe.recipe_name.S === recipeName);
+       //console.log(recipe);
+       if(recipe)
+       {
+           console.log((Number(recipe.recipe_quantity.S)+ Number(quantity)).toString());
+           recipe.recipe_quantity.S=(Number(recipe.recipe_quantity.S)+ Number(quantity)).toString();
+           recipe.recipe_totalCost.S=(Number(recipe.recipe_totalCost.S)+ Number(quantity)*Number(totalCost)).toString();
+           console.log(`done`);
+           return true;
+       }
+        console.log(`not exist`);
+       return false;
+    }
     function addRecipeToOrder() {
-        setOrderRecipes([...orderRecipes, makeRecipe(recipeName, quantity, ingredientsCost, totalCost)]);
+        const recipeExistInArray = recipeExistInOrders(orderRecipes,quantity, ingredientsCost, totalCost); //TODO  if the recipe exist it update it values
+        if(!recipeExistInArray) {
+            console.log(`went inside not exist`);
+            setOrderRecipes([...orderRecipes, makeRecipe(recipeName, quantity, ingredientsCost, totalCost)]); //TODO  if the recipe doesnt exist it create a new item
+        }
         setRecipeName('');
         setQuantity('');
         setIngredientsCost('');
         setTotalCost('');
     }
-
     function setDateFromPicker(value: any) {
         setDueDate(value);
     }
