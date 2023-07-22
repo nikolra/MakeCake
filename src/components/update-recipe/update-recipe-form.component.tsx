@@ -9,6 +9,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import {toast, ToastContainer} from "react-toastify";
+import StandardInputField from "../standart-input-field/input-field.component";
 
 interface IRecipeProps {
     id: string
@@ -43,7 +44,6 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
     const arr: any[] = []; //TODO: Amit - delete this after integration
     const [myIngredients, setMyIngredients] = useState(arr); //TODO: Amit - should be initialized to all ingredients name on page load
 
-
     const [ingredients, setIngredients] = useState(recipe.ingredients);
     const [recipeCost, setRecipeCost] = useState(recipe.avgCost);
     const [recipeName, setRecipeName] = useState(recipe.name);
@@ -53,6 +53,11 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
     const [minCost, setMinCost] = useState('');
     const [avgCost, setAvgCost] = useState('');
     const [maxCost, setMaxCost] = useState('');
+
+    const [totalMinCost, setTotalMinCost] = useState('');
+    const [totalMaxCost, setTotalMaxCost] = useState('');
+    const [totalAvgCost, setTotalAvgCost] = useState('');
+
 
     function sendDataToBackend() {
         console.log(`Submit clicked`);
@@ -195,7 +200,15 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                             }
                         </div>
                     </div>
-                    <button className='add-ingredient-to-recipe-button button-container button-text add-item-button' onClick={addIngredient}>Add</button>
+                    <div className="ingredient-delegate-container">
+                        <div/>
+                        <div/>
+                        {/*TODO: tomer - these should have the ingredients cost added to them*/}
+                        <StandardInputField onChange={setTotalMinCost} placeholder="Order Min Cost" disabled={true}/>
+                        <StandardInputField onChange={setTotalAvgCost} placeholder="Order Avg Cost" disabled={true}/>
+                        <StandardInputField onChange={setTotalMaxCost} placeholder="Order Max Cost" disabled={true}/>
+                        <button className='button-container button-text add-item-button add-ingredient-to-recipe-button' onClick={addIngredient}>Add</button>
+                    </div>
                 </div>
 
             </div>

@@ -9,6 +9,7 @@ import {toast} from "react-toastify";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import StandardInputField from "../standart-input-field/input-field.component";
 
 export default function NewRecipeForm() {
 
@@ -42,6 +43,10 @@ export default function NewRecipeForm() {
     const [avgCost, setAvgCost] = useState('');
     const [maxCost, setMaxCost] = useState('');
     const navigate = useNavigate();
+
+    const [totalMinCost, setTotalMinCost] = useState('');
+    const [totalMaxCost, setTotalMaxCost] = useState('');
+    const [totalAvgCost, setTotalAvgCost] = useState('');
 
     function generateNumericID() {
         const min = 100000000; // Minimum 16-digit number
@@ -224,9 +229,16 @@ export default function NewRecipeForm() {
                             }
                         </div>
                     </div>
-                    <button className='button-container button-text add-item-button add-ingredient-to-recipe-button' onClick={addIngredient}>Add</button>
+                    <div className="ingredient-delegate-container">
+                        <div/>
+                        <div/>
+                        {/*TODO: tomer - these should have the ingredients cost added to them*/}
+                        <StandardInputField onChange={setTotalMinCost} placeholder="Order Min Cost" disabled={true}/>
+                        <StandardInputField onChange={setTotalAvgCost} placeholder="Order Avg Cost" disabled={true}/>
+                        <StandardInputField onChange={setTotalMaxCost} placeholder="Order Max Cost" disabled={true}/>
+                        <button className='button-container button-text add-item-button add-ingredient-to-recipe-button' onClick={addIngredient}>Add</button>
+                    </div>
                 </div>
-
             </div>
 
             <div className="submit-button-container">

@@ -1,7 +1,7 @@
 .dashboard-orders-widget-container{
     background-color: var(--dashboard-widgets-color);
     border-radius: var(--widget-radius);
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0 5px 15px 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -95,7 +95,7 @@
     padding-top: 1vw;
     width: 100%;
     display: grid;
-    grid-template-columns: 2fr 2fr 2fr 2fr 1fr;
+    grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr 1fr;
     grid-template-rows: repeat(1, 60px);
 }
 

@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import '../../App.css';
 import './create-new-order-form.style.css';
 import RecipeDelegate from "./recipe-delegate/recipe-delegate.component";
@@ -11,9 +11,11 @@ import {toast,ToastContainer} from "react-toastify";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
+import update = toast.update;
+import InputField from "../outlinedd-input-field/input-field.component";
+import StandardInputField from "../standart-input-field/input-field.component";
 
 export default function NewOrderForm() {
-
 
     interface Ingredient {
         M: {
@@ -34,56 +36,70 @@ export default function NewOrderForm() {
         recipe_price: { S: string };
     }
 
-    interface OrderRecipeItem
-    {
-        recipe_name:{ S: string };
-        recipe_IngredientCost:{ S: string };
-        recipe_quantity:{ S: string };
-        recipe_totalCost:{ S: string }
+    interface OrderRecipeItem {
+        recipe_name: { S: string };
+        recipe_IngredientCost: { S: string };
+        recipe_quantity: { S: string };
+        recipe_totalCost: { S: string }
     }
 
+    interface OrderItem {
+
+        seller_email: { S: string };
+        buyer_email: { S: string };
+        order_id: { S: string };
+        due_date: { S: string };
+        recipes: { L: OrderRecipeItem[] }
+    }
 
     type CustomerType = {
         name: string;
         email: string;
     };
-
     const options1 = [ //TODO: Eden - remove after integration
         "Nikol", "Eden", "Amit", "Tomer"
     ]
 
-
-
-    const [customerName, setCustomerName] = useState('yankale@gmail.com');///TODO eden need to do a getter that will return all the customers seller has
+    const [customerName, setCustomerName] = useState('yankale@gmail.com');///TODO - Eden need to do a getter that will return all the customers seller has
     const [dueDate, setDueDate] = useState(dayjs());
     const [orderRecipes, setOrderRecipes] = useState<OrderRecipeItem[]>([]);
     const [orderPrice,setOrderPrice]=useState(0);
     const [recipeName, setRecipeName] = useState("");
+    const [recipePrice, setRecipePrice] = useState("");
     const [quantity, setQuantity] = useState('');
-    const [ingredientsCost, setIngredientsCost] = useState('');//TODO: Tomer - should we have all 3 prices? no,Should be only avg cost
-    const [totalCost, setTotalCost] = useState('');
-    const [myRecipesNames,setRecipeNames] = useState<string[]>([]); //TODO: Tomer - should be initializes to all recipes names for the user that is currently logged in
+    const [ingredientsCost, setIngredientsCost] = useState('');
+    const [minCost, setMinCost] = useState('');
+    const [maxCost, setMaxCost] = useState('');
+    const [avgCost, setAvgCost] = useState('');
+
+    const [totalMinCost, setTotalMinCost] = useState('');
+    const [totalMaxCost, setTotalMaxCost] = useState('');
+    const [totalAvgCost, setTotalAvgCost] = useState('');
+
+    const [myRecipesNames, setRecipeNames] = useState<string[]>([]); //TODO: Tomer - should be initializes to all recipes names for the user that is currently logged in
     const [myCustomers, setCustomers] = useState(options1); //TODO: Eden - should be initializes to all customer names for the user that is currently logged in. (Consider saving change customer name to customer email)
     const [myRecipes, setMyRecipes] = useState<RecipeItem[]>([]);
+
     const navigate = useNavigate();
 
-
-    useEffect(()=>{fetchUserRecipes();},[]);
-    useEffect(()=>{
-        if(myRecipes)
-        {
-            const recipe = myRecipes.find((recipe)  => recipe.recipe_name.toString() === recipeName);
+    useEffect(() => {
+        fetchUserRecipes();
+    }, []);
+    useEffect(() => {
+        if (myRecipes) {
+            const recipe = myRecipes.find((recipe) => recipe.recipe_name.toString() === recipeName);
             if (recipe) {
                 setIngredientsCost(recipe.recipe_ingredients_cost.toString());
                 setQuantity('1');
-                setTotalCost(ingredientsCost.toString());
+                setMinCost(ingredientsCost.toString());
+                //setTotalCost(parse)
             }
         }
-    },[recipeName]); //TODO this is taking the recipe name and return the data of this recipe so we can send it back to the DB
+    }, [recipeName]); //TODO this is taking the recipe name and return the data of this recipe so we can send it back to the DB
     useEffect(() => {
         const newTotalCost = Number(quantity) * Number(ingredientsCost);
         if (!isNaN(newTotalCost)) {
-            setTotalCost(newTotalCost.toString());
+            setMinCost(newTotalCost.toString());
         }
     }, [quantity, ingredientsCost]); //TODO this calculate the Total Cost
     const deleteRecipeFromOrder = (recipeName: string) => {
@@ -103,7 +119,7 @@ export default function NewOrderForm() {
     const fetchUserRecipes = async () => {
         try {
             const payload = {user_email: 'tomer@gmail.com'};
-            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user_recipes', {params:payload});
+            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user_recipes', {params: payload});
             const responseData = JSON.parse(response.data.body);
             const recipesArr = responseData.map((item: RecipeItem) => {
                 return {
@@ -167,10 +183,10 @@ export default function NewOrderForm() {
     const makeRecipe = (name:string, quantity:string, ingredientsCost:string, totalCost:string = (parseFloat(quantity) * parseFloat(ingredientsCost)).toString()): OrderRecipeItem => {
         addToOrderPrice(Number(quantity)*Number(ingredientsCost));
         return {
-            recipe_name: { S: name },
-            recipe_IngredientCost: { S: ingredientsCost },
-            recipe_quantity: { S: quantity },
-            recipe_totalCost: { S: totalCost },
+            recipe_name: {S: name},
+            recipe_IngredientCost: {S: ingredientsCost},
+            recipe_quantity: {S: quantity},
+            recipe_totalCost: {S: totalCost},
         }
     }
     function recipeExistInOrders(orderRecipes:any,quantity:string, ingredientsCost:string, totalCost:string){ //TODO  if the recipe exist it update it values
@@ -184,16 +200,22 @@ export default function NewOrderForm() {
         }
         return false;
     }
+
     function addRecipeToOrder() {
         const recipeExistInArray = recipeExistInOrders(orderRecipes,quantity, ingredientsCost, totalCost); //TODO  if the recipe exist it update it values
         if(!recipeExistInArray) {
+            console.log(`went inside not exist`);
             setOrderRecipes([...orderRecipes, makeRecipe(recipeName, quantity, ingredientsCost, totalCost)]); //TODO  if the recipe doesnt exist it create a new item
         }
         setRecipeName('');
         setQuantity('');
         setIngredientsCost('');
-        setTotalCost('');
+        setMinCost('');
+        setMaxCost('');
+        setAvgCost('');
+
     }
+
     function setDateFromPicker(value: any) {
         setDueDate(value);
     }
@@ -205,6 +227,9 @@ export default function NewOrderForm() {
                     <ComboBox setValueDelegate={setCustomerName} label="Customer Name" options={myCustomers}/>
                 </div>
                 <DatePicker setValueDelegate={setDateFromPicker}/>
+                <div className={"new-order-customer-name"}>
+                    <InputField setValueDelegate={setOrderCost} label="Order Cost" width={255}/>
+                </div>
             </div>
 
             <div className="orders">
@@ -223,10 +248,16 @@ export default function NewOrderForm() {
                             <span>Quantity</span>
                         </div>
                         <div className="recipes-header-list-title">
-                            <span>Ingredients Cost</span>
+                            <span>Min Cost</span>
                         </div>
                         <div className="recipes-header-list-title">
-                            <span>Ingredients Total Cost</span>
+                            <span>Avg Cost</span>
+                        </div>
+                        <div className="recipes-header-list-title">
+                            <span>Max Cost</span>
+                        </div>
+                        <div className="recipes-header-list-title">
+                            <span>Price</span>
                         </div>
                     </div>
 
@@ -259,7 +290,7 @@ export default function NewOrderForm() {
                                            defaultValue={quantity} value={quantity}
                                            inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
                                 />
-                            </Box>{/* TODO: Tomer - Should be an Int. should be inserted only after recipe is chosen    DONE*/}
+                            </Box>
 
                             <Box
                                 component="div"
@@ -267,14 +298,45 @@ export default function NewOrderForm() {
                                     '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
                                 onChange={(e: any) => {
-                                    setIngredientsCost(e.target.value)
+                                    setMinCost(e.target.value)
                                 }}
                             >
-                                <TextField variant="standard" id="standard-number" label={'Ingredients Cost'} type="number"
-                                           defaultValue={ingredientsCost} value={ingredientsCost}
+                                <TextField variant="standard" id="standard-number" label={'Ingredients Min Cost'}
+                                           type="number" disabled={true}
+                                           defaultValue={minCost} value={minCost}
                                            inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
                                 />
-                            </Box>{/*  TODO: Tomer -should be taken from the recipe   DONE*/}
+                            </Box>
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': {m: 1, width: '25ch'},
+                                }}
+                                onChange={(e: any) => {
+                                    setAvgCost(e.target.value)
+                                }}
+                            >
+                                <TextField variant="standard" id="standard-number" label={'Ingredients Avg Cost'}
+                                           type="number" disabled={true}
+                                           defaultValue={avgCost} value={avgCost}
+                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
+                                />
+                            </Box>
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': {m: 1, width: '25ch'},
+                                }}
+                                onChange={(e: any) => {
+                                    setMaxCost(e.target.value)
+                                }}
+                            >
+                                <TextField variant="standard" id="standard-number" label={'Ingredients Max Cost'}
+                                           type="number" disabled={true}
+                                           defaultValue={maxCost} value={maxCost}
+                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
+                                />
+                            </Box>
 
                             <Box
                                 component="div"
@@ -282,28 +344,42 @@ export default function NewOrderForm() {
                                     '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
                                 onChange={(e: any) => {
-                                    setTotalCost(e.target.value)
+                                    setRecipePrice(e.target.value)
                                 }}
                             >
-                                <TextField variant="standard" id="standard-number" label={'Total Cost'} type="number"
-                                           defaultValue={totalCost} value={totalCost}
+                                <TextField variant="standard" id="standard-number" label={'Price'}
+                                           type="number"
+                                           defaultValue={recipePrice} value={recipePrice}
                                            inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
                                 />
-                            </Box>{         }
+                            </Box>
 
                         </div>
                         <div className="orders-list">
                             {
                                 orderRecipes.map((recipe) => {
-                                    return <RecipeDelegate removeDelegate={deleteRecipeFromOrder} key={recipe.recipe_name.S}
-                                                           name={recipe.recipe_name.S} quantity={recipe.recipe_quantity.S.toString()}
-                                                           ingredientsCost={recipe.recipe_IngredientCost.S}
-                                                           totalCost={recipe.recipe_totalCost.S}/>
+                                    return <RecipeDelegate removeDelegate={deleteRecipeFromOrder}
+                                                           key={recipe.recipe_name.S}
+                                                           name={recipe.recipe_name.S}
+                                                           quantity={recipe.recipe_quantity.S.toString()}
+                                                           minCost={recipe.recipe_IngredientCost.S}
+                                                           avgCost={recipe.recipe_IngredientCost.S}
+                                                           maxCost={recipe.recipe_IngredientCost.S}
+                                                           price={recipe.recipe_totalCost.S}/>
                                 })
                             }
                         </div>
                     </div>
-                    <button className='add-recipe-to-order-button' onClick={addRecipeToOrder}>Add recipe</button>
+                    <div className="recipe-delegate-container">
+                        <div/>
+                        <div/>
+                        <div/>
+                        {/*TODO: tomer - these should have the recipe cost added to them*/}
+                        <StandardInputField onChange={setTotalMinCost} placeholder="Order Min Cost" disabled={true}/>
+                        <StandardInputField onChange={setTotalAvgCost} placeholder="Order Avg Cost" disabled={true}/>
+                        <StandardInputField onChange={setTotalMaxCost} placeholder="Order Max Cost" disabled={true}/>
+                        <button className='add-recipe-to-order-button' onClick={addRecipeToOrder}>Add recipe</button>
+                    </div>
                 </div>
 
             </div>
