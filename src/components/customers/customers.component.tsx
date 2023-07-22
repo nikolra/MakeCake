@@ -30,12 +30,38 @@ interface ICustomer {
 export default function Customers({ className, header, description }: ICustomerProps) {
     const [customers, setCustomers] = useState<ICustomer[]>([]);
     const [filteredCustomers, setFilteredCustomers] = useState<ICustomer[]>([]);
+    const [templates, setTemplates] = useState<string[]>([]);
     const [searchString, setSearchString] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
         fetchCustomerDetails();
+        fetchSMSTemplateNames();
     }, []);
+
+
+    const fetchSMSTemplateNames = async () => {
+        try {
+            //TODO: Amit - should get connected user email
+            const payload = {
+                konditorEmail: "tomer@gmail.com"
+            };
+            toast.promise(async () => {
+                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_all_sms_templates', payload);
+                const data = response.data;
+                console.log(data);
+                setTemplates(data);
+            }, {
+                // @ts-ignore
+                loading: 'Loading',
+                success: `Get all SMS template names`,
+                error: `Error getting all SMS template names`
+            });
+
+        } catch (error) {
+            console.error(JSON.stringify(error));
+        }
+    }
 
     const deleteCustomer = (customerEmail:string) => {
         console.log('Deleting customer:', customerEmail);
@@ -132,7 +158,7 @@ export default function Customers({ className, header, description }: ICustomerP
             <div className="customers-list-container">
                 <div className="customers-list">
                     {filteredCustomers.map((customer) => {
-                        return <CustomerDelegate key={customer.email} data={customer} deleteDelegate={deleteCustomer}/>;
+                        return <CustomerDelegate key={customer.email} data={customer} deleteDelegate={deleteCustomer} templateNames={templates}/>;
                     })}
                 </div>
             </div>
