@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c7a2437d-b918-4d33-803d-084c99b088ba" name="Changes" comment="new order is finished">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/create-new-order/create-new-order-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-order/create-new-order-form.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/date-picker/date-picker.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/date-picker/date-picker.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/orders/orders.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/orders/orders.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx" afterDir="false" />
-    </list>
+    <list default="true" id="c7a2437d-b918-4d33-803d-084c99b088ba" name="Changes" comment="orders/edit order/order-form updates" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -71,7 +64,7 @@
       <workItem from="1689970513068" duration="3319000" />
       <workItem from="1689974139657" duration="3667000" />
       <workItem from="1689982357812" duration="1403000" />
-      <workItem from="1690019042850" duration="10364000" />
+      <workItem from="1690019042850" duration="10815000" />
     </task>
     <task id="LOCAL-00001" summary="implemented best customers widget">
       <option name="closed" value="true" />
@@ -113,7 +106,15 @@
       <option name="project" value="LOCAL" />
       <updated>1689937224468</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="orders/edit order/order-form updates">
+      <option name="closed" value="true" />
+      <created>1690030148180</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1690030148180</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -141,7 +142,8 @@
     <MESSAGE value="order not showing dates fixed" />
     <MESSAGE value="order fixed" />
     <MESSAGE value="new order is finished" />
-    <option name="LAST_COMMIT_MESSAGE" value="new order is finished" />
+    <MESSAGE value="orders/edit order/order-form updates" />
+    <option name="LAST_COMMIT_MESSAGE" value="orders/edit order/order-form updates" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
