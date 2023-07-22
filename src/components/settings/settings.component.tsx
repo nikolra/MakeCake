@@ -16,6 +16,7 @@ export default function SettingsComponent({className}: IOrderProps) {
     //TODO: Amit should use the data of the connected user and not hard codded data
     const [username, setName] = useState('Ariana Broflowski');
     const [templateName, setTemplateName] = useState('');
+    const [smsTemplate, setSmsTemplate] = useState('');
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
@@ -63,6 +64,7 @@ export default function SettingsComponent({className}: IOrderProps) {
                                 '& .MuiTextField-root': {m:'2vh 0 0 0', width: '100%'},
                             }}
                             noValidate
+
                             autoComplete="off"
                         >
                             <div>
@@ -75,7 +77,11 @@ export default function SettingsComponent({className}: IOrderProps) {
                                             height: '25vh'
                                         }
                                     }}
-                                    defaultValue="Write template here. You can use name, from time, to time, place holders"
+                                    onChange={(e: any) => {
+                                        setSmsTemplate(e.target.value);
+                                    }}
+                                    defaultValue="Write the template here. You can use name, from time, to time, place holders"
+                                    value={smsTemplate}
                                 />
                             </div>
                         </Box>
