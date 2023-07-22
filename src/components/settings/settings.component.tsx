@@ -3,9 +3,10 @@ import '../dashboard-widgets/widgets.style.css'
 import './settings.style.css'
 import InputField from "../outlinedd-input-field/input-field.component";
 import LabeledField from "../labeled-input/labeled-input.component";
-import {ToastContainer} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import TextField from '@mui/material/TextField';
 import Box from "@mui/material/Box";
+import axios from "axios";
 
 interface IOrderProps {
     className?: string
@@ -26,7 +27,26 @@ export default function SettingsComponent({className}: IOrderProps) {
     }
 
     const createNewSMSTemplate = () => {
-        //TODO: Eden integrate create new template
+        try{
+            //TODO: Amit - should get connected user email
+        const payload = {
+            smsTemplateName:templateName,
+            konditorEmail: "tomer@gmail.com",
+            smsTemplateMessage:smsTemplate
+        };
+        toast.promise(async ()=> {
+            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/create_sms_template',payload);
+            console.log(JSON.stringify(response));
+            console.log(response.data);
+        }, {
+            // @ts-ignore
+            loading: 'Loading',
+            success: `Created template ${templateName}`,
+            error: `Error creating template ${templateName}`
+        });
+        } catch (error) {
+            console.error(JSON.stringify(error));
+        }
     }
 
     return (
