@@ -15,7 +15,7 @@
 .recipe-delegate-container{
     width: 100%;
     display: grid;
-    grid-template-columns: 2fr 2fr 2fr 2fr 2fr 1fr;
+    grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr 1fr;
     grid-template-rows: repeat(1, 60px);
     padding-left: 8px;
 }

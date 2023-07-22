@@ -92,12 +92,14 @@ export default function Orders({ className, header, description, isDashboard }: 
 
     useEffect(() => {
         const filtered = orders.filter((order) => {
-            const name = order.customer;
-            return name.includes(searchString);
+            console.log(order);
+            const name = order.customer.toLowerCase();
+            const doesInclude = name.includes(searchString);
+            console.log(doesInclude);
+            return doesInclude;
         });
         setFilteredOrders(filtered);
     }, [orders, searchString]);
-
 
     const createRecipeFromData = (recipeData: any) => {
         return{
@@ -129,7 +131,6 @@ export default function Orders({ className, header, description, isDashboard }: 
             };
         }
     };
-
 
     return (
         <div className={`dashboard-orders-widget-container orders-widget ${className}`}>

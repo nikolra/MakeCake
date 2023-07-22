@@ -66,6 +66,7 @@ export default function NewOrderForm() {
     const [orderCost, setOrderCost] = useState('');
 
     const [recipeName, setRecipeName] = useState("");
+    const [recipePrice, setRecipePrice] = useState("");
     const [quantity, setQuantity] = useState('');
     const [ingredientsCost, setIngredientsCost] = useState('');
     const [minCost, setMinCost] = useState('');
@@ -92,7 +93,6 @@ export default function NewOrderForm() {
                 setIngredientsCost(recipe.recipe_ingredients_cost.toString());
                 setQuantity('1');
                 setMinCost(ingredientsCost.toString());
-
                 //setTotalCost(parse)
             }
         }
@@ -151,7 +151,6 @@ export default function NewOrderForm() {
             console.error('Error fetching orders:', error);
         }
     };
-
     /*    const createRecipeFromData = (recipeData: any) => {
             const recipeName = recipeData.M.recipe_name.S;
             const recipePrice = recipeData.M.recipe_price.S;
@@ -239,7 +238,7 @@ export default function NewOrderForm() {
                 </div>
                 <DatePicker setValueDelegate={setDateFromPicker}/>
                 <div className={"new-order-customer-name"}>
-                    <InputField setValueDelegate={setOrderCost} label="Order Cost" width={300}/>
+                    <InputField setValueDelegate={setOrderCost} label="Order Cost" width={255}/>
                 </div>
             </div>
 
@@ -267,6 +266,9 @@ export default function NewOrderForm() {
                         </div>
                         <div className="recipes-header-list-title">
                             <span>Max Cost</span>
+                        </div>
+                        <div className="recipes-header-list-title">
+                            <span>Price</span>
                         </div>
                     </div>
 
@@ -311,7 +313,7 @@ export default function NewOrderForm() {
                                 }}
                             >
                                 <TextField variant="standard" id="standard-number" label={'Ingredients Min Cost'}
-                                           type="number"
+                                           type="number" disabled={true}
                                            defaultValue={minCost} value={minCost}
                                            inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
                                 />
@@ -326,7 +328,7 @@ export default function NewOrderForm() {
                                 }}
                             >
                                 <TextField variant="standard" id="standard-number" label={'Ingredients Avg Cost'}
-                                           type="number"
+                                           type="number" disabled={true}
                                            defaultValue={avgCost} value={avgCost}
                                            inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
                                 />
@@ -341,11 +343,27 @@ export default function NewOrderForm() {
                                 }}
                             >
                                 <TextField variant="standard" id="standard-number" label={'Ingredients Max Cost'}
-                                           type="number"
+                                           type="number" disabled={true}
                                            defaultValue={maxCost} value={maxCost}
                                            inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
                                 />
-                            </Box>{}
+                            </Box>
+
+                            <Box
+                                component="div"
+                                sx={{
+                                    '& > :not(style)': {m: 1, width: '25ch'},
+                                }}
+                                onChange={(e: any) => {
+                                    setRecipePrice(e.target.value)
+                                }}
+                            >
+                                <TextField variant="standard" id="standard-number" label={'Price'}
+                                           type="number"
+                                           defaultValue={recipePrice} value={recipePrice}
+                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
+                                />
+                            </Box>
 
                         </div>
                         <div className="orders-list">
@@ -355,8 +373,10 @@ export default function NewOrderForm() {
                                                            key={recipe.recipe_name.S}
                                                            name={recipe.recipe_name.S}
                                                            quantity={recipe.recipe_quantity.S.toString()}
-                                                           ingredientsCost={recipe.recipe_IngredientCost.S}
-                                                           totalCost={recipe.recipe_totalCost.S}/>
+                                                           minCost={recipe.recipe_IngredientCost.S}
+                                                           avgCost={recipe.recipe_IngredientCost.S}
+                                                           maxCost={recipe.recipe_IngredientCost.S}
+                                                           price={recipe.recipe_totalCost.S}/>
                                 })
                             }
                         </div>
@@ -364,10 +384,11 @@ export default function NewOrderForm() {
                     <div className="recipe-delegate-container">
                         <div/>
                         <div/>
+                        <div/>
                         {/*TODO: tomer - these should have the recipe cost added to them*/}
-                        <StandardInputField onChange={setTotalMinCost} placeholder="Order Min Cost"/>
-                        <StandardInputField onChange={setTotalAvgCost} placeholder="Order Avg Cost"/>
-                        <StandardInputField onChange={setTotalMaxCost} placeholder="Order Max Cost"/>
+                        <StandardInputField onChange={setTotalMinCost} placeholder="Order Min Cost" disabled={true}/>
+                        <StandardInputField onChange={setTotalAvgCost} placeholder="Order Avg Cost" disabled={true}/>
+                        <StandardInputField onChange={setTotalMaxCost} placeholder="Order Max Cost" disabled={true}/>
                         <button className='add-recipe-to-order-button' onClick={addRecipeToOrder}>Add recipe</button>
                     </div>
                 </div>
