@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c7a2437d-b918-4d33-803d-084c99b088ba" name="Changes" comment="order fixed">
+    <list default="true" id="c7a2437d-b918-4d33-803d-084c99b088ba" name="Changes" comment="new order is finished">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/create-new-order/create-new-order-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-order/create-new-order-form.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/date-picker/date-picker.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/date-picker/date-picker.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/orders/orders.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/orders/orders.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +66,12 @@
       <workItem from="1689848132839" duration="20320000" />
       <workItem from="1689889380700" duration="4639000" />
       <workItem from="1689931299995" duration="461000" />
-      <workItem from="1689932162869" duration="4514000" />
+      <workItem from="1689932162869" duration="14773000" />
+      <workItem from="1689970473304" duration="8000" />
+      <workItem from="1689970513068" duration="3319000" />
+      <workItem from="1689974139657" duration="3667000" />
+      <workItem from="1689982357812" duration="1403000" />
+      <workItem from="1690019042850" duration="10364000" />
     </task>
     <task id="LOCAL-00001" summary="implemented best customers widget">
       <option name="closed" value="true" />
@@ -96,7 +105,15 @@
       <option name="project" value="LOCAL" />
       <updated>1689892594042</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="new order is finished">
+      <option name="closed" value="true" />
+      <created>1689937224468</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1689937224468</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -107,7 +124,13 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="false" />
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -117,14 +140,15 @@
     <MESSAGE value="implemented best customers widget" />
     <MESSAGE value="order not showing dates fixed" />
     <MESSAGE value="order fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="order fixed" />
+    <MESSAGE value="new order is finished" />
+    <option name="LAST_COMMIT_MESSAGE" value="new order is finished" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx</url>
-          <line>137</line>
+          <line>349</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>

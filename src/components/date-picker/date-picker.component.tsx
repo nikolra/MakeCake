@@ -12,8 +12,8 @@ interface IProps {
 
 export default function BasicDatePicker({setValueDelegate, initValue}: IProps) {
 
-    //const [value, setValue] = React.useState<Dayjs | null>(initValue?dayjs(initValue):dayjs((new Date()).toISOString().split('T')[0]));
-    const [value, setValue] = React.useState<Dayjs | null>(initValue ? dayjs(initValue, 'MM/DD/YYYY') : dayjs());
+    const [value, setValue] = React.useState<Dayjs | null>(initValue?dayjs(initValue):dayjs((new Date()).toISOString().split('T')[0]));
+    //const [value, setValue] = React.useState<Dayjs | null>(initValue ? dayjs(initValue, 'MM/DD/YYYY') : dayjs());
 
     useEffect(() => {
         

@@ -6,9 +6,8 @@ import OrderDelegate from './order-delegate/order-delegate.component';
 import SearchField from '../search-field/search-field.component';
 import NavigationButtonComponent from '../navigation-button/navigation-button.component';
 import {useNavigate} from "react-router-dom";
-import { ToastContainer } from 'react-toastify';
+import {toast, ToastContainer} from 'react-toastify';
 import dayjs from "dayjs";
-// import { Auth } from 'aws-amplify';
 
 interface IOrderProps {
     className: string;
@@ -48,20 +47,33 @@ export default function Orders({ className, header, description, isDashboard }: 
     const [error, setError] = useState(null); // new error state
     const navigate = useNavigate();
 
+
+
     const deleteOrder= async (id: any) => {
         try {
             const payload = {
                 seller_email: 'tomer@gmail.com',
-                order_id: id
+                order_id: id.toString()
             };
-            const response =await axios.delete('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_order', {params: payload});
-            await navigate('/orders');
-            console.log(response);
-        }
+            toast.promise(async ()=> {
+                const postPromise = await axios.delete(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_order`,{data:payload});
+            },
+                {
+                    pending: 'Loading',
+                    success: { render: 'Order deleted', autoClose: 1000 },
+                    error: { render: 'Error deleting order', autoClose: 1000 }
+                }
+            ).then(response => {
+                handleDeleteOrder(id);
+            });}
         catch (error)
         {
             console.error(`Error deleting order ${id}:`, error);
         }
+    }
+
+    const handleDeleteOrder = (id: any) => {
+        setOrders(prevOrders => prevOrders.filter(order => order.id !== id));
     }
 
     const fetchOrders = async () => {
