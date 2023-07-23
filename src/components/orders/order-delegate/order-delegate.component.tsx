@@ -10,7 +10,7 @@ interface IOrderProps {
 
 function OrderDelegate(props: IOrderProps) {
     const [isOpened, setOpened] = useState(false)
-    const {id, dueDate, customer, totalCost, recipes} = props.data;
+    const {id, dueDate, customer, order_price, recipes} = props.data;
     //console.log(props.data);
     const deleteDelegate = props.deleteDelegate;
 
@@ -26,7 +26,7 @@ function OrderDelegate(props: IOrderProps) {
                     <span>{customer}</span>
                 </div>
                 <div className="order-delegate-table-container">
-                    <span>{totalCost}₪</span>
+                    <span>{order_price}₪</span>
                 </div>
                 <div className="order-delegate-table-container">
                     <span>{dueDate}</span>
@@ -71,13 +71,13 @@ function OrderDelegate(props: IOrderProps) {
                             return (
                                 <div className="order-delegate-recipe-title-value">
                                     <div className="order-delegate-recipe-title-item">
-                                        <span>{recipe.name}</span>
+                                        <span>{recipe.recipe_name}</span>
                                     </div>
                                     <div className="order-delegate-recipe-title-item">
-                                        <span>{recipe.quantity}</span>
+                                        <span>{recipe.recipe_quantity}</span>
                                     </div>
                                     <div className="order-delegate-recipe-title-item">
-                                        <span>{recipe.total}₪</span>
+                                        <span>{recipe.recipe_price}₪</span>
                                     </div>
 
                                 </div>

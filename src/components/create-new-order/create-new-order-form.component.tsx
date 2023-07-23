@@ -7,7 +7,7 @@ import ComboBox from "../combo-box/combo-box.component";
 import dayjs from 'dayjs';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import {toast} from "react-toastify";
+import {toast,ToastContainer} from "react-toastify";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -19,37 +19,32 @@ export default function NewOrderForm() {
 
     interface Ingredient {
         M: {
-            is_automated_ingredient: { N: string };
-            ingredient_code: { S: string };
-            ingredient_name: { S: string };
-            ingredient_price: { N: string };
-            ingredient_quantity: { N: string };
+            is_automated_ingredient: string;
+            ingredient_code: string;
+            ingredient_name: string ;
+            ingredient_price: number ;
+            ingredient_quantity:  number ;
         };
     }
 
     interface RecipeItem {
-        recipe_ingredients_cost: { N: string };
-        recipe_id: { S: string };
-        user_email: { S: string };
-        ingredients: { L: Ingredient[] };
-        recipe_name: { S: string };
-        recipe_price: { S: string };
+        ingredients_min_cost:  number;
+        ingredients_avg_cost:  number;
+        ingredients_max_cost:  number;
+        recipe_id: string;
+        user_email: string;
+        ingredients: Ingredient[];
+        recipe_name: string;
+        recipe_price: number;
     }
 
     interface OrderRecipeItem {
-        recipe_name: { S: string };
-        recipe_IngredientCost: { S: string };
-        recipe_quantity: { S: string };
-        recipe_totalCost: { S: string }
-    }
-
-    interface OrderItem {
-
-        seller_email: { S: string };
-        buyer_email: { S: string };
-        order_id: { S: string };
-        due_date: { S: string };
-        recipes: { L: OrderRecipeItem[] }
+        recipe_name: string;
+        recipe_quantity: number;
+        ingredients_min_cost: number;
+        ingredients_avg_cost: number;
+        ingredients_max_cost: number;
+        recipe_price: number;
     }
 
     type CustomerType = {
@@ -63,19 +58,21 @@ export default function NewOrderForm() {
     const [customerName, setCustomerName] = useState('yankale@gmail.com');///TODO - Eden need to do a getter that will return all the customers seller has
     const [dueDate, setDueDate] = useState(dayjs());
     const [orderRecipes, setOrderRecipes] = useState<OrderRecipeItem[]>([]);
-    const [orderCost, setOrderCost] = useState('');
-
+    const [orderPrice,setOrderPrice]=useState(0);
     const [recipeName, setRecipeName] = useState("");
-    const [recipePrice, setRecipePrice] = useState("");
     const [quantity, setQuantity] = useState('');
     const [ingredientsCost, setIngredientsCost] = useState('');
+
+
     const [minCost, setMinCost] = useState('');
     const [maxCost, setMaxCost] = useState('');
     const [avgCost, setAvgCost] = useState('');
+    const [totalMinCost, setTotalMinCost] = useState(0);
+    const [totalMaxCost, setTotalMaxCost] = useState(0);
+    const [totalAvgCost, setTotalAvgCost] = useState(0);
+    const [recipePrice,setRecipePrice]=useState('');
+    const [currentRecipe,setCurrentRecipe]=useState<RecipeItem>();
 
-    const [totalMinCost, setTotalMinCost] = useState('');
-    const [totalMaxCost, setTotalMaxCost] = useState('');
-    const [totalAvgCost, setTotalAvgCost] = useState('');
 
     const [myRecipesNames, setRecipeNames] = useState<string[]>([]); //TODO: Tomer - should be initializes to all recipes names for the user that is currently logged in
     const [myCustomers, setCustomers] = useState(options1); //TODO: Eden - should be initializes to all customer names for the user that is currently logged in. (Consider saving change customer name to customer email)
@@ -86,32 +83,71 @@ export default function NewOrderForm() {
     useEffect(() => {
         fetchUserRecipes();
     }, []);
+
+
+    useEffect(() => {
+        fetchUserRecipes();
+    }, [recipeName,quantity]);
+
+    useEffect(() => {
+        if(currentRecipe) {
+            setRecipePrice((Number(quantity) * currentRecipe.recipe_price).toString());
+        }
+    }, [quantity]);
+
+
+    useEffect(() => {
+        console.log(orderRecipes);
+    }, [orderRecipes]);
+
+    useEffect(() => {
+        setOrderPrice(orderPrice);
+    }, [orderPrice]);
+
     useEffect(() => {
         if (myRecipes) {
             const recipe = myRecipes.find((recipe) => recipe.recipe_name.toString() === recipeName);
             if (recipe) {
-                setIngredientsCost(recipe.recipe_ingredients_cost.toString());
+                setCurrentRecipe(recipe);
+                setMinCost(recipe.ingredients_min_cost.toString());
+                setAvgCost(recipe.ingredients_avg_cost.toString());
+                setMaxCost(recipe.ingredients_max_cost.toString());
+                setRecipePrice(recipe.recipe_price.toString());
                 setQuantity('1');
-                setMinCost(ingredientsCost.toString());
-                //setTotalCost(parse)
             }
         }
     }, [recipeName]); //TODO this is taking the recipe name and return the data of this recipe so we can send it back to the DB
+
+
     useEffect(() => {
         const newTotalCost = Number(quantity) * Number(ingredientsCost);
         if (!isNaN(newTotalCost)) {
-            setMinCost(newTotalCost.toString());
+            //setMinCost(newTotalCost.toString());
         }
     }, [quantity, ingredientsCost]); //TODO this calculate the Total Cost
-
     const deleteRecipeFromOrder = (recipeName: string) => {
-        console.log(orderRecipes);
-        const index = orderRecipes.findIndex(recipe => recipe.recipe_name.S === recipeName);
+        const index = orderRecipes.findIndex(recipe => recipe.recipe_name=== recipeName);
         const newOrders = [...orderRecipes];
+        addToOrderPrice(-(Number(orderRecipes[index].recipe_quantity)*(orderRecipes[index].recipe_price)));
+        addTotalMinIngredientCost(-(orderRecipes[index].ingredients_min_cost*Number(orderRecipes[index].recipe_quantity)));
+        addTotalAvgIngredientCost(-(orderRecipes[index].ingredients_avg_cost*Number(orderRecipes[index].recipe_quantity)));
+        addTotalMaxIngredientCost(-(orderRecipes[index].ingredients_max_cost*Number(orderRecipes[index].recipe_quantity)));
         newOrders.splice(index, 1);
         setOrderRecipes(newOrders);
     }
 
+    function addTotalMinIngredientCost(val:number)
+    {
+        setTotalMinCost(totalMinCost+val);
+    }
+    function addTotalAvgIngredientCost(val:number)
+    {
+        setTotalAvgCost(totalAvgCost+val);
+    }
+    function addTotalMaxIngredientCost(val:number)
+    {
+        setTotalMaxCost(totalMaxCost+val);
+    }
     function generateNumericID() {
         const min = 100000000; // Minimum 16-digit number
         const max = 999999999; // Maximum 16-digit number
@@ -124,11 +160,13 @@ export default function NewOrderForm() {
             const payload = {user_email: 'tomer@gmail.com'};
             const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user_recipes', {params: payload});
             const responseData = JSON.parse(response.data.body);
-            const recipesArr = responseData.map((item: RecipeItem) => {
+            const recipesArr = responseData.map((item:any) => {
                 return {
-                    recipe_ingredients_cost: Number(item.recipe_ingredients_cost.N),
+                    ingredients_min_cost :Number(item.ingredients_min_cost.N),
+                    ingredients_avg_cost :Number(item.ingredients_avg_cost.N),
+                    ingredients_max_cost :Number(item.ingredients_max_cost.N),
                     user_email: item.user_email.S,
-                    ingredients: item.ingredients.L.map((ingItem: Ingredient) => {
+/*                    ingredients: item.ingredients.map((ingItem: any) => {
                         return {
                             is_automated_ingredient: Number(ingItem.M.is_automated_ingredient.N),
                             ingredient_code: ingItem.M.ingredient_code.S,
@@ -136,29 +174,26 @@ export default function NewOrderForm() {
                             ingredient_price: Number(ingItem.M.ingredient_price.N),
                             ingredient_quantity: Number(ingItem.M.ingredient_quantity.N)
                         };
-                    }),
+                    }),*///not sure the ingridients themself should be here will be commented for now
                     recipe_id: item.recipe_id.S,
                     recipe_name: item.recipe_name.S,
-                    recipe_price: Number(item.recipe_price.S),
+                    recipe_price: Number(item.recipe_price.N)
                 };
             });
             setMyRecipes(recipesArr);
-            const recipeNames: string[] = responseData.map((recipe: {
-                recipe_name: { S: string }
-            }) => recipe.recipe_name.S);
+            const recipeNames: string[] = recipesArr.map((recipe:any)=>recipe.recipe_name);
             setRecipeNames(recipeNames);
         } catch (error) {
             console.error('Error fetching orders:', error);
         }
     };
-    /*    const createRecipeFromData = (recipeData: any) => {
-            const recipeName = recipeData.M.recipe_name.S;
-            const recipePrice = recipeData.M.recipe_price.S;
-            const recipeQuantity = recipeData.M.recipe_quantity.S;
-           // orderCost+= parseInt(recipePrice)*parseInt(recipeQuantity);
-            return { id: '', name: recipeName, total: recipePrice, quantity: recipeQuantity };
-        };*/
-    async function sendDataToBackend() {//TODO - Tomer use the toaster!
+
+    async function addToOrderPrice(value:number) {
+        setOrderPrice(Number(orderPrice)+value);
+    }
+
+
+    async function sendDataToBackend() {
         const order_Id = generateNumericID();
         try {
             const orderData = {
@@ -166,63 +201,77 @@ export default function NewOrderForm() {
                 order_id: order_Id,
                 buyer_email: customerName,
                 due_date: dueDate,
-                recipes: orderRecipes
-            }
-            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order', orderData);
-            console.log(response);
-
-        }
-            /*            };
-                        toast.promise(async () => {
-                            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order', orderData);
-                            console.log(response);
-                            navigate('/orders');
-                            //console.log(JSON.stringify(response));
-                        }, {
-                            pending: 'Loading',
-                            success: `Created order `,
-                            error: `Error creating order`
-                        });}*/ catch (error) {
+                recipes: orderRecipes,
+                order_price: orderPrice
+            };
+            const postPromise  =  axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order', orderData);
+            toast.promise(
+                () => postPromise,
+                {
+                    pending: 'Loading',
+                    success: { render: 'Order deleted', autoClose: 1000 },
+                    error: { render: 'Error deleting order', autoClose: 1000 }
+                }
+            ).then(response => {
+                console.log(response);
+                if (response.status === 200) {
+                    navigate(`/orders`);
+                }
+            });
+        } catch (error) {
             console.log(error);
             return error;
         }
     }
 
-    const makeRecipe = (name: string, quantity: string, ingredientsCost: string, totalCost: string = (parseFloat(quantity) * parseFloat(ingredientsCost)).toString()): OrderRecipeItem => {
+
+    const makeRecipe = (recipe:any): OrderRecipeItem => {
+        addToOrderPrice(Number(quantity)*recipe.recipe_price);
         return {
-            recipe_name: {S: name},
-            recipe_IngredientCost: {S: ingredientsCost},
-            recipe_quantity: {S: quantity},
-            recipe_totalCost: {S: totalCost},
+            recipe_name: recipe.recipe_name,
+            recipe_quantity: Number(quantity),
+            ingredients_min_cost:  recipe.ingredients_min_cost,
+            ingredients_avg_cost:  recipe.ingredients_avg_cost,
+            ingredients_max_cost: recipe.ingredients_max_cost,
+            recipe_price: recipe.recipe_price
         }
     }
+    function updateOrderExistRecipe(recipe:any) { //TODO  if the recipe exist it update it values
+        addToOrderPrice(Number(quantity) * Number(recipe.recipe_price));
+        recipe.recipe_quantity = Number(recipe.recipe_quantity) + Number(quantity);
 
-    function recipeExistInOrders(orderRecipes: any, quantity: string, ingredientsCost: string, totalCost: string) { //TODO  if the recipe exist it update it values
-        const recipe = orderRecipes.find((recipe: any) => recipe.recipe_name.S === recipeName);
-        //console.log(recipe);
-        if (recipe) {
-            console.log((Number(recipe.recipe_quantity.S) + Number(quantity)).toString());
-            recipe.recipe_quantity.S = (Number(recipe.recipe_quantity.S) + Number(quantity)).toString();
-            recipe.recipe_totalCost.S = (Number(recipe.recipe_totalCost.S) + Number(quantity) * Number(totalCost)).toString();
-            console.log(`done`);
-            return true;
-        }
-        console.log(`not exist`);
-        return false;
     }
-
     function addRecipeToOrder() {
-        const recipeExistInArray = recipeExistInOrders(orderRecipes, quantity, ingredientsCost, minCost); //TODO  if the recipe exist it update it values
-        if (!recipeExistInArray) {
-            console.log(`went inside not exist`);
-            setOrderRecipes([...orderRecipes, makeRecipe(recipeName, quantity, ingredientsCost, minCost)]); //TODO  if the recipe doesnt exist it create a new item
+        const recipe = orderRecipes.find((recipe:any) => recipe.recipe_name === recipeName);
+        if(recipe) {
+            console.log(`1`);
+          updateOrderExistRecipe(recipe);
+            addToOrderPrice(recipe.recipe_price*Number(quantity));
+            addTotalMinIngredientCost(recipe.ingredients_min_cost*Number(quantity));
+            addTotalAvgIngredientCost(recipe.ingredients_avg_cost*Number(quantity));
+            addTotalMaxIngredientCost(recipe.ingredients_max_cost*Number(quantity));
         }
+        else
+        {
+            const recipeFromMyRecipes =myRecipes.find((recipe:any) => recipe.recipe_name === recipeName);
+            if(recipeFromMyRecipes) {
+                console.log(`2`);
+                console.log(makeRecipe(recipeFromMyRecipes));
+                setOrderRecipes([...orderRecipes, makeRecipe(recipeFromMyRecipes)]);
+                addTotalMinIngredientCost(recipeFromMyRecipes.ingredients_min_cost*Number(quantity));
+                addTotalAvgIngredientCost(recipeFromMyRecipes.ingredients_avg_cost*Number(quantity));
+                addTotalMaxIngredientCost(recipeFromMyRecipes.ingredients_max_cost*Number(quantity));
+                addToOrderPrice(recipeFromMyRecipes.recipe_price * Number(quantity));
+            }
+        }
+        setCurrentRecipe(undefined);
         setRecipeName('');
         setQuantity('');
         setIngredientsCost('');
         setMinCost('');
         setMaxCost('');
         setAvgCost('');
+        setRecipePrice('');
 
     }
 
@@ -238,7 +287,19 @@ export default function NewOrderForm() {
                 </div>
                 <DatePicker setValueDelegate={setDateFromPicker}/>
                 <div className={"new-order-customer-name"}>
-                    <InputField setValueDelegate={setOrderCost} label="Order Cost" width={255}/>
+                    <Box
+                        component="div"
+                        sx={{
+                            width: 255,
+                            maxWidth: '100%',
+                            m: '0 0 6px 0'
+                        }}
+                    >
+                        <TextField  fullWidth id="outlined-basic" label={"Order Cost"} variant="outlined" defaultValue={orderPrice} value={orderPrice}
+                                   onChange={(e: any) => {
+                                       setOrderPrice(e.target.value)
+                                   }}/>
+                    </Box>
                 </div>
             </div>
 
@@ -249,7 +310,6 @@ export default function NewOrderForm() {
                         <span className="widget-title-text-secondary"> </span>
                     </div>
                 </div>
-
                 <div className="recipes-widget">
                     <div className="create-recipe-header-recipes-list-title">
                         <div className="recipes-header-list-title">
@@ -309,7 +369,7 @@ export default function NewOrderForm() {
                                     '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
                                 onChange={(e: any) => {
-                                    setMinCost(e.target.value)
+                                    //setMinCost(e.target.value)
                                 }}
                             >
                                 <TextField variant="standard" id="standard-number" label={'Ingredients Min Cost'}
@@ -324,7 +384,7 @@ export default function NewOrderForm() {
                                     '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
                                 onChange={(e: any) => {
-                                    setAvgCost(e.target.value)
+                                    //setAvgCost(e.target.value)
                                 }}
                             >
                                 <TextField variant="standard" id="standard-number" label={'Ingredients Avg Cost'}
@@ -370,13 +430,13 @@ export default function NewOrderForm() {
                             {
                                 orderRecipes.map((recipe) => {
                                     return <RecipeDelegate removeDelegate={deleteRecipeFromOrder}
-                                                           key={recipe.recipe_name.S}
-                                                           name={recipe.recipe_name.S}
-                                                           quantity={recipe.recipe_quantity.S.toString()}
-                                                           minCost={recipe.recipe_IngredientCost.S}
-                                                           avgCost={recipe.recipe_IngredientCost.S}
-                                                           maxCost={recipe.recipe_IngredientCost.S}
-                                                           price={recipe.recipe_totalCost.S}/>
+                                                           key={recipe.recipe_name}
+                                                           name={recipe.recipe_name}
+                                                           quantity={recipe.recipe_quantity.toString()}
+                                                           minCost={recipe.ingredients_min_cost.toString()}
+                                                           avgCost={recipe.ingredients_avg_cost.toString()}
+                                                           maxCost={recipe.ingredients_max_cost.toString()}
+                                                           price={recipe.recipe_price.toString()}/>
                                 })
                             }
                         </div>
@@ -385,10 +445,66 @@ export default function NewOrderForm() {
                         <div/>
                         <div/>
                         <div/>
-                        {/*TODO: tomer - these should have the recipe cost added to them*/}
-                        <StandardInputField onChange={setTotalMinCost} placeholder="Order Min Cost" disabled={true}/>
-                        <StandardInputField onChange={setTotalAvgCost} placeholder="Order Avg Cost" disabled={true}/>
-                        <StandardInputField onChange={setTotalMaxCost} placeholder="Order Max Cost" disabled={true}/>
+                        <Box
+                            component="div"
+                            sx={{
+                                width: '25ch',
+                                m:1
+                            }}
+                            //onChange={props.onChange}
+                        >
+                            <TextField
+                                disabled={true}
+                                id="standard-basic"
+                                label={"Order Min Cost"}
+                                variant="standard"
+                                defaultValue={totalMinCost}
+                                value={totalMinCost}
+                                onChange={(e: any) => {
+                                    setTotalMinCost(e.target.value)
+                                }}
+                            />
+                        </Box>
+                        <Box
+                            component="div"
+                            sx={{
+                                width: '25ch',
+                                m:1
+                            }}
+                            //onChange={props.onChange}
+                        >
+                            <TextField
+                                disabled={true}
+                                id="standard-basic"
+                                label={"Order Avg Cost"}
+                                variant="standard"
+                                defaultValue={totalAvgCost}
+                                value={totalAvgCost}
+                                onChange={(e: any) => {
+                                    setTotalAvgCost(e.target.value)
+                                }}
+                            />
+                        </Box>
+                        <Box
+                            component="div"
+                            sx={{
+                                width: '25ch',
+                                m:1
+                            }}
+                            //onChange={props.onChange}
+                        >
+                            <TextField
+                                disabled={true}
+                                id="standard-basic"
+                                label={"Order Max Cost"}
+                                variant="standard"
+                                defaultValue={totalMaxCost}
+                                value={totalMaxCost}
+                                onChange={(e: any) => {
+                                    setTotalMaxCost(e.target.value)
+                                }}
+                            />
+                        </Box>
                         <button className='add-recipe-to-order-button' onClick={addRecipeToOrder}>Add recipe</button>
                     </div>
                 </div>

@@ -6,9 +6,8 @@ import OrderDelegate from './order-delegate/order-delegate.component';
 import SearchField from '../search-field/search-field.component';
 import NavigationButtonComponent from '../navigation-button/navigation-button.component';
 import {useNavigate} from "react-router-dom";
-import { ToastContainer } from 'react-toastify';
+import {toast, ToastContainer} from 'react-toastify';
 import dayjs from "dayjs";
-// import { Auth } from 'aws-amplify';
 
 interface IOrderProps {
     className: string;
@@ -17,27 +16,23 @@ interface IOrderProps {
     isDashboard?: boolean;
 }
 
-interface RecipeItem {
-    recipe_ingredients_cost: { S: string };
-    recipe_id: { S: string };
-    user_email: { S: string };
-    recipe_name: { S: string };
-    recipe_price: { S: string };
-}
 
+interface OrderRecipeItem {
+    recipe_name: string;
+    recipe_quantity: number;
+    ingredients_min_cost: number;
+    ingredients_avg_cost: number;
+    ingredients_max_cost: number;
+    recipe_price: number;
+}
 
 type OrderType = {
     seller: string;
     id: string;
     dueDate: string;
     customer: string;
-    recipes: Array<{
-        id: string;
-        name: string;
-        total: string;
-        totalCost: string;
-        quantity: string;
-    }>;
+    order_price: number;
+    recipes: OrderRecipeItem[]
 };
 
 export default function Orders({ className, header, description, isDashboard }: IOrderProps) {
@@ -48,20 +43,33 @@ export default function Orders({ className, header, description, isDashboard }: 
     const [error, setError] = useState(null); // new error state
     const navigate = useNavigate();
 
+
+
     const deleteOrder= async (id: any) => {
         try {
             const payload = {
                 seller_email: 'tomer@gmail.com',
-                order_id: id
+                order_id: id.toString()
             };
-            const response =await axios.delete('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_order', {params: payload});
-            await navigate('/orders');
-            console.log(response);
-        }
+            toast.promise(async ()=> {
+                const postPromise = await axios.delete(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_order`,{data:payload});
+            },
+                {
+                    pending: 'Loading',
+                    success: { render: 'Order deleted', autoClose: 1000 },
+                    error: { render: 'Error deleting order', autoClose: 1000 }
+                }
+            ).then(response => {
+                handleDeleteOrder(id);
+            });}
         catch (error)
         {
             console.error(`Error deleting order ${id}:`, error);
         }
+    }
+
+    const handleDeleteOrder = (id: any) => {
+        setOrders(prevOrders => prevOrders.filter(order => order.id !== id));
     }
 
     const fetchOrders = async () => {
@@ -71,6 +79,7 @@ export default function Orders({ className, header, description, isDashboard }: 
             const payload = { seller_email: 'tomer@gmail.com'};
             const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get-all-my-orders', {params:payload});
             const apiData = JSON.parse(response.data.body);
+            //console.log(apiData);
             if(isDashboard)
             {
                 const transformedOrders = apiData.map((orderData:any) => createOrderFromData(orderData,true)).filter((orderData:any)=>orderData!=null);
@@ -80,6 +89,7 @@ export default function Orders({ className, header, description, isDashboard }: 
             {
                 const transformedOrders = apiData.map((orderData: any) => createOrderFromData(orderData,false));
                 setOrders(transformedOrders);
+                console.log(orders);
             }
         } catch (error) {
             console.error('Error fetching orders:', error);
@@ -101,14 +111,14 @@ export default function Orders({ className, header, description, isDashboard }: 
         setFilteredOrders(filtered);
     }, [orders, searchString]);
 
-    const createRecipeFromData = (recipeData: any) => {
+    const createRecipeFromData = (recipeData:any):OrderRecipeItem => {
         return{
-            id: recipeData.M.recipe_name.S,
-            name: recipeData.M.recipe_name.S,
-            total: recipeData.M.recipe_totalCost.S,
-            //totalCost: recipeData.M.recipe_totalCost.S,
-            quantity: recipeData.M.recipe_quantity.S
-
+            ingredients_min_cost:recipeData.M.ingredients_min_cost.N,
+            ingredients_avg_cost:recipeData.M.ingredients_avg_cost.N,
+            ingredients_max_cost:recipeData.M.ingredients_max_cost.N,
+            recipe_name: recipeData.M.recipe_name.S,
+            recipe_price: recipeData.M.recipe_price.N,
+            recipe_quantity: recipeData.M.recipe_quantity.N
         };
     };
 
@@ -121,13 +131,14 @@ export default function Orders({ className, header, description, isDashboard }: 
         }
         else {
             const orderRecipes = orderData.recipes.L.map(createRecipeFromData);
+            console.log(orderRecipes);
             const customer = orderData.buyer_email.S;
             return {
                 id: orderData.order_id.S,
                 dueDate: orderDate,
                 customer: customer,
                 recipes: orderRecipes,
-                totalCost: orderData[`order_price`].S
+                order_price:orderData.order_price.N,
             };
         }
     };
@@ -167,7 +178,7 @@ export default function Orders({ className, header, description, isDashboard }: 
             </div>
             <div className="orders-list-container">
                 <div className="orders-list">
-                    {filteredOrders.map((order) => {
+                    {filteredOrders.map((order:OrderType) => {
                         return <OrderDelegate key={order.id} data={order} deleteDelegate={deleteOrder}/>;
                     })}
                 </div>

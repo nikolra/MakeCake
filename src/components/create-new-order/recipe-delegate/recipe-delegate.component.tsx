@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, {useState} from 'react';
 import './recipe-delegate.style.css'
 
 interface IRecipeProps{
@@ -13,8 +12,7 @@ interface IRecipeProps{
 }
 
 function RecipeDelegate(props: IRecipeProps) {
-    const {name, quantity, minCost,avgCost, maxCost, price, removeDelegate} = props;
-
+    const {name, quantity, minCost,avgCost, maxCost, price/*, removeDelegate*/} = props;
     return (
         <div className={
             `recipe-delegate-main-container recipe-delegate-text`
