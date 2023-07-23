@@ -11,9 +11,6 @@ import {toast,ToastContainer} from "react-toastify";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
-import update = toast.update;
-import InputField from "../outlinedd-input-field/input-field.component";
-import StandardInputField from "../standart-input-field/input-field.component";
 
 export default function NewOrderForm() {
 
@@ -26,7 +23,6 @@ export default function NewOrderForm() {
             ingredient_quantity:  number ;
         };
     }
-
     interface RecipeItem {
         ingredients_min_cost:  number;
         ingredients_avg_cost:  number;
@@ -37,7 +33,6 @@ export default function NewOrderForm() {
         recipe_name: string;
         recipe_price: number;
     }
-
     interface OrderRecipeItem {
         recipe_name: string;
         recipe_quantity: number;
@@ -46,7 +41,6 @@ export default function NewOrderForm() {
         ingredients_max_cost: number;
         recipe_price: number;
     }
-
     type CustomerType = {
         name: string;
         email: string;
@@ -55,23 +49,22 @@ export default function NewOrderForm() {
         "Nikol", "Eden", "Amit", "Tomer"
     ]
 
-    const [customerName, setCustomerName] = useState('yankale@gmail.com');///TODO - Eden need to do a getter that will return all the customers seller has
+    const [customerName, setCustomerName] = useState('');///TODO - Eden need to do a getter that will return all the customers seller has
     const [dueDate, setDueDate] = useState(dayjs());
     const [orderRecipes, setOrderRecipes] = useState<OrderRecipeItem[]>([]);
     const [orderPrice,setOrderPrice]=useState(0);
     const [recipeName, setRecipeName] = useState("");
     const [quantity, setQuantity] = useState('');
-    const [ingredientsCost, setIngredientsCost] = useState('');
-
-
     const [minCost, setMinCost] = useState('');
     const [maxCost, setMaxCost] = useState('');
     const [avgCost, setAvgCost] = useState('');
-    const [totalMinCost, setTotalMinCost] = useState(0);
-    const [totalMaxCost, setTotalMaxCost] = useState(0);
-    const [totalAvgCost, setTotalAvgCost] = useState(0);
+    const [totalMinCost, setTotalMinCost] = useState('');
+    const [totalMaxCost, setTotalMaxCost] = useState('');
+    const [totalAvgCost, setTotalAvgCost] = useState('');
     const [recipePrice,setRecipePrice]=useState('');
     const [currentRecipe,setCurrentRecipe]=useState<RecipeItem>();
+
+
 
 
     const [myRecipesNames, setRecipeNames] = useState<string[]>([]); //TODO: Tomer - should be initializes to all recipes names for the user that is currently logged in
@@ -81,29 +74,21 @@ export default function NewOrderForm() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetchUserRecipes();
-    }, []);
-
-
-    useEffect(() => {
-        fetchUserRecipes();
-    }, [recipeName,quantity]);
-
-    useEffect(() => {
-        if(currentRecipe) {
-            setRecipePrice((Number(quantity) * currentRecipe.recipe_price).toString());
+        if(recipeName==="")
+        {
+            setQuantity("");
+            setMinCost("");
+            setAvgCost("");
+            setMaxCost("");
+            setRecipePrice("");
         }
+        }, [recipeName]);
+    useEffect(() => {fetchUserRecipes(); }, []);
+    useEffect(() => {
+        if(currentRecipe)
+            setRecipePrice((Number(quantity) * currentRecipe.recipe_price).toString());
     }, [quantity]);
-
-
-    useEffect(() => {
-        console.log(orderRecipes);
-    }, [orderRecipes]);
-
-    useEffect(() => {
-        setOrderPrice(orderPrice);
-    }, [orderPrice]);
-
+    useEffect(() => {setOrderPrice(orderPrice);}, [orderPrice]);
     useEffect(() => {
         if (myRecipes) {
             const recipe = myRecipes.find((recipe) => recipe.recipe_name.toString() === recipeName);
@@ -116,15 +101,8 @@ export default function NewOrderForm() {
                 setQuantity('1');
             }
         }
-    }, [recipeName]); //TODO this is taking the recipe name and return the data of this recipe so we can send it back to the DB
+    }, [recipeName]);
 
-
-    useEffect(() => {
-        const newTotalCost = Number(quantity) * Number(ingredientsCost);
-        if (!isNaN(newTotalCost)) {
-            //setMinCost(newTotalCost.toString());
-        }
-    }, [quantity, ingredientsCost]); //TODO this calculate the Total Cost
     const deleteRecipeFromOrder = (recipeName: string) => {
         const index = orderRecipes.findIndex(recipe => recipe.recipe_name=== recipeName);
         const newOrders = [...orderRecipes];
@@ -138,16 +116,18 @@ export default function NewOrderForm() {
 
     function addTotalMinIngredientCost(val:number)
     {
-        setTotalMinCost(totalMinCost+val);
+        setTotalMinCost((Number(totalMinCost)+val).toString());
     }
     function addTotalAvgIngredientCost(val:number)
     {
-        setTotalAvgCost(totalAvgCost+val);
+        setTotalAvgCost((Number(totalAvgCost)+val).toString());
     }
     function addTotalMaxIngredientCost(val:number)
     {
-        setTotalMaxCost(totalMaxCost+val);
+        setTotalMaxCost((Number(totalMaxCost)+val).toString());
     }
+
+
     function generateNumericID() {
         const min = 100000000; // Minimum 16-digit number
         const max = 999999999; // Maximum 16-digit number
@@ -166,15 +146,6 @@ export default function NewOrderForm() {
                     ingredients_avg_cost :Number(item.ingredients_avg_cost.N),
                     ingredients_max_cost :Number(item.ingredients_max_cost.N),
                     user_email: item.user_email.S,
-/*                    ingredients: item.ingredients.map((ingItem: any) => {
-                        return {
-                            is_automated_ingredient: Number(ingItem.M.is_automated_ingredient.N),
-                            ingredient_code: ingItem.M.ingredient_code.S,
-                            ingredient_name: ingItem.M.ingredient_name.S,
-                            ingredient_price: Number(ingItem.M.ingredient_price.N),
-                            ingredient_quantity: Number(ingItem.M.ingredient_quantity.N)
-                        };
-                    }),*///not sure the ingridients themself should be here will be commented for now
                     recipe_id: item.recipe_id.S,
                     recipe_name: item.recipe_name.S,
                     recipe_price: Number(item.recipe_price.N)
@@ -244,8 +215,7 @@ export default function NewOrderForm() {
     function addRecipeToOrder() {
         const recipe = orderRecipes.find((recipe:any) => recipe.recipe_name === recipeName);
         if(recipe) {
-            console.log(`1`);
-          updateOrderExistRecipe(recipe);
+            updateOrderExistRecipe(recipe);
             addToOrderPrice(recipe.recipe_price*Number(quantity));
             addTotalMinIngredientCost(recipe.ingredients_min_cost*Number(quantity));
             addTotalAvgIngredientCost(recipe.ingredients_avg_cost*Number(quantity));
@@ -255,7 +225,6 @@ export default function NewOrderForm() {
         {
             const recipeFromMyRecipes =myRecipes.find((recipe:any) => recipe.recipe_name === recipeName);
             if(recipeFromMyRecipes) {
-                console.log(`2`);
                 console.log(makeRecipe(recipeFromMyRecipes));
                 setOrderRecipes([...orderRecipes, makeRecipe(recipeFromMyRecipes)]);
                 addTotalMinIngredientCost(recipeFromMyRecipes.ingredients_min_cost*Number(quantity));
@@ -267,7 +236,6 @@ export default function NewOrderForm() {
         setCurrentRecipe(undefined);
         setRecipeName('');
         setQuantity('');
-        setIngredientsCost('');
         setMinCost('');
         setMaxCost('');
         setAvgCost('');
@@ -297,7 +265,7 @@ export default function NewOrderForm() {
                     >
                         <TextField  fullWidth id="outlined-basic" label={"Order Cost"} variant="outlined" defaultValue={orderPrice} value={orderPrice}
                                    onChange={(e: any) => {
-                                       setOrderPrice(e.target.value)
+                                       setOrderPrice(Number(e.target.value))
                                    }}/>
                     </Box>
                 </div>
@@ -342,7 +310,6 @@ export default function NewOrderForm() {
                                     if (newValue)
                                         setRecipeName(newValue);
                                     else setRecipeName("");
-
                                 }}
                                 options={myRecipesNames}
                                 sx={{width: 235, padding: "8px 0 0 0"}}
@@ -369,7 +336,7 @@ export default function NewOrderForm() {
                                     '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
                                 onChange={(e: any) => {
-                                    //setMinCost(e.target.value)
+                                    setMinCost(e.target.value)
                                 }}
                             >
                                 <TextField variant="standard" id="standard-number" label={'Ingredients Min Cost'}
@@ -384,7 +351,7 @@ export default function NewOrderForm() {
                                     '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
                                 onChange={(e: any) => {
-                                    //setAvgCost(e.target.value)
+                                    setAvgCost(e.target.value)
                                 }}
                             >
                                 <TextField variant="standard" id="standard-number" label={'Ingredients Avg Cost'}
@@ -451,7 +418,6 @@ export default function NewOrderForm() {
                                 width: '25ch',
                                 m:1
                             }}
-                            //onChange={props.onChange}
                         >
                             <TextField
                                 disabled={true}
@@ -471,7 +437,6 @@ export default function NewOrderForm() {
                                 width: '25ch',
                                 m:1
                             }}
-                            //onChange={props.onChange}
                         >
                             <TextField
                                 disabled={true}
@@ -491,7 +456,6 @@ export default function NewOrderForm() {
                                 width: '25ch',
                                 m:1
                             }}
-                            //onChange={props.onChange}
                         >
                             <TextField
                                 disabled={true}

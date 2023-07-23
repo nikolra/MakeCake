@@ -17,7 +17,7 @@ export default function BasicDatePicker({setValueDelegate, initValue}: IProps) {
 
     useEffect(() => {
         
-        setValue(initValue ? dayjs(initValue, 'MM/DD/YYYY') : dayjs());
+        setValue(initValue ? dayjs(initValue): dayjs());
     }, [initValue]);
 
     return (

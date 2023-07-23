@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c7a2437d-b918-4d33-803d-084c99b088ba" name="Changes" comment="orders/edit order/order-form updates">
+    <list default="true" id="c7a2437d-b918-4d33-803d-084c99b088ba" name="Changes" comment="orders finished">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/create-new-order/create-new-order-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-order/create-new-order-form.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/create-new-order/recipe-delegate/recipe-delegate.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-order/recipe-delegate/recipe-delegate.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/orders/order-delegate/order-delegate.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/orders/order-delegate/order-delegate.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/orders/orders.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/orders/orders.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/recipes/recipes-delegate/recipe-delegate.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recipes/recipes-delegate/recipe-delegate.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/recipes/recipes.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recipes/recipes.component.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +64,8 @@
       <workItem from="1689889380700" duration="4639000" />
       <workItem from="1689931299995" duration="461000" />
       <workItem from="1689932162869" duration="4514000" />
-      <workItem from="1690050183508" duration="12751000" />
+      <workItem from="1690050183508" duration="14972000" />
+      <workItem from="1690106041064" duration="23118000" />
     </task>
     <task id="LOCAL-00001" summary="implemented best customers widget">
       <option name="closed" value="true" />
@@ -101,7 +99,23 @@
       <option name="project" value="LOCAL" />
       <updated>1689892594042</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="creat new order is working now, what is left is edit order">
+      <option name="closed" value="true" />
+      <created>1690064064946</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1690064064946</updated>
+    </task>
+    <task id="LOCAL-00006" summary="orders finished">
+      <option name="closed" value="true" />
+      <created>1690135731817</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1690135731817</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -122,6 +136,20 @@
     <MESSAGE value="implemented best customers widget" />
     <MESSAGE value="order not showing dates fixed" />
     <MESSAGE value="order fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="order fixed" />
+    <MESSAGE value="creat new order is working now, what is left is edit order" />
+    <MESSAGE value="orders finished" />
+    <option name="LAST_COMMIT_MESSAGE" value="orders finished" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx</url>
+          <line>271</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

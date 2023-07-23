@@ -8,43 +8,53 @@ interface IRecipeProps {
     deleteDelegate: Function
 }
 
+interface Ingredient {
+    minCost:number;
+    avgCost:number;
+    maxCost:number;
+    price: number;
+    quantity: number;
+    is_automated: number;
+    ingredient_code: string;
+    name: string;
+}
+
 function RecipeDelegate(props: IRecipeProps) {
     const [isOpened, setOpened] = useState(false)
-    const {id, name, avgCost, minCost, maxCost, ingredients, price} = props.data;
+    const {recipe_id, recipe_name, ingredients,recipe_price,ingredients_min_cost,ingredients_avg_cost,ingredients_max_cost,} = props.data;
     const deleteDelegate = props.deleteDelegate;
 
-    console.log(props.data);
     return (
         <div className={
             `all-recipes-delegate-main-container all-recipes-delegate-text ${isOpened ? "all-recipes-delegate-opened" : ""}`
         }>
             <div className="all-recipes-delegate-container">
                 <div className="all-recipes-delegate-table-container">
-                    <span>{id}</span>
+                    <span>{recipe_id}</span>
                 </div>
                 <div className="all-recipes-delegate-table-container">
-                    <span>{name}</span>
+                    <span>{recipe_name}</span>
                 </div>
                 <div className="all-recipes-delegate-table-container">
-                    <span>{minCost}₪</span>
+                    <span>{ingredients_min_cost}₪</span>
                 </div>
                 <div className="all-recipes-delegate-table-container">
-                    <span>{avgCost}₪</span>
+                    <span>{ingredients_avg_cost}₪</span>
                 </div>
                 <div className="all-recipes-delegate-table-container">
-                    <span>{maxCost}₪</span>
+                    <span>{ingredients_max_cost}₪</span>
                 </div>
                 <div className="all-recipes-delegate-table-container">
-                    <span>{maxCost}₪</span>
+                    <span>{recipe_price}₪</span>
                     {/*TODO: Tomer - change to price*/}
                 </div>
                 <div className="all-recipes-delegate-table-container align-right">
                     <button className="expand-button">
-                        <NavLink to={`/recipes/edit/${id}`} className={`link active`}>Edit</NavLink>
+                        <NavLink to={`/recipes/edit/${recipe_id}`} className={`link active`}>Edit</NavLink>
                     </button>
                     <button className="expand-button" onClick={
                         async () => {
-                            await deleteDelegate(id);
+                            await deleteDelegate(recipe_id);
                         }
                     }>
                         Delete
@@ -83,17 +93,20 @@ function RecipeDelegate(props: IRecipeProps) {
                     </div>
                 </div>
                 {
-                    ingredients.map((ingredient: any) => {
+                    ingredients.map((ingredient: Ingredient) => {
+                        let barcode = "" ;
+                        if(ingredient.is_automated)
+                            barcode=ingredient.ingredient_code.toString();
                         return(
                             <div className="all-recipes-delegate-recipe-title-value">
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.id}</span>
+                                    <span>{barcode}</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
                                     <span>{ingredient.name}</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.ingredient_quantity}</span>
+                                    <span>{ingredient.quantity}</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
                                     <span>{ingredient.minCost}₪</span>
