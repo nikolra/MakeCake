@@ -130,6 +130,9 @@ export default function Recipes({className, header, description}: IRecipeProps) 
                     <div className="all-recipes-header-recipes-list-title-item">
                         <span>Max Cost</span>
                     </div>
+                    <div className="all-recipes-header-recipes-list-title-item">
+                        <span>Price</span>
+                    </div>
                 </div>
             </div>
             <div className="all-recipes-list-container">

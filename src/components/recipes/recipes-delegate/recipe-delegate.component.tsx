@@ -10,7 +10,7 @@ interface IRecipeProps {
 
 function RecipeDelegate(props: IRecipeProps) {
     const [isOpened, setOpened] = useState(false)
-    const {id, name, avgCost, minCost, maxCost, ingredients} = props.data;
+    const {id, name, avgCost, minCost, maxCost, ingredients, price} = props.data;
     const deleteDelegate = props.deleteDelegate;
 
     console.log(props.data);
@@ -33,6 +33,10 @@ function RecipeDelegate(props: IRecipeProps) {
                 </div>
                 <div className="all-recipes-delegate-table-container">
                     <span>{maxCost}₪</span>
+                </div>
+                <div className="all-recipes-delegate-table-container">
+                    <span>{maxCost}₪</span>
+                    {/*TODO: Tomer - change to price*/}
                 </div>
                 <div className="all-recipes-delegate-table-container align-right">
                     <button className="expand-button">
