@@ -45,7 +45,7 @@
 
 .all-recipes-header-recipes-list-title{
     display: grid;
-    grid-template-columns: 2fr 2fr 2fr 2fr 2fr 1fr;
+    grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr 1fr;
     grid-template-rows: repeat(1, 30px);
     width: 100%;
     padding: 0 20px;
