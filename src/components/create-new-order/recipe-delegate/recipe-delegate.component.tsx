@@ -12,7 +12,7 @@ interface IRecipeProps{
 }
 
 function RecipeDelegate(props: IRecipeProps) {
-    const {name, quantity, minCost,avgCost, maxCost, price/*, removeDelegate*/} = props;
+    const {name, quantity, minCost,avgCost, maxCost, price, removeDelegate} = props;
     return (
         <div className={
             `recipe-delegate-main-container recipe-delegate-text`
@@ -38,7 +38,7 @@ function RecipeDelegate(props: IRecipeProps) {
                 </div>
                 <div className="recipe-delegate-table-container align-right">
                     <button className="expand-button" onClick={() => {
-                        props.removeDelegate(name);
+                        removeDelegate(name);
                     }}>
                         <span>Remove</span>
                     </button>
