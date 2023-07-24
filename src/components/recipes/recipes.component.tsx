@@ -35,8 +35,9 @@ type RecipeType = {
 
 export default function Recipes({className, header, description}: IRecipeProps) {
 
+
+
     const [recipes, setRecipes] = useState<RecipeType[]>([]);
-    const [filteredRecipes, setFilteredRecipes] = useState<RecipeType[]>([]);
     const [searchString, setSearchString] = useState('');
     const navigate = useNavigate();
     const deleteRecipe= async (id: any) => {
@@ -72,32 +73,6 @@ export default function Recipes({className, header, description}: IRecipeProps) 
     useEffect(() => {
         fetchRecipes();
     }, []);
-/*
-    const createRecipeFromData = (recipeData: any, recipeId: number) => {
-        let ingredientCounter=0;
-        const ingredients = recipeData.ingredients?.L.map((ingredientData: any) => {
-            const ingredientId = `${++ingredientCounter}`;
-            const ingredientName = ingredientData.M.ingredient_name.S;
-            const ingredientPrice= ingredientData.M.ingredient_price.N;
-            const ingredientQuantity = ingredientData.M.ingredient_quantity.N;
-            return { id: `${ingredientData.M.ingredient_code.S}`, name: ingredientName, minCost: ingredientPrice,avgCost:ingredientPrice,maxCost:ingredientPrice, ingredient_quantity: ingredientQuantity };
-        });
-
-        const totalCost = ingredients.reduce((total: number, ingredient: IngredientType) => {
-            if (ingredient) {
-                return total + (ingredient.minCost*ingredient.ingredient_quantity);
-            }
-            return total;
-        }, 0);
-        return { id: recipeId, name: recipeData.recipe_name?.S,price:recipeData.recipe_price || 0, ingredients, totalCost };
-    };*/
-
-/*
-    useEffect(() => {
-        const filtered = recipes.filter((recipe) => recipe.recipe_name.toLowerCase().includes(searchString));
-        setFilteredRecipes(filtered);
-    }, [recipes, searchString]);
-*/
 
     return (
         <div className= {`dashboard-widget-container all-recipes-widget ${className}`}>

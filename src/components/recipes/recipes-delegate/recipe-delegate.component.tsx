@@ -14,15 +14,17 @@ interface Ingredient {
     maxCost:number;
     price: number;
     quantity: number;
-    is_automated: number;
+    automated: boolean;
     ingredient_code: string;
-    name: string;
+    ingredient_name: string;
 }
 
 function RecipeDelegate(props: IRecipeProps) {
     const [isOpened, setOpened] = useState(false)
     const {recipe_id, recipe_name, ingredients,recipe_price,ingredients_min_cost,ingredients_avg_cost,ingredients_max_cost,} = props.data;
     const deleteDelegate = props.deleteDelegate;
+
+    console.log(props.data);
 
     return (
         <div className={
@@ -46,7 +48,6 @@ function RecipeDelegate(props: IRecipeProps) {
                 </div>
                 <div className="all-recipes-delegate-table-container">
                     <span>{recipe_price}₪</span>
-                    {/*TODO: Tomer - change to price*/}
                 </div>
                 <div className="all-recipes-delegate-table-container align-right">
                     <button className="expand-button">
@@ -95,27 +96,29 @@ function RecipeDelegate(props: IRecipeProps) {
                 {
                     ingredients.map((ingredient: Ingredient) => {
                         let barcode = "" ;
-                        if(ingredient.is_automated)
-                            barcode=ingredient.ingredient_code.toString();
+                        if(ingredient.automated) {
+                            barcode = ingredient.ingredient_code.toString();
+                        }
+                        console.log(barcode);
                         return(
                             <div className="all-recipes-delegate-recipe-title-value">
                                 <div className="all-recipes-delegate-recipe-title-item">
                                     <span>{barcode}</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.name}</span>
+                                    <span>{ingredient.ingredient_name}</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
                                     <span>{ingredient.quantity}</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.minCost}₪</span>
+                                    <span>{ingredient.minCost === 0 ? "" :ingredient.minCost}₪</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.avgCost}₪</span>
+                                    <span>{ingredient.avgCost === 0 ? "" :ingredient.avgCost}₪</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.maxCost}₪</span>
+                                    <span>{ingredient.maxCost === 0 ? "" :ingredient.maxCost}₪</span>
                                 </div>
                             </div>
                         )
