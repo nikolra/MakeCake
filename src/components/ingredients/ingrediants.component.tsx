@@ -6,6 +6,8 @@ import {devIngredients} from "./dev-data";
 import SearchField from "../search-field/search-field.component";
 import NavigationButtonComponent from "../navigation-button/navigation-button.component";
 import {ToastContainer} from "react-toastify";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 interface IIngredientProps{
     className: string,
@@ -15,7 +17,6 @@ interface IIngredientProps{
 
 export default function Ingredients({className, header, description}: IIngredientProps) {
 
-    //TODO: Amit should use ingredients from DB and not devIngredients
     const [ingredients, setIngredients] = useState(devIngredients);
     const [filteredIngredients, setFilteredIngredients] = useState(ingredients);
     const [searchString, setSearchString] = useState('');
@@ -29,9 +30,43 @@ export default function Ingredients({className, header, description}: IIngredien
         setFilteredIngredients(filtered)
     }, [ingredients, searchString]);
 
-    const updateIngredients = () => {
+    const updateIngredients = async () => {
         console.log(`update Ingredients called`);
         //TODO: Amit integrate with automated ingredients lambda
+        try {
+            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user',{accessToken: Cookies.get('makecake-token')});
+            const responseBodyJSON = JSON.parse(response.data.body);
+            const user_email = responseBodyJSON.email;
+            console.log(response.data);
+
+            const body = {
+                "table_name": "mnl_ingredients",
+                "field_name": "user_email",
+                "search_value": user_email
+            }
+            console.log(body);
+            try {
+                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_mnl_ingredients', body);
+                const data = response.data;
+                console.log('data#####:', data);
+                const formattedIngredients = data.map((ingredient: any) => {
+                    return {
+                        id: ingredient.code,
+                        name: ingredient.name,
+                        price: ingredient.phoneNumber
+                    };
+                });
+                setIngredients(formattedIngredients);
+                console.log('formattedCustomers:', formattedIngredients);
+                setFilteredIngredients(formattedIngredients);
+            }
+            catch (error) {
+                console.error(`Error getting ingredients`, error);
+            }
+        }
+        catch (error) {
+            console.error(`Error getting ingredients`, error);
+        }
     }
     return (
         <div className= {`dashboard-widget-container all-ingredients-widget ${className}`}>

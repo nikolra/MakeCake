@@ -7,6 +7,7 @@ import CheckBox from '../../components/checkbox/checkbox.component'
 import axios from 'axios';
 import {ToastContainer, toast} from 'react-toastify';
 import './login.style.css';
+import Cookies from 'js-cookie';
 
 export default function Login() {
 
@@ -16,6 +17,13 @@ export default function Login() {
 
 
     const tryLogin = async () => {
+        //if cookie has a token navigate to dashboard
+        if (Cookies.get('makecake-token')) {
+            navigate('/dashboard');
+            return;
+        }
+
+
         const body = {
             email: email,
             password: password
@@ -35,6 +43,7 @@ export default function Login() {
 
             console.log(token);
             if (token && response.status === 200) {
+                Cookies.set('makecake-token', token, { expires: 1 });
                 navigate('/dashboard');
             } else {
                 console.error('Login failed: ', response.data.message);
