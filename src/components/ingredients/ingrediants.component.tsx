@@ -5,7 +5,7 @@ import IngredientDelegate from './ingredients-delegate/ingrediant-delegate.compo
 import {devIngredients} from "./dev-data";
 import SearchField from "../search-field/search-field.component";
 import NavigationButtonComponent from "../navigation-button/navigation-button.component";
-import {ToastContainer} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -51,21 +51,24 @@ export default function Ingredients({className, header, description}: IIngredien
                 console.log('data#####:', data);
                 const formattedIngredients = data.map((ingredient: any) => {
                     return {
-                        id: ingredient.code,
-                        name: ingredient.name,
-                        price: ingredient.phoneNumber
+                        id: ingredient.code.S,
+                        name: ingredient.name.S,
+                        avgCost: String(ingredient.price.N)
                     };
                 });
                 setIngredients(formattedIngredients);
-                console.log('formattedCustomers:', formattedIngredients);
+                console.log('formattedIngredients:', formattedIngredients);
                 setFilteredIngredients(formattedIngredients);
             }
             catch (error) {
                 console.error(`Error getting ingredients`, error);
+                toast.error(`Error getting ingredients`);
+
             }
         }
         catch (error) {
-            console.error(`Error getting ingredients`, error);
+            console.error(`Error getting user email`, error);
+            toast.error(`Error getting user email`);
         }
     }
     return (

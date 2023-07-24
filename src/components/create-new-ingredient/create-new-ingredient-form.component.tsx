@@ -6,6 +6,7 @@ import NumericInputField from "../numeric-input-field/input-field.component";
 import {useNavigate} from "react-router-dom";
 import Cookies from 'js-cookie';
 import axios from "axios";
+import {toast} from "react-toastify";
 
 export default function NewIngredientForm() {
 
@@ -38,13 +39,18 @@ export default function NewIngredientForm() {
             }
             try {
                 const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/create_new_mnl_ingredient', body);
+                toast.success(`${ingredientName} Added Successfully`);
             }
             catch (error) {
                 console.error(`Error adding: ${ingredientName}`, error);
+                toast.error(`Error adding: ${ingredientName}`);
+
             }
         }
         catch (error) {
             console.error(`Error getting user email`, error);
+            toast.error(`Error getting user email`);
+
         }
     }
 
