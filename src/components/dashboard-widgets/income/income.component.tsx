@@ -13,6 +13,7 @@ import {
 import '../widgets.style.css'
 import './income.style.css'
 import Dropdown from '../../dropdown/dropdown.component'
+import axios from "axios";
 
 ChartJS.register(
     CategoryScale,
@@ -84,35 +85,30 @@ export default function Income() {
         rangeChanged(range);
     }, []);
 
-    const rangeChanged = (rangeString: string) => {
-        //TODO: eden with nikol
-        /// DEMONSTRATION CODE //////
-        // fetch(`https://mockend.com/llOzzeell/konditor/${rangeString}`)
-        //     .then((response) => {
-        //         return response.json()
-        //     })
-        //     .then((result) => {
-        //         let totalForRange = 0;
-        //         chartData.x = [];
-        //         chartData.y = [];
-        //         for(const res of result){
-        //             chartData.y.push(res.label)
-        //             chartData.x.push(res.value)
-        //             totalForRange += res.value
-        //         }
-        //         setTotal(totalForRange);
-        //         setData({
-        //             labels: chartData.y,
-        //             datasets: [
-        //                 {
-        //                     data: chartData.x,
-        //                     backgroundColor: chartColor,
-        //                     borderRadius: chartBorderRadius
-        //                 }
-        //             ]
-        //         });
-        //     })
-        //////////////////////////////
+    const rangeChanged = async (rangeString: string) => {
+        const payload = {
+            seller_email: "tomer@gmail.com", //TODO: Amit - should user the mail of the connected user
+            rangeString: rangeString
+        };
+        console.log(payload);
+        const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/calculate_income', payload);
+        console.log(response);
+        chartData.x = response.data.x;
+        chartData.y = response.data.y;
+        console.log(chartData);
+        let totalForRange = 0;
+        chartData.x.forEach((data => totalForRange += data));
+        setTotal(totalForRange);
+        setData({
+            labels: chartData.y,
+            datasets: [
+                {
+                    data: chartData.x,
+                    backgroundColor: chartColor,
+                    borderRadius: chartBorderRadius
+                }
+            ]
+        });
         setRange(rangeString);
     }
 
