@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
-
 import './recipe-delegate.style.css'
 
 interface IRecipeProps{
     name: string,
     quantity: string,
-    ingredientsCost: string,
-    totalCost: string,
+    minCost: string,
+    avgCost: string,
+    maxCost: string,
+    price: string,
     removeDelegate: Function
 }
 
 function RecipeDelegate(props: IRecipeProps) {
-    const {name, quantity, ingredientsCost, totalCost, removeDelegate} = props;
-
+    const {name, quantity, minCost,avgCost, maxCost, price, removeDelegate} = props;
     return (
         <div className={
             `recipe-delegate-main-container recipe-delegate-text`
@@ -25,14 +25,20 @@ function RecipeDelegate(props: IRecipeProps) {
                     <span>{quantity}</span>
                 </div>
                 <div className="recipe-delegate-table-container">
-                    <span>{ingredientsCost}₪</span>
+                    <span>{minCost}₪</span>
                 </div>
                 <div className="recipe-delegate-table-container">
-                    <span>{totalCost}₪</span>
+                    <span>{avgCost}₪</span>
+                </div>
+                <div className="recipe-delegate-table-container">
+                    <span>{maxCost}₪</span>
+                </div>
+                <div className="recipe-delegate-table-container">
+                    <span>{price}₪</span>
                 </div>
                 <div className="recipe-delegate-table-container align-right">
                     <button className="expand-button" onClick={() => {
-                        props.removeDelegate(name);
+                        removeDelegate(name);
                     }}>
                         <span>Remove</span>
                     </button>

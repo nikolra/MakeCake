@@ -5,15 +5,16 @@ import {NavLink} from "react-router-dom";
 import PopUp from '../../popup/popup.component'
 import 'reactjs-popup/dist/index.css';
 
+
 interface ICustomerProps {
     data: any,
-    deleteDelegate: Function
+    deleteDelegate: Function,
+    templateNames: string[]
 }
 
-function CustomerDelegate({data, deleteDelegate}: ICustomerProps) {
+function CustomerDelegate({data, templateNames, deleteDelegate}: ICustomerProps) {
 
     const [isOpened, setOpened] = useState(false);
-    const [templates, setTemplates] = useState(["sms1", "sms2"]);
     const {name, phoneNumber, email, orders, address} = data;
 
     return (
@@ -81,7 +82,7 @@ function CustomerDelegate({data, deleteDelegate}: ICustomerProps) {
                                     <div className="all-customers-delegate-customer-title-item">
                                         <span>{order.totalCost}₪</span>
                                     </div>
-                                    <PopUp buttonText="SMS" dropdownValues={templates} order={order} customerName={name}
+                                    <PopUp buttonText="SMS" dropdownValues={templateNames} order={order} customerName={name}
                                            customerPhoneNumber={phoneNumber} customerEmail={email} customerAddress={address}/>
                                 </div>
                             )

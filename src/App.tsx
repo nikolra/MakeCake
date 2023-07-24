@@ -21,6 +21,7 @@ import EditCustomerPage from "./pages/customers/edit-customer.page";
 import EditIngredientPage from "./pages/ingredients/edit-ingredient.page";
 import EditOrderPage from "./pages/orders/edit-order.page";
 import AuthPage from "./pages/register/auth.page";
+import SetNewPasswordPage from "./pages/password-restore/set-new-password.page";
 
 function App() {
     return (
@@ -30,6 +31,7 @@ function App() {
                 <Route path="register" element={<Register/>}/>
                 <Route path="register/auth" element={<AuthPage/>}/>
                 <Route path="forgot-password" element={<PasswordRestore/>}/>
+                <Route path="set-new-password" element={<SetNewPasswordPage/>}/>
             </Route>
             <Route path="/" element={<DashboardLayout/>}>
                 <Route path="dashboard" element={<Dashboard/>}/>

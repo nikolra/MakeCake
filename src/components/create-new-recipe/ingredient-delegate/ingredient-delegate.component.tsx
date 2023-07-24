@@ -4,13 +4,18 @@ import './ingredient-delegate.style.css'
 
 interface IIngredientProps{
     name: string,
-    quantity: string,
-    cost: string,
+    quantity: number,
+    minCost:number,
+    avgCost:number,
+    maxCost:number,
     removeDelegate: Function
 }
 
 function IngredientDelegate(props: IIngredientProps) {
-    const {name, quantity, cost} = props;
+    const {name, quantity, minCost,avgCost,maxCost,removeDelegate} = props;
+    console.log(quantity);
+
+
 
     return (
         <div className={
@@ -21,16 +26,16 @@ function IngredientDelegate(props: IIngredientProps) {
                     <span>{name}</span>
                 </div>
                 <div className="ingredient-delegate-table-container">
-                    <span>{quantity}</span>
+                    <span>{quantity.toString()}</span>
                 </div>
                 <div className="ingredient-delegate-table-container">
-                    <span>{cost}₪</span>
+                    <span>{minCost}₪</span>
                 </div>
                 <div className="ingredient-delegate-table-container">
-                    <span>{cost}₪</span>
+                    <span>{avgCost}₪</span>
                 </div>
                 <div className="ingredient-delegate-table-container">
-                    <span>{cost}₪</span>
+                    <span>{maxCost}₪</span>
                 </div>
                 <div className="ingredient-delegate-table-container align-right">
                     <button className="expand-button" onClick={() => {

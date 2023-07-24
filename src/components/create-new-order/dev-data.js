@@ -1,4 +1,4 @@
-const makeRecipe = (name, quantity, ingredientsCost, totalCost = quantity * ingredientsCost * 1.5) => {
+const makeRecipe = (name, quantity, ingredientsCost, totalCost = (quantity * ingredientsCost * 1.5).toString()) => {
     return {
         name: name,
         quantity: quantity,

@@ -79,7 +79,7 @@ export default function Login() {
                     </div>
                     <div>
                         <Link className='sign-up-button button button-bordered' to="register">Sign Up</Link>
-                        <Link className='button button-bordered auth-button' to="register">Authenticate</Link>
+                        <Link className='button button-bordered auth-button' to="register/auth">Authenticate</Link>
                     </div>
                 </div>
             </div>

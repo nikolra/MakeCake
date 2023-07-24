@@ -29,7 +29,7 @@
 
 .create-recipe-header-recipes-list-title{
     display: grid;
-    grid-template-columns: 2fr 2fr 2fr 2fr 1fr;
+    grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr 1fr;
     grid-template-rows: repeat(1, 30px);
     width: 100%;
     border-bottom: 2px solid var(--widget-line-separator);

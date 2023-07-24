@@ -39,7 +39,7 @@ export default function UpdateIngredientForm({id}: IProps) {
             <div className="update-ingredient-input-fields">
                 <div className="ingredient-input-field">
                     <InputField setValueDelegate={setIngredientName} label="Ingredient Name" width={290} value={ingredientName} margin={'0 2vh 1vh 0'}/>
-                    <InputField setValueDelegate={setCode} label="Ingredient Code" width={195} value={code}/>
+                    <InputField setValueDelegate={setCode} label="Ingredient Code" width={195} value={code} disabled={true}/>
                 </div>
 
                 <div className="ingredient-input-field">
