@@ -39,7 +39,6 @@ export default function Customers({ className, header, description }: ICustomerP
         fetchSMSTemplateNames();
     }, []);
 
-
     const fetchSMSTemplateNames = async () => {
         try {
             //TODO: Amit - should get connected user email
@@ -66,31 +65,35 @@ export default function Customers({ className, header, description }: ICustomerP
     const deleteCustomer = (customerEmail:string) => {
         console.log('Deleting customer:', customerEmail);
         const payload = {
+            seller_email: "tomer@gmail.com", //TODO: Amit - should user the mail of the connected user
             email_address: customerEmail
         };
         toast.promise(async () => {
             navigate('/customers');
             console.log('Deleting customer:', customerEmail);
-            const response = await axios.delete('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/deletecustomer',
+            const response = await axios.delete('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete-customer',
                 {data: payload});
             console.log('Delete customer response status:', response.status);
             console.log('Delete customer response data:', response.data);
-
+            const updatedCustomers= customers.filter(customer=>customer.email!==customerEmail);
+            setCustomers(updatedCustomers);
         }, {
             // @ts-ignore
             loading: 'Loading',
             success: `Delete customer ${customerEmail}`,
             error: `Error deleting customer ${customerEmail}`
         });
-        const updatedCustomers= customers.filter(customer=>customer.email!==customerEmail);
-        setCustomers(updatedCustomers);
     }
 
     const fetchCustomerDetails = async () => {
         try {
-            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/getallcustomers');
+            const payload = {
+                seller_email: "tomer@gmail.com" //TODO: Amit - should user the mail of the connected user
+            }
+            // const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/getallcustomers');
+            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/all-customers', payload);
             const data = response.data;
-            //console.log('data#####:', data);
+            console.log(response);
             const formattedCustomers = data.map((customer: any) => {
                 return {
                     name: customer.name,

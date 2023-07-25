@@ -29,6 +29,7 @@ export default function NewCustomerForm() {
             toast.error(`Please enter a valid phone number`);
         else try {
             const payload = {
+                seller_email: "tomer@gmail.com", //TODO: Amit - should user the mail of the connected user
                 name: customerName,
                 phone_number: phoneNumber,
                 email_address: email,
@@ -38,6 +39,7 @@ export default function NewCustomerForm() {
                 navigate('/customers');
                 console.log('create customer:', payload);
                 const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/customer', payload);
+                //TODO: Eden.Nikol - understand why showing error on success
                 console.log('create customer response status:', response.status);
                 console.log('create customer response data:', response.data);
                 console.log(JSON.stringify(response));
