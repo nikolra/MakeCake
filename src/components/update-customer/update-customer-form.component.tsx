@@ -33,8 +33,11 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
     useEffect(() => {
         async function fetchCustomer() {
             try {
-                //TODO: Eden, Consider using the lambda that Amit created to get a single customer from DDB
-                const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/getallcustomers');
+                const payload = {
+                    seller_email: "tomer@gmail.com" //TODO: Amit - should user the mail of the connected user
+                }
+                //TODO: Eden - Consider using the lambda that Amit created to get a single customer from DDB
+                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/all-customers', payload);
                 const customers = response.data;
                 const customerData = customers.find((customer: { email: string; }) => customer.email === email);
 
@@ -66,6 +69,7 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
             toast.error(`Please enter a valid phone number`);
         else try {
             const payload = {
+                seller_email: "tomer@gmail.com", //TODO: Amit - should user the mail of the connected user
                 name: customerName,
                 phone_number: phoneNumber,
                 email_address: email,
