@@ -15,20 +15,33 @@ interface IIngredientProps{
     description: string
 }
 
+interface IIngredientData{
+    id: string,
+    name: string,
+    minCost: number,
+    avgCost: number,
+    maxCost: number,
+    isManual: boolean
+}
+
 export default function Ingredients({className, header, description}: IIngredientProps) {
 
-    const [ingredients, setIngredients] = useState(devIngredients);
+    const [ingredients, setIngredients] = useState<IIngredientData[]>();
     const [filteredIngredients, setFilteredIngredients] = useState(ingredients);
     const [searchString, setSearchString] = useState('');
 
     useEffect( () => {
-        const filtered = ingredients.filter((ingredient) => {
+        const filtered = ingredients?.filter((ingredient) => {
             const name = ingredient.name;
             console.log(name, searchString, name.includes(searchString))
             return name.includes(searchString);
         })
-        setFilteredIngredients(filtered)
+        setFilteredIngredients(filtered? filtered : [])
     }, [ingredients, searchString]);
+
+    useEffect(() => {
+        updateIngredients();
+    }, []);
 
     const updateIngredients = async () => {
         console.log(`update Ingredients called`);
@@ -62,19 +75,18 @@ export default function Ingredients({className, header, description}: IIngredien
                         id: ingredient.code.S,
                         name: ingredient.name.S,
                         minCost: {
-                            price: String(ingredient.price.N),
-                            supermarketName: 'a'
+                            price: ingredient.min_price.N,
+                            supermarketName: ingredient.min_store.S
                         },
                         maxCost: {
-                            price: String(ingredient.price.N),
-                            supermarketName: 'b'
+                            price: ingredient.max_price.N,
+                            supermarketName: ingredient.max_store.S
                         },
-                        avgCost: String(ingredient.price.N)
+                        avgCost: ingredient.avg_price.N
                     };
                 });
                 setIngredients(formattedIngredients);
                 console.log('formattedIngredients:', formattedIngredients);
-                setFilteredIngredients(formattedIngredients);
             }
             catch (error) {
                 console.error(`Error getting ingredients`, error);
@@ -125,7 +137,7 @@ export default function Ingredients({className, header, description}: IIngredien
             <div className="all-ingredients-list-container">
                 <div className="all-ingredients-list">
                     {
-                        filteredIngredients.map((ingredient) => {
+                        filteredIngredients?.map((ingredient) => {
                             return <IngredientDelegate deleteDelegate={deleteIngredients} key={ingredient.id} data={ingredient} />
                         })
                     }
