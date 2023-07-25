@@ -252,7 +252,7 @@ export default function NewRecipeForm() {
                         });
 
                     if (response.status === 200) {
-                        toast.success('Order created successfully', {autoClose: 2000});
+                        toast.success('Recipe created successfully', {autoClose: 2000});
                         navigate(`/recipes`);
                     } else {
                         toast.error('Error creating recipe');

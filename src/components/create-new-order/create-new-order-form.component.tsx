@@ -184,15 +184,25 @@ export default function NewOrderForm() {
         }
     }
 
-
     function addRecipeToOrder() {
         const recipe = orderRecipes.find((recipe:any) => recipe.recipe_name === recipeName);
         if(recipe) {
             if(recipe.recipe_name==="")
                 toast.error("please choose recipe");
             else {
+                let newPrice=0;
+                if(recipe.recipe_price!==recipePrice) {
+                    console.log(recipe.recipe_quantity);
+                    console.log(recipe.recipe_price);
+                    console.log(recipe.recipe_price*recipe.recipe_quantity);
+                    newPrice=((orderPrice-(recipe.recipe_price*recipe.recipe_quantity)));
+                    recipe.recipe_price=recipePrice;
+                }
+
                 recipe.recipe_quantity = recipe.recipe_quantity + quantity;
-                addToOrderPrice(recipe.recipe_price * quantity);
+                newPrice += recipe.recipe_quantity*recipe.recipe_price;
+                setOrderPrice(newPrice);
+                //addToOrderPrice(recipe.recipe_quantity*recipe.recipe_price)
                 addTotalMinIngredientCost(recipe.ingredients_min_cost * quantity);
                 addTotalAvgIngredientCost(recipe.ingredients_avg_cost * quantity);
                 addTotalMaxIngredientCost(recipe.ingredients_max_cost * quantity);
@@ -205,12 +215,15 @@ export default function NewOrderForm() {
                 if(recipeFromMyRecipes.recipe_name==="")
                     toast.error("please choose recipe");
                 else {
+                    if(recipeFromMyRecipes.recipe_price!==recipePrice) {
+                        recipeFromMyRecipes.recipe_price=recipePrice;
+                    }
                     setOrderRecipes([...orderRecipes, recipeFromMyRecipes]);
                     recipeFromMyRecipes.recipe_quantity = quantity;
                     addTotalMinIngredientCost(recipeFromMyRecipes.ingredients_min_cost * quantity);
                     addTotalAvgIngredientCost(recipeFromMyRecipes.ingredients_avg_cost * quantity);
                     addTotalMaxIngredientCost(recipeFromMyRecipes.ingredients_max_cost * quantity);
-                    addToOrderPrice(recipeFromMyRecipes.recipe_price * quantity);
+                    addToOrderPrice(recipePrice * quantity);
                 }
             }
             else{
@@ -224,8 +237,6 @@ export default function NewOrderForm() {
         setMaxCost(0);
         setAvgCost(0);
         setRecipePrice(0);
-
-
     }
 
     function setDateFromPicker(value: any) {

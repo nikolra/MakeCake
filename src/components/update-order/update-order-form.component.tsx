@@ -162,13 +162,13 @@ export default function EditOrderForm({id}: IProps) {
                     const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order', orderData);
 
                     if (response.status === 200) {
-                        toast.success('Order created successfully', { autoClose: 2000 });
+                        toast.success('Order updated successfully', { autoClose: 2000 });
                         navigate(`/orders`);
                     } else {
-                        toast.error('Error creating order');
+                        toast.error('Error updating order');
                     }
                 } catch (error) {
-                    toast.error('Error creating order');
+                    toast.error('Error updating order');
                     console.error(error);
                 }
             } catch (error) {
@@ -217,8 +217,19 @@ export default function EditOrderForm({id}: IProps) {
             if(recipe.recipe_name==="")
                 toast.error("please choose recipe");
             else {
+                let newPrice=0;
+                if(recipe.recipe_price!==recipePrice) {
+                    console.log(recipe.recipe_quantity);
+                    console.log(recipe.recipe_price);
+                    console.log(recipe.recipe_price*recipe.recipe_quantity);
+                    newPrice=((orderPrice-(recipe.recipe_price*recipe.recipe_quantity)));
+                    recipe.recipe_price=recipePrice;
+                }
+
                 recipe.recipe_quantity = recipe.recipe_quantity + quantity;
-                addToOrderPrice(recipe.recipe_price * quantity);
+                newPrice += recipe.recipe_quantity*recipe.recipe_price;
+                setOrderPrice(newPrice);
+                //addToOrderPrice(recipe.recipe_quantity*recipe.recipe_price)
                 addTotalMinIngredientCost(recipe.ingredients_min_cost * quantity);
                 addTotalAvgIngredientCost(recipe.ingredients_avg_cost * quantity);
                 addTotalMaxIngredientCost(recipe.ingredients_max_cost * quantity);
@@ -231,12 +242,15 @@ export default function EditOrderForm({id}: IProps) {
                 if(recipeFromMyRecipes.recipe_name==="")
                     toast.error("please choose recipe");
                 else {
+                    if(recipeFromMyRecipes.recipe_price!==recipePrice) {
+                        recipeFromMyRecipes.recipe_price=recipePrice;
+                    }
                     setOrderRecipes([...orderRecipes, recipeFromMyRecipes]);
                     recipeFromMyRecipes.recipe_quantity = quantity;
                     addTotalMinIngredientCost(recipeFromMyRecipes.ingredients_min_cost * quantity);
                     addTotalAvgIngredientCost(recipeFromMyRecipes.ingredients_avg_cost * quantity);
                     addTotalMaxIngredientCost(recipeFromMyRecipes.ingredients_max_cost * quantity);
-                    addToOrderPrice(recipeFromMyRecipes.recipe_price * quantity);
+                    addToOrderPrice(recipePrice * quantity);
                 }
             }
             else{

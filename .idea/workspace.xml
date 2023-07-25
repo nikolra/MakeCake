@@ -4,17 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c7a2437d-b918-4d33-803d-084c99b088ba" name="Changes" comment="recipes finished get request isnt working for some reason other than that all should work properly">
+    <list default="true" id="c7a2437d-b918-4d33-803d-084c99b088ba" name="Changes" comment="recipe page and order completly finished">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/create-new-order/create-new-order-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-order/create-new-order-form.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/create-new-order/recipe-delegate/recipe-delegate.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-order/recipe-delegate/recipe-delegate.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/create-new-recipe/create-new-recipe-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-recipe/create-new-recipe-form.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/create-new-recipe/ingredient-delegate/ingredient-delegate.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-recipe/ingredient-delegate/ingredient-delegate.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/orders/orders.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/orders/orders.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/recipes/recipes-delegate/recipe-delegate.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recipes/recipes-delegate/recipe-delegate.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/recipes/recipes.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recipes/recipes.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/update-recipe/update-recipe-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/update-recipe/update-recipe-form.component.tsx" afterDir="false" />
     </list>
@@ -78,7 +70,9 @@
       <workItem from="1690187641443" duration="8593000" />
       <workItem from="1690206795280" duration="15824000" />
       <workItem from="1690228323889" duration="13698000" />
-      <workItem from="1690279814000" duration="21641000" />
+      <workItem from="1690279814000" duration="22419000" />
+      <workItem from="1690307632647" duration="1394000" />
+      <workItem from="1690309059946" duration="6723000" />
     </task>
     <task id="LOCAL-00001" summary="implemented best customers widget">
       <option name="closed" value="true" />
@@ -144,7 +138,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690226383541</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="recipe page and order completly finished">
+      <option name="closed" value="true" />
+      <created>1690307135862</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1690307135862</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -169,6 +171,7 @@
     <MESSAGE value="orders finished" />
     <MESSAGE value="recipes main page working now with the new fields,ingredients ID will only show for automated ingredients" />
     <MESSAGE value="recipes finished get request isnt working for some reason other than that all should work properly" />
-    <option name="LAST_COMMIT_MESSAGE" value="recipes finished get request isnt working for some reason other than that all should work properly" />
+    <MESSAGE value="recipe page and order completly finished" />
+    <option name="LAST_COMMIT_MESSAGE" value="recipe page and order completly finished" />
   </component>
 </project>
