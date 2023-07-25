@@ -17,17 +17,6 @@ interface IProps {
 }
 
 
-/*
-interface Ingredient {
-    M: {
-        is_automated_ingredient: { N: string };
-        ingredient_code: { S: string };
-        ingredient_name: { S: string };
-        ingredient_price: { N: string };
-        ingredient_quantity: { N: string };
-    }}
-*/
-
 type OrderType = {
     seller: string;
     id: string;
@@ -377,7 +366,7 @@ export default function EditOrderForm({id}: IProps) {
                                     else setRecipeName("");
 
                                 }}
-                                options={myRecipesNames/*myRecipes*/}
+                                options={myRecipesNames}
                                 sx={{width: 235, padding: "8px 0 0 0"}}
                                 renderInput={(params) => <TextField {...params} label={"Name"} variant="standard"/>}
                             />

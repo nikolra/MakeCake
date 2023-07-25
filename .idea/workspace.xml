@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c7a2437d-b918-4d33-803d-084c99b088ba" name="Changes" comment="orders finished">
+    <list default="true" id="c7a2437d-b918-4d33-803d-084c99b088ba" name="Changes" comment="recipes main page working now with the new fields,ingredients ID will only show for automated ingredients">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/create-new-recipe/create-new-recipe-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-recipe/create-new-recipe-form.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/create-new-recipe/ingredient-delegate/ingredient-delegate.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-recipe/ingredient-delegate/ingredient-delegate.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/recipes/recipes-delegate/recipe-delegate.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recipes/recipes-delegate/recipe-delegate.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/recipes/recipes.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recipes/recipes.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/update-recipe/update-recipe-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/update-recipe/update-recipe-form.component.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +69,9 @@
       <workItem from="1689931299995" duration="461000" />
       <workItem from="1689932162869" duration="4514000" />
       <workItem from="1690050183508" duration="14972000" />
-      <workItem from="1690106041064" duration="23118000" />
+      <workItem from="1690106041064" duration="31635000" />
+      <workItem from="1690187641443" duration="8593000" />
+      <workItem from="1690206795280" duration="15736000" />
     </task>
     <task id="LOCAL-00001" summary="implemented best customers widget">
       <option name="closed" value="true" />
@@ -115,7 +121,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690135731817</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="recipes main page working now with the new fields,ingredients ID will only show for automated ingredients">
+      <option name="closed" value="true" />
+      <created>1690144187379</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1690144187379</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -138,15 +152,15 @@
     <MESSAGE value="order fixed" />
     <MESSAGE value="creat new order is working now, what is left is edit order" />
     <MESSAGE value="orders finished" />
-    <option name="LAST_COMMIT_MESSAGE" value="orders finished" />
+    <MESSAGE value="recipes main page working now with the new fields,ingredients ID will only show for automated ingredients" />
+    <option name="LAST_COMMIT_MESSAGE" value="recipes main page working now with the new fields,ingredients ID will only show for automated ingredients" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx</url>
-          <line>271</line>
-          <properties lambdaOrdinal="-1" />
+          <line>260</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
