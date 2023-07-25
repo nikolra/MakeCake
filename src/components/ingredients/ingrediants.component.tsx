@@ -79,6 +79,12 @@ export default function Ingredients({className, header, description}: IIngredien
             toast.error(`Error getting user email`);
         }
     }
+
+    const deleteIngredients = (id: string) => {
+        console.log(`delete ingredient called`);
+        //TODO: Amit integrate with automated ingredients lambda
+    }
+
     return (
         <div className= {`dashboard-widget-container all-ingredients-widget ${className}`}>
             <div className="all-ingredients-header">
@@ -112,7 +118,7 @@ export default function Ingredients({className, header, description}: IIngredien
                 <div className="all-ingredients-list">
                     {
                         filteredIngredients.map((ingredient) => {
-                            return <IngredientDelegate key={ingredient.id} data={ingredient} />
+                            return <IngredientDelegate deleteDelegate={deleteIngredients} key={ingredient.id} data={ingredient} />
                         })
                     }
                 </div>
