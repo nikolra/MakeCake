@@ -246,7 +246,7 @@ export default function NewRecipeForm() {
                     const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe', recipeData);
 
                     if (response.status === 200) {
-                        toast.success('Order created successfully', {autoClose: 2000});
+                        toast.success('Recipe created successfully', {autoClose: 2000});
                         navigate(`/recipes`);
                     } else {
                         toast.error('Error creating recipe');

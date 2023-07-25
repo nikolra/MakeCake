@@ -55,7 +55,7 @@ export default function Recipes({className, header, description}: IRecipeProps) 
                 {
                     pending: 'Loading',
                     success: {render: 'recipe deleted', autoClose: 1000},
-                    error: {render: 'Error deleting order', autoClose: 1000}
+                    error: {render: 'Error deleting recipe', autoClose: 1000}
                 }
             ).then(response => {
                 handleDeleteOrder(id);
