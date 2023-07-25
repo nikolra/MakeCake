@@ -53,7 +53,7 @@ function App() {
                 <Route path="settings" element={<Settings/>}/>
             </Route>
         </Routes>
-        <ToastContainer autoClose={2000} hideProgressBar />
+        <ToastContainer autoClose={200} hideProgressBar />
         </>
     );
 }

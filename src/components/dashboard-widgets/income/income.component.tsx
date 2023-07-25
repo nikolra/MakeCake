@@ -1,28 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Bar } from 'react-chartjs-2';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
+import {Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,} from 'chart.js';
 
 import '../widgets.style.css'
 import './income.style.css'
 import Dropdown from '../../dropdown/dropdown.component'
 import axios from "axios";
+import Cookies from "js-cookie";
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export const options = {
     plugins: {
@@ -57,15 +43,17 @@ export const options = {
     }
 };
 
-let chartData = {
-    y: [""],
-    x: [0]
-}
 
 const chartColor = '#ff875e';
 const chartBorderRadius = 16;
 
 export default function Income() {
+
+    let chartData = {
+        y: [""],
+        x: [0]
+    }
+
     const [range, setRange] = useState('Week')
     const [total, setTotal] = useState(0)
     const [data, setData] = useState(
@@ -83,15 +71,22 @@ export default function Income() {
 
     useEffect(() => {
         rangeChanged(range);
-    }, []);
+    }, [range]);
 
     const rangeChanged = async (rangeString: string) => {
         const payload = {
-            seller_email: "tomer@gmail.com", //TODO: Amit - should user the mail of the connected user
             rangeString: rangeString
         };
         console.log(payload);
-        const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/calculate_income', payload);
+        const response =
+            await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/calculate_income',
+                payload,
+                {
+                    headers: {
+                        "Content-type": "application/json",
+                        Authorization: "Bearer " + Cookies.get('makecake-token')
+                    }
+                });
         console.log(response);
         chartData.x = response.data.x;
         chartData.y = response.data.y;
@@ -109,7 +104,7 @@ export default function Income() {
                 }
             ]
         });
-        setRange(rangeString);
+        // setRange(rangeString);
     }
 
     return (

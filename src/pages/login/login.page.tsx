@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Link, useNavigate} from 'react-router-dom';
 import DonutPanel from '../../components/donut-panel/donut-panel.component'
 import LogoComponent from '../../components/logo/logo.component'
@@ -15,15 +15,15 @@ export default function Login() {
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
 
-
-    const tryLogin = async () => {
+    useEffect(()=> {
         //if cookie has a token navigate to dashboard
         if (Cookies.get('makecake-token')) {
             navigate('/dashboard');
             return;
         }
+    },[]);
 
-
+    const tryLogin = async () => {
         const body = {
             email: email,
             password: password
