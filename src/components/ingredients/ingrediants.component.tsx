@@ -34,7 +34,7 @@ export default function Ingredients({className, header, description}: IIngredien
         console.log(`update Ingredients called`);
         //TODO: Amit integrate with automated ingredients lambda
         try {
-            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user',{accessToken: Cookies.get('makecake-token')});
+            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user', {accessToken: Cookies.get('makecake-token')});
             const responseBodyJSON = JSON.parse(response.data.body);
             const user_email = responseBodyJSON.email;
             console.log(response.data);
@@ -53,6 +53,14 @@ export default function Ingredients({className, header, description}: IIngredien
                     return {
                         id: ingredient.code.S,
                         name: ingredient.name.S,
+                        minCost: {
+                            price: String(ingredient.price.N),
+                            supermarketName: 'a'
+                        },
+                        maxCost: {
+                            price: String(ingredient.price.N),
+                            supermarketName: 'b'
+                        },
                         avgCost: String(ingredient.price.N)
                     };
                 });
