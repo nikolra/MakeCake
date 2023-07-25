@@ -397,7 +397,7 @@ export default function NewRecipeForm() {
                             {
                                 recipeIngredients.map((ingredient) => {
                                     return <IngredientDelegate removeDelegate={removeIngredient} key={ingredient.ingredient_name} name={ingredient.ingredient_name} quantity={(ingredient.quantity)}
-                                     minCost={ingredient.avgCost}  avgCost={ingredient.avgCost}     maxCost={ingredient.avgCost} measurement_unit = {ingredient.measurement_unit}
+                                     minCost={ingredient.minCost}  avgCost={ingredient.avgCost}     maxCost={ingredient.maxCost} measurement_unit = {ingredient.measurement_unit}
                                     />
                                 })
                             }
