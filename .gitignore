@@ -6,7 +6,6 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
-
 # file: ~/.gitignore_global
 .DS_Store
 .idea
@@ -133,4 +132,4 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-/package-lock.json
+./package-lock.json
