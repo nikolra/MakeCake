@@ -9,7 +9,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import {toast, ToastContainer} from "react-toastify";
-import StandardInputField from "../standart-input-field/input-field.component";
+//import StandardInputField from "../standart-input-field/input-field.component";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
@@ -28,18 +28,11 @@ type IRecipeIngredientType ={
     minCost: number;
     avgCost: number;
     maxCost: number;
-    quantity: number,
-    automated: boolean
+    quantity: number;
+    measurement_unit:string;
+    automated: boolean;
 };
 
-interface IIngredient {
-    id: string,
-    name: string,
-    quantity: number,
-    avgCost: number
-    minCost: ICost,
-    maxCost: ICost
-}
 
 export default function EditRecipeForm( {id}: IRecipeProps) {
 
@@ -55,6 +48,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
             avgCost: 2,
             maxCost: 2,
             quantity: 0,
+            measurement_unit: "gram",
             automated: false,
         },
         {
@@ -64,6 +58,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
             avgCost: 1.5,
             maxCost: 1.5,
             quantity: 0,
+            measurement_unit: "gram",
             automated: false,
         },
         {
@@ -73,6 +68,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
             avgCost: 0.5,
             maxCost: 0.5,
             quantity: 0,
+            measurement_unit: "gram",
             automated: false,
         },
         {
@@ -82,6 +78,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
             avgCost: 1.2,
             maxCost: 1.2,
             quantity: 0,
+            measurement_unit: "gram",
             automated: false,
         },
         {
@@ -91,6 +88,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
             avgCost: 3,
             maxCost: 3,
             quantity: 0,
+            measurement_unit: "ml",
             automated: false,
         },
     ]);//TODO: Amit - should be initialized to all ingredients name on page load
@@ -102,6 +100,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
             avgCost: 6,
             maxCost: 7,
             quantity: 0,
+            measurement_unit: "ml",
             automated: true,
         },
         {
@@ -111,6 +110,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
             avgCost: 1.5,
             maxCost: 1.8,
             quantity: 0,
+            measurement_unit: "gram",
             automated: true,
         },
         {
@@ -120,6 +120,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
             avgCost: 3,
             maxCost: 3.5,
             quantity: 0,
+            measurement_unit: "gram",
             automated: true,
         },
         {
@@ -129,6 +130,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
             avgCost: 3.25,
             maxCost: 3.5,
             quantity: 0,
+            measurement_unit: "gram",
             automated: true,
         },
         {
@@ -138,6 +140,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
             avgCost: 1.75,
             maxCost: 2,
             quantity: 0,
+            measurement_unit: "gram",
             automated: true,
         },
     ]);
@@ -146,7 +149,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
     const [ingredientsName,setIngredientNames]= useState<string[]>([]);//TODO this is both of them names merged
     ////////////////////////////////////Global To Order //////////////////////////////////////////
     const [recipeName, setRecipeName] = useState('');
-    const [recipeCost, setRecipeCost] = useState(0);
+    const [recipePrice, setRecipePrice] = useState(0);
     const [totalMinCost, setTotalMinCost] = useState(0);
     const [totalMaxCost, setTotalMaxCost] = useState(0);
     const [totalAvgCost, setTotalAvgCost] = useState(0);
@@ -207,24 +210,23 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
     }
 
 
+    useEffect(()=>{console.log(recipePrice);},[recipePrice])
+
     async function fetchRecipeData()
     {
      const  recipe_payload={user_email: "tomer@gmail.com",recipe_id:id}
         try
         {
             const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_recipe', { params: recipe_payload });
-            console.log(`response`);
-            const data = JSON.parse(response.data);  // Converts the JSON string back to an object
+            const data = response.data;  // Converts the JSON string back to an object
+            console.log(data[0].recipe_price);
+            setRecipeIngredients(data[0].ingredients);
+            setRecipeName(data[0].recipe_name);
+            setRecipePrice(data[0].recipe_price);
+            setTotalMinCost(data[0].ingredients_min_cost);
+            setTotalAvgCost(data[0].ingredients_avg_cost);
+            setTotalMaxCost(data[0].ingredients_max_cost);
 
-            setRecipeIngredients(data.ingredients);
-            setRecipeName(data.recipe_name)
-            setRecipeCost(data.recipe_price);
-            setTotalMinCost(data.ingredients_min_cost);
-            setTotalAvgCost(data.ingredients_avg_cost);
-            setTotalMaxCost(data.ingredients_max_cost);
-
-            console.log(data);
-            console.log(`response`);
         }
         catch(error)
         {
@@ -236,39 +238,46 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
 
     async function sendDataToBackend() {
         console.log(`Submit clicked`);
-        //TODO possible to trim the - my from the recipe but I dont think we should
-        if(!recipeIngredients)
-            toast.error(`Please add at least one ingredient`);
-        else try {
-            const recipeData = {
-                user_email: "tomer@gmail.com",
-                recipe_id:`5`,
-                recipe_name: recipeName,
-                recipe_price: recipeCost,
-                ingredients_min_cost:totalMinCost,
-                ingredients_avg_cost:totalAvgCost,
-                ingredients_max_cost:totalMaxCost,
-                ingredients:recipeIngredients
-            };
-            toast.promise(async () => {
-                console.log(recipeData);
-                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe', recipeData);
-                console.log(response.data.body);
-                console.log('recipe created');
-            }, {
-                pending: 'Loading',
-                success: `Created order `,
-                error: `Error creating order`
-            });
-            navigate('/recipes')
-            console.log(`new recipe added`);
-        }
-        catch(error)
-        {
-            return error;
+        console.log(recipePrice);
+        if (recipeName === "") {
+            toast.error("Please enter recipe name");
+        } else if (recipeIngredients.length === 0)
+            toast.error("Please add at least ingredient to the recipe");
+        else if (isNaN(Number(recipePrice)))
+            toast.error("Recipe price must be a number");
+        else if (recipePrice === 0 || recipePrice.toString() === "0" || recipePrice.toString() === "") {
+            toast.error("Recipe price can't be 0");
+        } else {
+            try {
+                const recipeData = {
+                    user_email: "tomer@gmail.com",
+                    recipe_id: id.toString(),
+                    recipe_name: recipeName,
+                    recipe_price: recipePrice,
+                    ingredients_min_cost: totalMinCost,
+                    ingredients_avg_cost: totalAvgCost,
+                    ingredients_max_cost: totalMaxCost,
+                    ingredients: recipeIngredients
+                };
+                try {
+
+                    const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe', recipeData);
+
+                    if (response.status === 200) {
+                        toast.success('Order created successfully', {autoClose: 2000});
+                        navigate(`/recipes`);
+                    } else {
+                        toast.error('Error creating recipe');
+                    }
+                } catch (error) {
+                    toast.error('Error creating recipe');
+                    console.error(error);
+                }
+            } catch (error) {
+                return error;
+            }
         }
     }
-
 
     async function removeIngredient(name: string) {
         console.log(`remove name: ${name}`);
@@ -311,11 +320,40 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
         <div className="dashboard-widget-container new-recipe-widget all-recipes-container inputs-container">
             <div className="new-recipe-input-fields">
                 <div className={"new-recipe-ingredient-name"}>
-                    <OutlinedInputField label='Recipe Name' setValueDelegate={setRecipeName} width={400} value={recipeName}/>
+                    <Box
+                        component="div"
+                        sx={{
+                            width: 400,
+                            maxWidth: '100%',
+                            m: 1
+                        }}
+                    >
+                        <TextField disabled={false} fullWidth id="outlined-basic" label={"Recipe Name"} variant="outlined" defaultValue={recipeName}
+                                   value={recipeName}
+                                   onChange={(e: any) => {
+                                       setRecipeName(e.target.value)
+                                   }}/>
+                    </Box>
+
                 </div>
 
-                <div className={"new-recipe-ingredient-name"}>
-                    <OutlinedInputField label='Recipe Cost' value={recipeCost === 0 ? "" : recipeCost.toString()} setValueDelegate={setRecipeCost} width={400}/>
+                <div className={"new-recipe-price"}>
+
+                    <Box
+                        component="div"
+                        sx={{
+                            width: 400,
+                            maxWidth: '100%',
+                            m: 1
+                        }}
+                    >
+                        <TextField disabled={false} fullWidth id="outlined-basic" label={"Recipe Priece"} variant="outlined" defaultValue={recipePrice}
+                                   value={recipePrice === 0 ? "" : recipePrice}
+                                   onChange={(e: any) => {
+                                       setRecipePrice(Number(e.target.value))
+                                   }}/>
+                    </Box>
+
                 </div>
             </div>
 
@@ -408,14 +446,13 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                             {
                                 recipeIngredients.map((ingredient) => {
                                     return <IngredientDelegate removeDelegate={removeIngredient} key={ingredient.ingredient_name} name={ingredient.ingredient_name} quantity={ingredient.quantity}
-                                                               minCost={ingredient.avgCost}  avgCost={ingredient.avgCost}    maxCost={ingredient.avgCost}
+                                                               minCost={ingredient.minCost}  avgCost={ingredient.avgCost}    maxCost={ingredient.maxCost} measurement_unit = {ingredient.measurement_unit}
                                     />
                                 })
                             }
                         </div>
                     </div>
                     <div className="ingredient-delegate-container">
-                        <div/>
                         <div/>
                         <div/>
                         <Box
@@ -475,14 +512,10 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                                 }}
                             />
                         </Box>
-                        {/*TODO: tomer - these should have the ingredients cost added to them*/}
-{/*                        <StandardInputField onChange={setTotalMinCost} placeholder="Order Min Cost" disabled={true}/>
-                        <StandardInputField onChange={setTotalAvgCost} placeholder="Order Avg Cost" disabled={true}/>
-                        <StandardInputField onChange={setTotalMaxCost} placeholder="Order Max Cost" disabled={true}/>*/}
-                        <button className='button-container button-text add-item-button add-ingredient-to-recipe-button' onClick={addIngredient}>Add</button>
+
+                        <button className='button-container button-text add-item-button add-ingredient-to-recipe-button' onClick={addIngredient}>Add Ingredient</button>
                     </div>
                 </div>
-
             </div>
 
             <div className="submit-button-container">

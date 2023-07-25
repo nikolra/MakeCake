@@ -5,7 +5,7 @@ import './dev-data';
 import RecipeDelegate from './recipes-delegate/recipe-delegate.component'
 import SearchField from "../search-field/search-field.component";
 import NavigationButtonComponent from "../navigation-button/navigation-button.component";
-import {ToastContainer} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
@@ -41,15 +41,25 @@ export default function Recipes({className, header, description}: IRecipeProps) 
     const [searchString, setSearchString] = useState('');
     const navigate = useNavigate();
     const deleteRecipe= async (id: any) => {
+
         try {
-            let str=id.toString()
             const payload = {
                 user_email: "tomer@gmail.com",
-                recipe_id: str
+                recipe_id: id.toString()
             };
-            const response = await axios.delete('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_recipe', {data: payload});
-            console.log(response);
-            await navigate('/recipes');
+
+
+            toast.promise(async () => {
+                    await axios.delete('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_recipe', {params: payload});
+                },
+                {
+                    pending: 'Loading',
+                    success: {render: 'recipe deleted', autoClose: 1000},
+                    error: {render: 'Error deleting order', autoClose: 1000}
+                }
+            ).then(response => {
+                handleDeleteOrder(id);
+            });
         }
         catch (error)
         {
@@ -57,15 +67,16 @@ export default function Recipes({className, header, description}: IRecipeProps) 
         }
     }
 
-    useEffect(() => {
-       console.log(recipes);
-    }, [recipes]);
+
+const handleDeleteOrder = (id: any) => {
+    setRecipes(prevRecipes => prevRecipes.filter(recipe => recipe.recipe_id !== id));
+}
+
     const fetchRecipes = async () => {
         try {
             const payload = {user_email: "tomer@gmail.com"};
             const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user_recipes', {params:payload});
             setRecipes(response.data);
-            //console.log(recipes);
         } catch (error) {
             console.error('Error fetching orders:', error);
         }

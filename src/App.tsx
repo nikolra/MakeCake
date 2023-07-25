@@ -1,6 +1,8 @@
 import React from 'react';
 import {Routes, Route} from 'react-router-dom'
 import './App.css'
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/login/login.page'
 import Register from './pages/register/register.page'
 import MainLayout from './pages/layouts/main.layout'
@@ -25,6 +27,7 @@ import SetNewPasswordPage from "./pages/password-restore/set-new-password.page";
 
 function App() {
     return (
+        <>
         <Routes>
             <Route path="/" element={<MainLayout/>}>
                 <Route index element={<Login/>}/>
@@ -50,6 +53,8 @@ function App() {
                 <Route path="settings" element={<Settings/>}/>
             </Route>
         </Routes>
+        <ToastContainer autoClose={2000} hideProgressBar />
+        </>
     );
 }
 

@@ -15,6 +15,7 @@ interface Ingredient {
     price: number;
     quantity: number;
     automated: boolean;
+    measurement_unit:string;
     ingredient_code: string;
     ingredient_name: string;
 }
@@ -109,7 +110,7 @@ function RecipeDelegate(props: IRecipeProps) {
                                     <span>{ingredient.ingredient_name}</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.quantity}</span>
+                                    <span>{ingredient.quantity} {ingredient.measurement_unit}</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
                                     <span>{ingredient.minCost === 0 ? "" :ingredient.minCost}₪</span>
