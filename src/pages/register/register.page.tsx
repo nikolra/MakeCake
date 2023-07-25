@@ -18,25 +18,23 @@ export default function Register() {
 
 
     const tryRegister = async () => {
-        if (password !== repeatPassword) {
-            console.error("Passwords do not match");
-            toast.error("Passwords do not match");
-            return;
-        }
         const body = {
             email: email,
             phone_num: "+972541111111",
             given_name: firstName,
             family_name: lastName,
+            repeat_password: repeatPassword,
             password: password
         };
         try {
+            console.log(body);
             const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/signup', body, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Headers': '*'
                 }
             })
+            
             if (response.status === 200) {
                 toast.success("Registration successful");
                 navigate('/');
@@ -44,9 +42,17 @@ export default function Register() {
                 toast.error("Registration failed");
                 console.error("Registration failed", response.data.message);
             }
-        } catch (error) {
-            toast.error("Registration failed");
-            console.error("Registration failed", error);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                if (error.message === "Passwords do not match") {
+                    toast.error("Passwords do not match");
+                } else if (error.message === "An account with the given email already exists.") {
+                    toast.error("A user with this email already exists");
+                } else {
+                    toast.error("Registration failed");
+                    console.error("Registration failed", error);
+                }
+            }
         }
     };
 
