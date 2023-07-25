@@ -52,7 +52,7 @@ export default function Orders({ className, header, description, isDashboard }: 
                 order_id: id.toString()
             };
             toast.promise(async ()=> {
-                const postPromise = await axios.delete(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_order`,{data:payload});
+               await axios.delete(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_order`,{data:payload});
             },
                 {
                     pending: 'Loading',

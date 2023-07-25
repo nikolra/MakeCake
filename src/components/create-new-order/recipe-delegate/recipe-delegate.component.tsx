@@ -3,11 +3,11 @@ import './recipe-delegate.style.css'
 
 interface IRecipeProps{
     name: string,
-    quantity: string,
-    minCost: string,
-    avgCost: string,
-    maxCost: string,
-    price: string,
+    quantity: number,
+    minCost: number,
+    avgCost: number,
+    maxCost: number,
+    price: number,
     removeDelegate: Function
 }
 

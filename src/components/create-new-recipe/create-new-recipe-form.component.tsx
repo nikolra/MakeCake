@@ -21,32 +21,11 @@ export default function NewRecipeForm() {
         minCost: number;
         avgCost: number;
         maxCost: number;
-        quantity: number,
-        automated: boolean
+        quantity: number;
+        measurement_unit:string;
+        automated: boolean;
      };
 
-/*
-
-    type IRecipe ={
-        user_email:string;
-        recipe_name:string;
-        recipe_price:string;
-        ingredients:IRecipeIngredientType[];
-        ingredients_min_cost:number;
-        ingredients_avg_cost:number;
-        ingredients_max_cost:number;
-    };
-
-    const IMakeIngredient = (name:string, quantity:number, cost:string,automated:string='1',code:string='0') => {
-        return {
-            code: code,
-            name: name,
-            cost: quantity,
-            quantity: quantity,
-            automated: automated
-        }
-    }
-*/
 /*    //const [ingredients, setIngredients] = useState<Array<{ code: any, name: any, cost: any,quantity: any, automated: any }>>([]);
     const arr: any[] = []; //TODO: Amit - delete this after integration*/
 
@@ -59,6 +38,7 @@ export default function NewRecipeForm() {
             avgCost: 2,
             maxCost: 2,
             quantity: 0,
+            measurement_unit: "gram",
             automated: false,
         },
         {
@@ -68,6 +48,7 @@ export default function NewRecipeForm() {
             avgCost: 1.5,
             maxCost: 1.5,
             quantity: 0,
+            measurement_unit: "gram",
             automated: false,
         },
         {
@@ -77,6 +58,7 @@ export default function NewRecipeForm() {
             avgCost: 0.5,
             maxCost: 0.5,
             quantity: 0,
+            measurement_unit: "gram",
             automated: false,
         },
         {
@@ -86,6 +68,7 @@ export default function NewRecipeForm() {
             avgCost: 1.2,
             maxCost: 1.2,
             quantity: 0,
+            measurement_unit: "gram",
             automated: false,
         },
         {
@@ -95,6 +78,7 @@ export default function NewRecipeForm() {
             avgCost: 3,
             maxCost: 3,
             quantity: 0,
+            measurement_unit: "ml",
             automated: false,
         },
     ]);//TODO: Amit - should be initialized to all ingredients name on page load
@@ -106,6 +90,7 @@ export default function NewRecipeForm() {
             avgCost: 6,
             maxCost: 7,
             quantity: 0,
+            measurement_unit: "ml",
             automated: true,
         },
         {
@@ -115,6 +100,7 @@ export default function NewRecipeForm() {
             avgCost: 1.5,
             maxCost: 1.8,
             quantity: 0,
+            measurement_unit: "gram",
             automated: true,
         },
         {
@@ -124,6 +110,7 @@ export default function NewRecipeForm() {
             avgCost: 3,
             maxCost: 3.5,
             quantity: 0,
+            measurement_unit: "gram",
             automated: true,
         },
         {
@@ -133,6 +120,7 @@ export default function NewRecipeForm() {
             avgCost: 3.25,
             maxCost: 3.5,
             quantity: 0,
+            measurement_unit: "gram",
             automated: true,
         },
         {
@@ -142,6 +130,7 @@ export default function NewRecipeForm() {
             avgCost: 1.75,
             maxCost: 2,
             quantity: 0,
+            measurement_unit: "gram",
             automated: true,
         },
     ]);
@@ -150,7 +139,7 @@ export default function NewRecipeForm() {
     const [ingredientsName,setIngredientNames]= useState<string[]>([]);//TODO this is both of them names merged
     ////////////////////////////////////Global To Order //////////////////////////////////////////
     const [recipeName, setRecipeName] = useState('');
-    const [recipeCost, setRecipeCost] = useState(0);
+    const [recipePrice, setRecipePrice] = useState(0);
     const [totalMinCost, setTotalMinCost] = useState(0);
     const [totalMaxCost, setTotalMaxCost] = useState(0);
     const [totalAvgCost, setTotalAvgCost] = useState(0);
@@ -166,7 +155,15 @@ export default function NewRecipeForm() {
 
     const navigate = useNavigate();
 
-
+    useEffect(() => {
+        if(recipeName==="")
+        {
+            setQuantity(0);
+            setMinCost(0);
+            setAvgCost(0);
+            setMaxCost(0);
+        }
+    }, [ingredientName]);
     useEffect(() => {fetchManualIngredients(); }, []);
     useEffect(() => {fetchAutomatedIngredients(); }, []);
     useEffect(() => {fetchIngredientsName(); }, []);
@@ -185,7 +182,6 @@ export default function NewRecipeForm() {
            setMaxCost(ingredient.maxCost);
        }
     }
-
     function fetchIngredientsName()
     {
         const automatedNames=automatedIngredients.map((ingredient:IRecipeIngredientType)=> {return ingredient.ingredient_name})
@@ -199,23 +195,6 @@ export default function NewRecipeForm() {
         setIngredientNames(automatedNames.concat(manualNames));
     }
 
-/*    useEffect(() => {
-        const mergeIngredients = (manualIngredients, automatedIngredients) => {
-            let counter = {};
-            const mergedIngredients = [...automatedIngredients, ...manualIngredients].map((ingredient) => {
-                if (counter[ingredient.ingredient_name] != null) {
-                    counter[ingredient.ingredient_name] += 1;
-                    return {...ingredient, ingredient_name: `${ingredient.ingredient_name}${counter[ingredient.ingredient_name]}`}
-                } else {
-                    counter[ingredient.ingredient_name] = 0;
-                    return ingredient;
-                }
-            });
-            return mergedIngredients;
-        };
-
-        setIngredientNames(mergeIngredients(manualIngredients, automatedIngredients));
-    }, [manualIngredients, automatedIngredients]);*/
     async function fetchManualIngredients()
     {
         /// get request
@@ -241,37 +220,44 @@ export default function NewRecipeForm() {
 
     async function sendDataToBackend() {
         console.log(`Submit clicked`);
-        //TODO possible to trim the - my from the recipe but I dont think we should
-        if(!recipeIngredients)
-            toast.error(`Please add at least one ingredient`);
-        else try {
-            const recipeData = {
-                user_email: "tomer@gmail.com",
-                recipe_id:generateNumericID(),
-                recipe_name: recipeName,
-                recipe_price: recipeCost,
-                ingredients_min_cost:totalMinCost,
-                ingredients_avg_cost:totalAvgCost,
-                ingredients_max_cost:totalMaxCost,
-                ingredients:recipeIngredients
-            };
-            console.log(recipeData);
-            toast.promise(async () => {
-                console.log(recipeData);
-                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe', recipeData);
-                console.log(response.data.body);
-                console.log('recipe created');
-            }, {
-                pending: 'Loading',
-                success: `Created order `,
-                error: `Error creating order`
-            });
-            navigate('/recipes')
-            console.log(`new recipe added`);
-        }
-        catch(error)
-        {
-            return error;
+        console.log(recipePrice);
+        if (recipeName === "") {
+            toast.error("Please enter recipe name");
+        } else if (recipeIngredients.length === 0)
+            toast.error("Please add at least ingredient to the recipe");
+        else if (isNaN(Number(recipePrice)))
+            toast.error("Recipe price must be a number");
+        else if (recipePrice === 0 || recipePrice.toString() === "0" || recipePrice.toString() === "") {
+            toast.error("Recipe price can't be 0");
+        } else {
+            try {
+                const recipeData = {
+                    user_email: "tomer@gmail.com",
+                    recipe_id: generateNumericID(),
+                    recipe_name: recipeName,
+                    recipe_price: recipePrice,
+                    ingredients_min_cost: totalMinCost,
+                    ingredients_avg_cost: totalAvgCost,
+                    ingredients_max_cost: totalMaxCost,
+                    ingredients: recipeIngredients
+                };
+                try {
+
+                    const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe', recipeData);
+
+                    if (response.status === 200) {
+                        toast.success('Order created successfully', {autoClose: 2000});
+                        navigate(`/recipes`);
+                    } else {
+                        toast.error('Error creating recipe');
+                    }
+                } catch (error) {
+                    toast.error('Error creating recipe');
+                    console.error(error);
+                }
+            } catch (error) {
+                return error;
+            }
         }
     }
 
@@ -317,7 +303,7 @@ export default function NewRecipeForm() {
                     <OutlinedInputField label='Recipe Name' setValueDelegate={setRecipeName} width={400}/>
                 </div>
                 <div className={"new-recipe-ingredient-name"}>
-                    <OutlinedInputField label='Recipe Price' setValueDelegate={setRecipeCost} width={400}/>
+                    <OutlinedInputField label='Recipe Price' setValueDelegate={setRecipePrice} width={400}/>
                 </div>
             </div>
 
@@ -376,7 +362,7 @@ export default function NewRecipeForm() {
                                 <TextField variant="standard" id="standard-number" label={'Quantity'} type="number"
                                            defaultValue={quantity}
                                            value={quantity === 0 ? "" : quantity}
-                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
+                                           inputProps={{min: 1, inputMode: "numeric", pattern: '[0-9]+'}}
                                 />
                             </Box>
                             <Box
@@ -411,14 +397,13 @@ export default function NewRecipeForm() {
                             {
                                 recipeIngredients.map((ingredient) => {
                                     return <IngredientDelegate removeDelegate={removeIngredient} key={ingredient.ingredient_name} name={ingredient.ingredient_name} quantity={(ingredient.quantity)}
-                                     minCost={ingredient.avgCost}  avgCost={ingredient.avgCost}     maxCost={ingredient.avgCost}
+                                     minCost={ingredient.avgCost}  avgCost={ingredient.avgCost}     maxCost={ingredient.avgCost} measurement_unit = {ingredient.measurement_unit}
                                     />
                                 })
                             }
                         </div>
                     </div>
                     <div className="ingredient-delegate-container">
-                        <div/>
                         <div/>
                         <div/>
                         <Box
@@ -479,10 +464,9 @@ export default function NewRecipeForm() {
                             />
                         </Box>
                         <button className='button-container button-text add-item-button add-ingredient-to-recipe-button' onClick={addIngredient}>Add</button>
-                    </div>
+                        </div>
                 </div>
-            </div>
-
+             </div>
             <div className="submit-button-container">
                 <button className='button button-gradient' onClick={sendDataToBackend}>Create</button>
             </div>
