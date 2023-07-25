@@ -4,12 +4,13 @@ import './ingrediant-delegate.style.css'
 import {NavLink} from "react-router-dom";
 
 interface IIngredientProps {
+    deleteDelegate: Function,
     data: any
 }
 
-function IngredientDelegate(props: IIngredientProps) {
+function IngredientDelegate({deleteDelegate, data}: IIngredientProps) {
     const [isOpened, setOpened] = useState(false)
-    const {id, name, minCost, maxCost, avgCost, isManual} = props.data;
+    const {id, name, minCost, maxCost, avgCost, isManual} = data;
 
     return (
         <div className={
@@ -59,6 +60,9 @@ function IngredientDelegate(props: IIngredientProps) {
                                 <div className="all-ingredient-delegate-recipe-title-item align-right">
                                     <button className="expand-button">
                                         <NavLink to={`/ingredients/edit/${id}`} className={`link active`}>Edit</NavLink>
+                                    </button>
+                                    <button className="expand-button">
+                                        <button className="expand-button" onClick={async () => {await deleteDelegate(id)}}>Delete</button>
                                     </button>
                                 </div>
                             }
