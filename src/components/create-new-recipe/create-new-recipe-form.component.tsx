@@ -9,7 +9,7 @@ import {toast} from "react-toastify";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import StandardInputField from "../standart-input-field/input-field.component";
+import Cookies from "js-cookie";
 
 export default function NewRecipeForm() {
 
@@ -232,7 +232,6 @@ export default function NewRecipeForm() {
         } else {
             try {
                 const recipeData = {
-                    user_email: "tomer@gmail.com",
                     recipe_id: generateNumericID(),
                     recipe_name: recipeName,
                     recipe_price: recipePrice,
@@ -243,7 +242,14 @@ export default function NewRecipeForm() {
                 };
                 try {
 
-                    const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe', recipeData);
+                    const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe',
+                        recipeData,
+                        {
+                            headers: {
+                                "Content-type": "application/json",
+                                Authorization: "Bearer " + Cookies.get('makecake-token')
+                            }
+                        });
 
                     if (response.status === 200) {
                         toast.success('Order created successfully', {autoClose: 2000});
