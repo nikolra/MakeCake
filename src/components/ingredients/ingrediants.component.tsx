@@ -34,10 +34,19 @@ export default function Ingredients({className, header, description}: IIngredien
         console.log(`update Ingredients called`);
         //TODO: Amit integrate with automated ingredients lambda
         try {
-            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user', {accessToken: Cookies.get('makecake-token')});
+                const user_body = {
+                    accessToken: Cookies.get('makecake-token')
+                }
+            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user',
+                user_body,{
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: "Bearer " + Cookies.get('makecake-token')
+                }});
+
+            console.log(response.data.body);
             const responseBodyJSON = JSON.parse(response.data.body);
             const user_email = responseBodyJSON.email;
-            console.log(response.data);
 
             const body = {
                 "table_name": "mnl_ingredients",
@@ -46,20 +55,25 @@ export default function Ingredients({className, header, description}: IIngredien
             }
             console.log(body);
             try {
-                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_mnl_ingredients', body);
+                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_mnl_ingredients',
+                    body,{
+                        headers:{
+                            "Content-type": "application/json",
+                            Authorization: "Bearer " + Cookies.get('makecake-token')
+                        }});
                 const data = response.data;
                 console.log('data#####:', data);
                 const formattedIngredients = data.map((ingredient: any) => {
                     return {
-                        id: ingredient.code.S,
-                        name: ingredient.name.S,
+                        id: ingredient.code,
+                        name: ingredient.name,
                         minCost: {
-                            price: String(ingredient.price.N),
-                            supermarketName: 'a'
+                            price: String(ingredient.min_price),
+                            supermarketName: ingredient.min_store
                         },
                         maxCost: {
-                            price: String(ingredient.price.N),
-                            supermarketName: 'b'
+                            price: String(ingredient.max_price),
+                            supermarketName: ingredient.max_store
                         },
                         avgCost: String(ingredient.price.N)
                     };
