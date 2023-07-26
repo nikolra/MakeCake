@@ -6,7 +6,6 @@ import BestCustomersDelegate from "./best-customers-delegate.component";
 import axios from 'axios';
 const { promisify } = require('util');
 
-
 type Customer = {
     number: number;
     orders: number;

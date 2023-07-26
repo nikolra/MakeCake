@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../dashboard-widgets/widgets.style.css';
 import './customers.style.css';
 import CustomerDelegate from './customer-delegate/customer-delegate.component';
-
+import Cookies from 'js-cookie';
 import SearchField from '../search-field/search-field.component';
 import NavigationButtonComponent from '../navigation-button/navigation-button.component';
 import axios from 'axios';
@@ -46,8 +46,15 @@ export default function Customers({ className, header, description }: ICustomerP
                 konditorEmail: "tomer@gmail.com"
             };
             toast.promise(async () => {
-                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_all_sms_templates', payload);
+                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_all_sms_templates', payload,{
+                    headers: {
+                        "content-type": "application/json",
+                            "Authorization": "Bearer " + Cookies.get('makecake-token')
+                    }
+                }
+            );
                 const data = response.data;
+
                 console.log(data);
                 setTemplates(data);
             }, {
