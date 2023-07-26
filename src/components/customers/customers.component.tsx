@@ -119,26 +119,9 @@ export default function Customers({className, header, description}: ICustomerPro
                             Authorization: "Bearer " + Cookies.get('makecake-token')
                         }
                     });
-            const data = response.data;
             console.log(response);
-            const formattedCustomers = data.map((customer: any) => {
-                return {
-                    name: customer.name,
-                    phoneNumber: customer.phoneNumber,
-                    email: customer.email,
-                    address: customer.address,
-                    orders: customer.orders.map((order: any) => {
-                        return {
-                            id: order.id,
-                            dueDate: order.dueDate,
-                            totalCost: order.totalCost,
-                        };
-                    }),
-                };
-            });
-            setCustomers(formattedCustomers);
-            console.log('formattedCustomers:', formattedCustomers);
-            setFilteredCustomers(formattedCustomers);
+            console.log('formattedCustomers:', response.data);
+            setFilteredCustomers(response.data);
         } catch (error) {
             console.error('Error fetching customer details:', error);
         }
