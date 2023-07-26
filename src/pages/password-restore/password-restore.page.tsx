@@ -1,10 +1,11 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Link, useNavigate} from 'react-router-dom';
 import DonutPanel from '../../components/donut-panel/donut-panel.component'
 import './password-restore.style.css'
 import LabeledField from '../../components/labeled-input/labeled-input.component'
 import validator from 'validator';
 import {toast, ToastContainer} from "react-toastify";
+import Cookies from "js-cookie";
 
 export default function PasswordRestore() {
 
