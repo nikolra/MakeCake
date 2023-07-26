@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import './user.style.css'
 import {useNavigate} from "react-router-dom";
 import Cookies from "js-cookie";
-import axios from "axios/index";
+import axios from "axios";
 
 export default function User() {
 
@@ -22,11 +22,17 @@ export default function User() {
     const getUserData = async() => {
         const response =
             await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user',
-                {accessToken: Cookies.get('makecake-token')});
+                {accessToken: Cookies.get('makecake-token')},
+                {
+                    headers: {
+                        "content-type": "application/json",
+                        "Authorization": "Bearer " + Cookies.get('makecake-token')
+                    }
+                });
         const responseBodyJSON = JSON.parse(response.data.body);
         console.log("responseBodyJSON");
-        console.log(responseBodyJSON);//TODO: Nikol - fix to use name and not email.
-        const user_email = responseBodyJSON.email;
+        console.log(responseBodyJSON);
+        const user_email = responseBodyJSON.username;
         setName(user_email);
     }
 

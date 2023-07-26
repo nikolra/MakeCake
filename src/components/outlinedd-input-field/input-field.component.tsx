@@ -13,7 +13,6 @@ interface IProps {
 }
 
 const InputField: React.FC<IProps> = ({setValueDelegate, label, width, value, disabled = false, margin}: IProps) => {
-    const [errorString, setErrorString] = useState('');
     const m = margin ? margin : '0 0 6px 0';
     return (
         <Box

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import '../../App.css';
 import './update-customer-form.style.css';
 import InputField from "../outlinedd-input-field/input-field.component";
-import {devCustomers} from "../customers/dev-data";
 import axios from "axios";
 import {toast, ToastContainer} from "react-toastify";
 import {useNavigate} from "react-router-dom";
@@ -59,6 +58,7 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
 
             if (customerData) {
                 setCustomer(customerData);
+                console.log(customerData.name);
                 setCustomerName(customerData.name);
                 setPhoneNumber(customerData.phoneNumber);
                 setAddress(customerData.address);
@@ -118,7 +118,20 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
             </div>
             <div className="new-customer-input-fields">
                 <div className="customer-input-field">
-                    <InputField setValueDelegate={setCustomerName} label="Customer Name" width={500} value={customerName} />
+                    <Box
+                        component="div"
+                        sx={{
+                            width: 500,
+                            maxWidth: '100%',
+                            m:  '0 0 6px 0'
+                        }}
+                    >
+                        <TextField fullWidth id="outlined-basic" label={"Customer Name"} variant="outlined" defaultValue={customerName} value={customerName}
+                                   onChange={(e: any) => {
+                                       console.log(`"Customer Name": ${e.target.value}`)
+                                       setCustomerName(e.target.value)
+                                   }}/>
+                    </Box>
                 </div>
 
                 <div className="customer-input-field">
