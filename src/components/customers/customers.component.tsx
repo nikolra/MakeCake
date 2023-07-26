@@ -87,9 +87,9 @@ export default function Customers({className, header, description}: ICustomerPro
         toast.promise(async () => {
             navigate('/customers');
             console.log('Deleting customer:', customerEmail);
-            const response = await axios.delete('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete-customer',
+            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete-customer',
+                payload,
                 {
-                    data: payload,
                     headers: {
                         "Content-type": "application/json",
                         Authorization: "Bearer " + Cookies.get('makecake-token')
