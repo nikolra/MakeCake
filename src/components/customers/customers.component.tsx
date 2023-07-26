@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import '../dashboard-widgets/widgets.style.css';
 import './customers.style.css';
 import CustomerDelegate from './customer-delegate/customer-delegate.component';
@@ -8,6 +8,7 @@ import NavigationButtonComponent from '../navigation-button/navigation-button.co
 import axios from 'axios';
 import {toast, ToastContainer} from "react-toastify";
 import {useNavigate} from "react-router-dom";
+import Cookies from "js-cookie";
 
 interface ICustomerProps {
     className: string;
@@ -27,7 +28,7 @@ interface ICustomer {
     }[];
 }
 
-export default function Customers({ className, header, description }: ICustomerProps) {
+export default function Customers({className, header, description}: ICustomerProps) {
     const [customers, setCustomers] = useState<ICustomer[]>([]);
     const [filteredCustomers, setFilteredCustomers] = useState<ICustomer[]>([]);
     const [templates, setTemplates] = useState<string[]>([]);
@@ -35,18 +36,34 @@ export default function Customers({ className, header, description }: ICustomerP
     const navigate = useNavigate();
 
     useEffect(() => {
+        if (!Cookies.get('makecake-token')) {
+            navigate("/");
+            return;
+        }
         fetchCustomerDetails();
         fetchSMSTemplateNames();
     }, []);
 
+    useEffect(() => {
+        const filtered = customers.filter((customer) => {
+            const name = customer.name.toLowerCase();
+            return name.includes(searchString);
+        });
+        setFilteredCustomers(filtered);
+    }, [customers, searchString]);
     const fetchSMSTemplateNames = async () => {
         try {
-            //TODO: Amit - should get connected user email
-            const payload = {
-                konditorEmail: "tomer@gmail.com"
-            };
+            const payload = {};
             toast.promise(async () => {
-                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_all_sms_templates', payload);
+                const response =
+                    await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_all_sms_templates',
+                        payload,
+                        {
+                            headers: {
+                                "Content-type": "application/json",
+                                Authorization: "Bearer " + Cookies.get('makecake-token')
+                            }
+                        });
                 const data = response.data;
                 console.log(data);
                 setTemplates(data);
@@ -62,20 +79,25 @@ export default function Customers({ className, header, description }: ICustomerP
         }
     }
 
-    const deleteCustomer = (customerEmail:string) => {
+    const deleteCustomer = (customerEmail: string) => {
         console.log('Deleting customer:', customerEmail);
         const payload = {
-            seller_email: "tomer@gmail.com", //TODO: Amit - should user the mail of the connected user
             email_address: customerEmail
         };
         toast.promise(async () => {
             navigate('/customers');
             console.log('Deleting customer:', customerEmail);
             const response = await axios.delete('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete-customer',
-                {data: payload});
+                {
+                    data: payload,
+                    headers: {
+                        "Content-type": "application/json",
+                        Authorization: "Bearer " + Cookies.get('makecake-token')
+                    }
+                });
             console.log('Delete customer response status:', response.status);
             console.log('Delete customer response data:', response.data);
-            const updatedCustomers= customers.filter(customer=>customer.email!==customerEmail);
+            const updatedCustomers = customers.filter(customer => customer.email !== customerEmail);
             setCustomers(updatedCustomers);
         }, {
             // @ts-ignore
@@ -87,11 +109,16 @@ export default function Customers({ className, header, description }: ICustomerP
 
     const fetchCustomerDetails = async () => {
         try {
-            const payload = {
-                seller_email: "tomer@gmail.com" //TODO: Amit - should user the mail of the connected user
-            }
-            // const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/getallcustomers');
-            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/all-customers', payload);
+            const payload = {};
+            const response =
+                await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/all-customers',
+                    payload,
+                    {
+                        headers: {
+                            "Content-type": "application/json",
+                            Authorization: "Bearer " + Cookies.get('makecake-token')
+                        }
+                    });
             const data = response.data;
             console.log(response);
             const formattedCustomers = data.map((customer: any) => {
@@ -116,14 +143,6 @@ export default function Customers({ className, header, description }: ICustomerP
             console.error('Error fetching customer details:', error);
         }
     };
-
-    useEffect(() => {
-        const filtered = customers.filter((customer) => {
-            const name = customer.name.toLowerCase();
-            return name.includes(searchString);
-        });
-        setFilteredCustomers(filtered);
-    }, [customers, searchString]);
 
     return (
         <div className={`dashboard-widget-container customers-widget ${className}`}>
@@ -161,11 +180,13 @@ export default function Customers({ className, header, description }: ICustomerP
             <div className="customers-list-container">
                 <div className="customers-list">
                     {filteredCustomers.map((customer) => {
-                        return <CustomerDelegate key={customer.email} data={customer} deleteDelegate={deleteCustomer} templateNames={templates}/>;
+                        return <CustomerDelegate key={customer.email} data={customer} deleteDelegate={deleteCustomer}
+                                                 templateNames={templates}/>;
                     })}
                 </div>
             </div>
-            <NavigationButtonComponent to="/customers/new" text="Add Customer" fontClassName="add-customer-button" spanClass={'add-customer-span'}/>
+            <NavigationButtonComponent to="/customers/new" text="Add Customer" fontClassName="add-customer-button"
+                                       spanClass={'add-customer-span'}/>
             <ToastContainer/>
         </div>
     );

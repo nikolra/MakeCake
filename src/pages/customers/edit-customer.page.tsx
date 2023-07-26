@@ -10,8 +10,10 @@ export default function EditCustomerPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!Cookies.get('makecake-token'))
+        if (!Cookies.get('makecake-token')) {
             navigate("/");
+            return;
+        }
     }, []);
 
     const { email } = useParams();

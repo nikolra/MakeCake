@@ -13,8 +13,6 @@ import Cookies from "js-cookie";
 
 export default function NewRecipeForm() {
 
-
-
     type IRecipeIngredientType ={
         ingredient_name: string;
         ingredient_code: string;
@@ -25,9 +23,6 @@ export default function NewRecipeForm() {
         measurement_unit:string;
         automated: boolean;
      };
-
-/*    //const [ingredients, setIngredients] = useState<Array<{ code: any, name: any, cost: any,quantity: any, automated: any }>>([]);
-    const arr: any[] = []; //TODO: Amit - delete this after integration*/
 
     /////////////////////////////////Change only at load////////////////////////////////////
     const [manualIngredients, setManualIngredients] = useState<IRecipeIngredientType[]>([
@@ -134,24 +129,22 @@ export default function NewRecipeForm() {
             automated: true,
         },
     ]);
-    const [recipeIngredients, setRecipeIngredients] = useState<IRecipeIngredientType[]>([]);//TODO this is both of them merged
+    const [recipeIngredients, setRecipeIngredients] = useState<IRecipeIngredientType[]>([]);//this is both of them merged
     const [ingredients,setIngredients] = useState<IRecipeIngredientType[]>([]);
-    const [ingredientsName,setIngredientNames]= useState<string[]>([]);//TODO this is both of them names merged
+    const [ingredientsName,setIngredientNames]= useState<string[]>([]);//this is both of them names merged
     ////////////////////////////////////Global To Order //////////////////////////////////////////
     const [recipeName, setRecipeName] = useState('');
     const [recipePrice, setRecipePrice] = useState(0);
     const [totalMinCost, setTotalMinCost] = useState(0);
     const [totalMaxCost, setTotalMaxCost] = useState(0);
     const [totalAvgCost, setTotalAvgCost] = useState(0);
- /////////////////////////////////////Change for each ingredient added ////////////////////////////////
-
+    /////////////////////////////////////Change for each ingredient added ////////////////////////////////
     const [currentIngredient,setCurrentIngredient] = useState<IRecipeIngredientType>();
     const [ingredientName, setIngredientName] = useState('');
     const [quantity, setQuantity] = useState(0);
     const [minCost, setMinCost] = useState(0);
     const [avgCost, setAvgCost] = useState(0);
     const [maxCost, setMaxCost] = useState(0);
-
 
     const navigate = useNavigate();
 
@@ -165,13 +158,17 @@ export default function NewRecipeForm() {
         }
         updateTableFields()
     }, [ingredientName]);
-    useEffect(() => {fetchManualIngredients(); }, []);
-    useEffect(() => {fetchAutomatedIngredients(); }, []);
-    useEffect(() => {fetchIngredientsName(); }, []);
+    useEffect(() => {
+        if (!Cookies.get('makecake-token')) {
+            navigate("/");
+            return;
+        }
+        fetchIngredients();
+        fetchIngredientsName();
+        }, []);
 
 
-    function updateTableFields()
-    {
+    function updateTableFields() {
        const ingredient = ingredients.find(ingredient=>ingredient.ingredient_name===ingredientName);
         setCurrentIngredient(ingredient);
        if(ingredient) {
@@ -181,11 +178,10 @@ export default function NewRecipeForm() {
            setMaxCost(ingredient.maxCost);
        }
     }
-    function fetchIngredientsName()
-    {
+    function fetchIngredientsName() {
+        //TODO: Nikol - understand with Amit if needed and how
         const automatedNames=automatedIngredients.map((ingredient:IRecipeIngredientType)=> {return ingredient.ingredient_name})
         const manualNames = manualIngredients.map((ingredient: IRecipeIngredientType) => {return ingredient.ingredient_name+"- my"; });
-        ingredients.concat(automatedIngredients);
         let manualIIngredients = manualIngredients.map((ingredient: IRecipeIngredientType) => {
             return {...ingredient, ingredient_name: ingredient.ingredient_name + "- my"};
         });
@@ -194,21 +190,8 @@ export default function NewRecipeForm() {
         setIngredientNames(automatedNames.concat(manualNames));
     }
 
-    async function fetchManualIngredients()
-    {
-        /// get request
-
-
-        //get the names of them
-        //place them in ingredientsName
-    }
-    async function fetchAutomatedIngredients()
-    {
-        /// get request
-
-
-        //get the names of them
-        //place them in ingredientsName
+    async function fetchIngredients() {
+        //TODO: Amit - implement!
     }
     function generateNumericID() {
         const min = 100000000; // Minimum 16-digit number
@@ -238,7 +221,6 @@ export default function NewRecipeForm() {
                     ingredients_max_cost: totalMaxCost,
                     ingredients: recipeIngredients
                 };
-                //const loadingToast = toast.info('Loading', { autoClose: false });
 
                 try {
                     const response = await axios.post(
@@ -258,7 +240,6 @@ export default function NewRecipeForm() {
                         toast.error('Error creating recipe');
                     }
                 } catch (error) {
-                   // toast.dismiss(loadingToast); // Dismiss the "Loading" toast
                     toast.error('Error creating recipe');
                     console.error(error);
                 }

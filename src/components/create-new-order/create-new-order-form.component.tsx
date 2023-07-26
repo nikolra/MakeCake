@@ -46,13 +46,18 @@ export default function NewOrderForm() {
     const [totalAvgCost, setTotalAvgCost] = useState(0);
     const [recipePrice,setRecipePrice]=useState(0);
     const [currentRecipe,setCurrentRecipe]=useState<RecipeItem>();
-    const [myRecipesNames, setRecipeNames] = useState<string[]>([]); //TODO: Tomer - should be initializes to all recipes names for the user that is currently logged in
+    const [myRecipesNames, setRecipeNames] = useState<string[]>([]);
     const [myCustomers, setCustomers] = useState(options1); //TODO: Eden - should be initializes to all customer names for the user that is currently logged in. (Consider saving change customer name to customer email)
     const [myRecipes, setMyRecipes] = useState<RecipeItem[]>([]);
     const navigate = useNavigate();
 
 
-
+    useEffect(() => {
+        if (!Cookies.get('makecake-token')) {
+            navigate("/");
+            return;
+        }
+        fetchUserRecipes(); }, []);
     useEffect(() => {
         if(recipeName==="")
         {
@@ -74,7 +79,6 @@ export default function NewOrderForm() {
             }
         }
         }, [recipeName]);
-    useEffect(() => {fetchUserRecipes(); }, []);
 
     const deleteRecipeFromOrder = (recipeName: string) => {
         const index = orderRecipes.findIndex(recipe => recipe.recipe_name=== recipeName);
@@ -87,19 +91,16 @@ export default function NewOrderForm() {
         setOrderRecipes(newOrders);
     }
 
-    function addTotalMinIngredientCost(val:number)
-    {
+    function addTotalMinIngredientCost(val:number) {
         setTotalMinCost(totalMinCost+val);
     }
-    function addTotalAvgIngredientCost(val:number)
-    {
+    function addTotalAvgIngredientCost(val:number) {
         setTotalAvgCost(totalAvgCost+val);
     }
-    function addTotalMaxIngredientCost(val:number)
-    {
+    function addTotalMaxIngredientCost(val:number) {
         setTotalMaxCost(totalMaxCost+val);
     }
-    async function addToOrderPrice(value:number) {
+    function addToOrderPrice(value:number) {
         setOrderPrice(orderPrice+value);
     }
 
@@ -108,8 +109,7 @@ export default function NewOrderForm() {
         const max = 999999999; // Maximum 16-digit number
         const numericID = Math.floor(Math.random() * (max - min + 1)) + min;
         return numericID.toString();
-        //TODO: Tomer - please use a hash function to generate something smaller  || possible but will have to save the values to a file because after a server shutdown the hashtable will reset.
-    }                                                                       //TODO|| and it will forget the last key and start over again
+    }
     const fetchUserRecipes = async () => {
         try {
             const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user_recipes',{
@@ -135,19 +135,17 @@ export default function NewOrderForm() {
         }
     };
 
-
     async function sendDataToBackend() {
         const order_Id = generateNumericID();
-        if (customerName === "") {
+        if (customerName === "")
             toast.error("Please choose a customer");
-        }
          else if (orderRecipes.length === 0)
             toast.error("Please add at least  one recipe to the order");
         else if (isNaN(Number(orderPrice)))
             toast.error("Order price must be a number");
         else if (orderPrice === 0 || orderPrice.toString() === "0" || orderPrice.toString() === "")
             toast.error("Order price can't be 0");
-         else {
+        else {
             try {
                 const payload = {
                     order_id: order_Id,
@@ -156,10 +154,6 @@ export default function NewOrderForm() {
                     recipes: orderRecipes,
                     order_price: orderPrice
                 };
-
-                // Show "Loading" toast
-                //const loadingToast = toast.info('Loading', { autoClose: false });
-
                 try {
                     const response = await axios.post(
                         'https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order',
@@ -202,11 +196,9 @@ export default function NewOrderForm() {
                     newPrice=((orderPrice-(recipe.recipe_price*recipe.recipe_quantity)));
                     recipe.recipe_price=recipePrice;
                 }
-
                 recipe.recipe_quantity = recipe.recipe_quantity + quantity;
                 newPrice += recipe.recipe_quantity*recipe.recipe_price;
                 setOrderPrice(newPrice);
-                //addToOrderPrice(recipe.recipe_quantity*recipe.recipe_price)
                 addTotalMinIngredientCost(recipe.ingredients_min_cost * quantity);
                 addTotalAvgIngredientCost(recipe.ingredients_avg_cost * quantity);
                 addTotalMaxIngredientCost(recipe.ingredients_max_cost * quantity);
