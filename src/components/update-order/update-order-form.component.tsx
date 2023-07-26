@@ -18,7 +18,6 @@ interface IProps {
     id: string;
 }
 
-
 interface RecipeItem {
     recipe_name: string;
     ingredients_min_cost: number;
@@ -28,18 +27,9 @@ interface RecipeItem {
     recipe_quantity:number;
 }
 
-type CustomerType = {
-    name: string;
-    email: string;
-};
-const options1 = [ //TODO: Eden - remove after integration
-    "Nikol", "Eden", "Amit", "Tomer"
-]
-
-
 export default function EditOrderForm({id}: IProps) {
 
-    const [customerName, setCustomerName] = useState('');///TODO - Eden need to do a getter that will return all the customers seller has
+    const [customerName, setCustomerName] = useState('');
     const [dueDate, setDueDate] = useState(dayjs());
     const [orderRecipes, setOrderRecipes] = useState<RecipeItem[]>([]);
     const [orderPrice,setOrderPrice]=useState(0);
@@ -54,15 +44,19 @@ export default function EditOrderForm({id}: IProps) {
     const [recipePrice,setRecipePrice]=useState(0);
     const [currentRecipe,setCurrentRecipe]=useState<RecipeItem>();
 
-
-
-
-    const [myRecipesNames, setRecipeNames] = useState<string[]>([]); //TODO: Tomer - should be initializes to all recipes names for the user that is currently logged in
-    const [myCustomers, setCustomers] = useState(options1); //TODO: Eden - should be initializes to all customer names for the user that is currently logged in. (Consider saving change customer name to customer email)
+    const [myRecipesNames, setRecipeNames] = useState<string[]>([]);
     const [myRecipes, setMyRecipes] = useState<RecipeItem[]>([]);
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (!Cookies.get('makecake-token')) {
+            navigate("/");
+            return;
+        }
+        fetchUserRecipes();
+        fetchOrder();
+        }, []);
 
     useEffect(() => {
         if(recipeName==="")
@@ -73,9 +67,6 @@ export default function EditOrderForm({id}: IProps) {
             setMaxCost(0);
             setRecipePrice(0);
         }
-    }, [recipeName]);
-    useEffect(() => {fetchUserRecipes(); }, []);
-    useEffect(() => {
         if (myRecipes) {
             const recipe = myRecipes.find((recipe) => recipe.recipe_name === recipeName);
             if (recipe) {
@@ -88,8 +79,6 @@ export default function EditOrderForm({id}: IProps) {
             }
         }
     }, [recipeName]);
-    useEffect(()=>{fetchOrder()},[]);
-
 
     const deleteRecipeFromOrder = (recipeName: string) => {
         const index = orderRecipes.findIndex(recipe => recipe.recipe_name=== recipeName);
@@ -102,22 +91,18 @@ export default function EditOrderForm({id}: IProps) {
         setOrderRecipes(newOrders);
     }
 
-    function addTotalMinIngredientCost(val:number)
-    {
+    function addTotalMinIngredientCost(val:number) {
         setTotalMinCost(totalMinCost+val);
     }
-    function addTotalAvgIngredientCost(val:number)
-    {
+    function addTotalAvgIngredientCost(val:number) {
         setTotalAvgCost(totalAvgCost+val);
     }
-    function addTotalMaxIngredientCost(val:number)
-    {
+    function addTotalMaxIngredientCost(val:number) {
         setTotalMaxCost(totalMaxCost+val);
     }
     async function addToOrderPrice(value:number) {
         setOrderPrice(orderPrice+value);
     }
-
 
     const fetchUserRecipes = async () => {
         try {
@@ -163,10 +148,6 @@ export default function EditOrderForm({id}: IProps) {
                     recipes: orderRecipes,
                     order_price: orderPrice
                 };
-
-                // Show "Loading" toast
-                //const loadingToast = toast.info('Loading', { autoClose: false });
-
                 try {
                     const response = await axios.post(
                         'https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order',
@@ -185,7 +166,6 @@ export default function EditOrderForm({id}: IProps) {
                         toast.error('Error updating order');
                     }
                 } catch (error) {
-                    //toast.dismiss(loadingToast); // Dismiss the "Loading" toast
                     toast.error('Error updating order');
                     console.error(error);
                 }
@@ -194,8 +174,6 @@ export default function EditOrderForm({id}: IProps) {
             }
         }
     }
-
-
 
     const fetchOrder = async () => {
         try {
@@ -212,7 +190,6 @@ export default function EditOrderForm({id}: IProps) {
             setCustomerName(data.buyer_email);
             setDateFromPicker(data.due_date);
             setOrderPrice(data.order_price);
-            //console.log(data.recipes);
             const recipeItems = data.recipes.map((item:RecipeItem) => (
                 {
                 recipe_price: item.recipe_price,
@@ -254,7 +231,6 @@ export default function EditOrderForm({id}: IProps) {
                 recipe.recipe_quantity = recipe.recipe_quantity + quantity;
                 newPrice += recipe.recipe_quantity*recipe.recipe_price;
                 setOrderPrice(newPrice);
-                //addToOrderPrice(recipe.recipe_quantity*recipe.recipe_price)
                 addTotalMinIngredientCost(recipe.ingredients_min_cost * quantity);
                 addTotalAvgIngredientCost(recipe.ingredients_avg_cost * quantity);
                 addTotalMaxIngredientCost(recipe.ingredients_max_cost * quantity);
@@ -302,7 +278,7 @@ export default function EditOrderForm({id}: IProps) {
                     <ComboBox setValueDelegate={setCustomerName} label="Customer Name" options={[]} isDisabled={true}
                               initialValue={customerName}/>
                 </div>
-                <DatePicker setValueDelegate={setDateFromPicker} initValue={dueDate.toString()/*.toISOString().split('T')[0]*/}/>
+                <DatePicker setValueDelegate={setDateFromPicker} initValue={dueDate.toString()}/>
                 <div className={"new-order-customer-name"}>
                     <Box
                         component="div"

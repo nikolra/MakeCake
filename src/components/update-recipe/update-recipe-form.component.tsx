@@ -23,22 +23,19 @@ interface ICost {
     supermarketName: string
 }
 
-type IRecipeIngredientType ={
+type IRecipeIngredientType = {
     ingredient_name: string;
     ingredient_code: string;
     minCost: number;
     avgCost: number;
     maxCost: number;
     quantity: number;
-    measurement_unit:string;
+    measurement_unit: string;
     automated: boolean;
 };
 
 
-export default function EditRecipeForm( {id}: IRecipeProps) {
-
-    /*    //const [ingredients, setIngredients] = useState<Array<{ code: any, name: any, cost: any,quantity: any, automated: any }>>([]);
-        const arr: any[] = []; //TODO: Amit - delete this after integration*/
+export default function EditRecipeForm({id}: IRecipeProps) {
 
     /////////////////////////////////Change only at load////////////////////////////////////
     const [manualIngredients, setManualIngredients] = useState<IRecipeIngredientType[]>([
@@ -145,9 +142,9 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
             automated: true,
         },
     ]);
-    const [recipeIngredients, setRecipeIngredients] = useState<IRecipeIngredientType[]>([]);//TODO this is both of them merged
-    const [ingredients,setIngredients] = useState<IRecipeIngredientType[]>([]);
-    const [ingredientsName,setIngredientNames]= useState<string[]>([]);//TODO this is both of them names merged
+    const [recipeIngredients, setRecipeIngredients] = useState<IRecipeIngredientType[]>([]);//this is both of them merged
+    const [ingredients, setIngredients] = useState<IRecipeIngredientType[]>([]);
+    const [ingredientsName, setIngredientNames] = useState<string[]>([]);//this is both of them names merged
     ////////////////////////////////////Global To Order //////////////////////////////////////////
     const [recipeName, setRecipeName] = useState('');
     const [recipePrice, setRecipePrice] = useState(0);
@@ -156,7 +153,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
     const [totalAvgCost, setTotalAvgCost] = useState(0);
     /////////////////////////////////////Change for each ingredient added ////////////////////////////////
 
-    const [currentIngredient,setCurrentIngredient] = useState<IRecipeIngredientType>();
+    const [currentIngredient, setCurrentIngredient] = useState<IRecipeIngredientType>();
     const [ingredientName, setIngredientName] = useState('');
     const [quantity, setQuantity] = useState(0);
     const [minCost, setMinCost] = useState(0);
@@ -166,58 +163,60 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
     const navigate = useNavigate();
 
 
+    useEffect(() => {
+        if (!Cookies.get('makecake-token')){
+            navigate('/');
+            return;
+        }
+        fetchIngredients();
+        fetchIngredientsName();
+        fetchRecipeData();
+    }, []);
+    useEffect(() => {
+        updateTableFields()
+    }, [ingredientName]);
 
-    useEffect(() => {fetchManualIngredients(); }, []);
-    useEffect(() => {fetchAutomatedIngredients(); }, []);
-    useEffect(() => {fetchIngredientsName(); }, []);
-
-    useEffect(() => {updateTableFields() }, [ingredientName]);
-    useEffect(()=>{fetchRecipeData()},[])
 
     function updateTableFields() {
-        const ingredient = ingredients.find(ingredient=>ingredient.ingredient_name===ingredientName);
+        const ingredient = ingredients.find(ingredient => ingredient.ingredient_name === ingredientName);
         setCurrentIngredient(ingredient);
-        if(ingredient) {
+        if (ingredient) {
             setQuantity(1);
             setMinCost(ingredient.minCost);
             setAvgCost(ingredient.avgCost);
             setMaxCost(ingredient.maxCost);
         }
     }
-    function fetchIngredientsName(){
-        const automatedNames=automatedIngredients.map((ingredient:IRecipeIngredientType)=> {return ingredient.ingredient_name})
-        const manualNames = manualIngredients.map((ingredient: IRecipeIngredientType) => {return ingredient.ingredient_name+"- my"; });
+
+    function fetchIngredientsName() {
+        //TODO: Nikol - understand with Amit if needed and how
+        const automatedNames = automatedIngredients.map((ingredient: IRecipeIngredientType) => {
+            return ingredient.ingredient_name
+        })
+        const manualNames = manualIngredients.map((ingredient: IRecipeIngredientType) => {
+            return ingredient.ingredient_name + "- my";
+        });
         ingredients.concat(automatedIngredients);
         let manualIIngredients = manualIngredients.map((ingredient: IRecipeIngredientType) => {
             return {...ingredient, ingredient_name: ingredient.ingredient_name + "- my"};
         });
-        const merged=manualIIngredients.concat(automatedIngredients);
+        const merged = manualIIngredients.concat(automatedIngredients);
         setIngredients(merged);
         setIngredientNames(automatedNames.concat(manualNames));
     }
-    async function fetchManualIngredients() {
-        /// get request
 
-
-        //get the names of them
-        //place them in ingredientsName
-    }
-    async function fetchAutomatedIngredients() {
-        /// get request
-
-
-        //get the names of them
-        //place them in ingredientsName
+    async function fetchIngredients() {
+        //TODO: Amit - implement!
     }
 
 
-    useEffect(()=>{console.log(recipePrice);},[recipePrice])
+    useEffect(() => {
+        console.log(recipePrice);
+    }, [recipePrice])
 
-    async function fetchRecipeData()
-    {
-     const  payload={recipe_id:id}
-        try
-        {
+    async function fetchRecipeData() {
+        const payload = {recipe_id: id}
+        try {
             const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_recipe', payload,
                 {
                     headers: {
@@ -226,7 +225,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                     }
                 }
             );
-            const data=JSON.parse(response.data.body)[0];
+            const data = JSON.parse(response.data.body)[0];
             setRecipeIngredients(data.ingredients);
             setRecipeName(data.recipe_name);
             setRecipePrice(data.recipe_price);
@@ -234,9 +233,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
             setTotalAvgCost(data.ingredients_avg_cost);
             setTotalMaxCost(data.ingredients_max_cost);
 
-        }
-        catch(error)
-        {
+        } catch (error) {
             console.log(error);
         }
     }
@@ -276,13 +273,13 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                         }
                     );
                     if (response.status === 200) {
-                        toast.success('Recipe updated successfully', { autoClose: 2000 });
+                        toast.success('Recipe updated successfully', {autoClose: 2000});
                         navigate(`/recipes`);
                     } else {
                         toast.error('Error updating recipe');
                     }
                 } catch (error) {
-                   // toast.dismiss(loadingToast); // Dismiss the "Loading" toast
+                    // toast.dismiss(loadingToast); // Dismiss the "Loading" toast
                     toast.error('Error updating recipe');
                     console.error(error);
                 }
@@ -291,6 +288,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
             }
         }
     }
+
     async function removeIngredient(name: string) {
         console.log(`remove name: ${name}`);
         const index = recipeIngredients.findIndex(ingredient => ingredient.ingredient_name === name);
@@ -301,20 +299,19 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
 
 
     function addIngredient() {
-        if(ingredientName === "" || !ingredientName)
+        if (ingredientName === "" || !ingredientName)
             toast.error(`Please choose ingredient`);
-        else if(quantity === 0 || !ingredientName)
+        else if (quantity === 0 || !ingredientName)
             toast.error(`Please choose quantity greater that 0`);
         else {
-            const recipeIngredientFromRecipe=recipeIngredients.find((ingredient)=>ingredient===currentIngredient);
-            if(recipeIngredientFromRecipe)
-                recipeIngredientFromRecipe.quantity=recipeIngredientFromRecipe.quantity+quantity;
-            else if(recipeIngredients&&currentIngredient)
-            {
+            const recipeIngredientFromRecipe = recipeIngredients.find((ingredient) => ingredient === currentIngredient);
+            if (recipeIngredientFromRecipe)
+                recipeIngredientFromRecipe.quantity = recipeIngredientFromRecipe.quantity + quantity;
+            else if (recipeIngredients && currentIngredient) {
                 setRecipeIngredients([...recipeIngredients, currentIngredient]);
-                currentIngredient.quantity=quantity;
+                currentIngredient.quantity = quantity;
             }
-            if(currentIngredient) {
+            if (currentIngredient) {
                 setTotalMinCost(quantity * currentIngredient.minCost + totalMinCost);
                 setTotalAvgCost(quantity * currentIngredient.avgCost + totalAvgCost);
                 setTotalMaxCost(quantity * currentIngredient.maxCost + totalMaxCost);
@@ -340,7 +337,8 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                             m: 1
                         }}
                     >
-                        <TextField disabled={false} fullWidth id="outlined-basic" label={"Recipe Name"} variant="outlined" defaultValue={recipeName}
+                        <TextField disabled={false} fullWidth id="outlined-basic" label={"Recipe Name"}
+                                   variant="outlined" defaultValue={recipeName}
                                    value={recipeName}
                                    onChange={(e: any) => {
                                        setRecipeName(e.target.value)
@@ -359,7 +357,8 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                             m: 1
                         }}
                     >
-                        <TextField disabled={false} fullWidth id="outlined-basic" label={"Recipe Priece"} variant="outlined" defaultValue={recipePrice}
+                        <TextField disabled={false} fullWidth id="outlined-basic" label={"Recipe Priece"}
+                                   variant="outlined" defaultValue={recipePrice}
                                    value={recipePrice === 0 ? "" : recipePrice}
                                    onChange={(e: any) => {
                                        setRecipePrice(Number(e.target.value))
@@ -403,7 +402,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                                 id="comcbo-box-demo"
                                 value={ingredientName}
                                 onChange={(event: any, newValue: string | null) => {
-                                    if(newValue)
+                                    if (newValue)
                                         setIngredientName(newValue);
                                     else setIngredientName("");
 
@@ -431,34 +430,48 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                                 sx={{
                                     '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
-                                onChange={(e: any) => {setMinCost(e.target.value)}}
+                                onChange={(e: any) => {
+                                    setMinCost(e.target.value)
+                                }}
                             >
-                                <TextField disabled={true} id="standard-basic" label={'Min Cost'} variant="standard" value={minCost === 0 ? "" : minCost}/>
+                                <TextField disabled={true} id="standard-basic" label={'Min Cost'} variant="standard"
+                                           value={minCost === 0 ? "" : minCost}/>
                             </Box>
                             <Box
                                 component="div"
                                 sx={{
                                     '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
-                                onChange={(e: any) => {setAvgCost(e.target.value)}}
+                                onChange={(e: any) => {
+                                    setAvgCost(e.target.value)
+                                }}
                             >
-                                <TextField disabled={true} id="standard-basic" label={'Avg Cost'} variant="standard" value={avgCost === 0 ? "" : avgCost}/>
+                                <TextField disabled={true} id="standard-basic" label={'Avg Cost'} variant="standard"
+                                           value={avgCost === 0 ? "" : avgCost}/>
                             </Box>
                             <Box
                                 component="div"
                                 sx={{
                                     '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
-                                onChange={(e: any) => {setMaxCost(e.target.value)}}
+                                onChange={(e: any) => {
+                                    setMaxCost(e.target.value)
+                                }}
                             >
-                                <TextField disabled={true} id="standard-basic" label={'Max Cost'} variant="standard" value={maxCost === 0 ? "" : maxCost}/>
+                                <TextField disabled={true} id="standard-basic" label={'Max Cost'} variant="standard"
+                                           value={maxCost === 0 ? "" : maxCost}/>
                             </Box>
                         </div>
                         <div className="recipes-list">
                             {
                                 recipeIngredients.map((ingredient) => {
-                                    return <IngredientDelegate removeDelegate={removeIngredient} key={ingredient.ingredient_name} name={ingredient.ingredient_name} quantity={ingredient.quantity}
-                                                               minCost={ingredient.minCost}  avgCost={ingredient.avgCost}    maxCost={ingredient.maxCost} measurement_unit = {ingredient.measurement_unit}
+                                    return <IngredientDelegate removeDelegate={removeIngredient}
+                                                               key={ingredient.ingredient_name}
+                                                               name={ingredient.ingredient_name}
+                                                               quantity={ingredient.quantity}
+                                                               minCost={ingredient.minCost} avgCost={ingredient.avgCost}
+                                                               maxCost={ingredient.maxCost}
+                                                               measurement_unit={ingredient.measurement_unit}
                                     />
                                 })
                             }
@@ -471,7 +484,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                             component="div"
                             sx={{
                                 width: '25ch',
-                                m:1
+                                m: 1
                             }}
                         >
                             <TextField
@@ -479,7 +492,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                                 id="standard-basic"
                                 label={"Order Min Cost"}
                                 variant="standard"
-                                defaultValue={totalMinCost }
+                                defaultValue={totalMinCost}
                                 value={totalMinCost === 0 ? "" : totalMinCost}
                                 onChange={(e: any) => {
                                     setTotalMinCost(Number(e.target.value))
@@ -490,7 +503,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                             component="div"
                             sx={{
                                 width: '25ch',
-                                m:1
+                                m: 1
                             }}
                         >
                             <TextField
@@ -509,7 +522,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                             component="div"
                             sx={{
                                 width: '25ch',
-                                m:1
+                                m: 1
                             }}
                         >
                             <TextField
@@ -525,7 +538,9 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                             />
                         </Box>
 
-                        <button className='button-container button-text add-item-button add-ingredient-to-recipe-button' onClick={addIngredient}>Add Ingredient</button>
+                        <button className='button-container button-text add-item-button add-ingredient-to-recipe-button'
+                                onClick={addIngredient}>Add Ingredient
+                        </button>
                     </div>
                 </div>
             </div>

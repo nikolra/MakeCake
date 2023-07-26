@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './dashboard-panel.style.css'
 import DashboardLink from '../dashboard-link/dashboard-link.component'
 import {solid} from '@fortawesome/fontawesome-svg-core/import.macro'

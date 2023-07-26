@@ -4,7 +4,10 @@ import '../widgets.style.css';
 import {ToastContainer} from "react-toastify";
 import BestCustomersDelegate from "./best-customers-delegate.component";
 import axios from 'axios';
-const { promisify } = require('util');
+import Cookies from "js-cookie";
+import {useNavigate} from "react-router-dom";
+
+const {promisify} = require('util');
 
 type Customer = {
     number: number;
@@ -14,19 +17,28 @@ type Customer = {
 
 export default function WeekOrders() {
     const [customers, setCustomers] = useState<Customer[]>([]);
-
+    const navigate = useNavigate();
 
     useEffect(() => {
+        if (!Cookies.get('makecake-token')) {
+            navigate("/");
+            return;
+        }
         fetchTopCustomers();
     }, []);
 
-    async function  fetchTopCustomers() {
+    async function fetchTopCustomers() {
         try {
-            //const user = await Auth.currentAuthenticatedUser();
-            //const payload = { seller_email: user.attributes.email };
-            const payload = {seller_email: 'tomer@gmail.com',buyers:5};
-            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/top_buyers', {params: payload});
-            const responseData=JSON.parse(response.data.body);
+            const response =
+                await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/top_buyers',
+                    {
+                        headers: {
+                            "Content-type": "application/json",
+                            Authorization: "Bearer " + Cookies.get('makecake-token')
+                        }
+                    },
+                );
+            const responseData = JSON.parse(response.data.body);
             console.log(responseData)
             const filteredData: Customer[] = responseData.map((item: any, index: number) => ({
                 number: index + 1,
@@ -34,8 +46,9 @@ export default function WeekOrders() {
                 name: item.email
             }));
             setCustomers(filteredData);
+        } catch {
+
         }
-        catch {}
     }
 
     return (
@@ -61,12 +74,12 @@ export default function WeekOrders() {
             </div>
             <div className="best-customers-list-container">
                 <div className="best-customers-list">
-                    {customers.map((customer:any) => {
+                    {customers.map((customer: any) => {
                         return <BestCustomersDelegate key={customer.number} data={customer}/>;
                     })}
                 </div>
             </div>
-            <ToastContainer />
+            <ToastContainer/>
         </div>
     )
 }

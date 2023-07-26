@@ -34,7 +34,15 @@ export default function Ingredients({className, header, description}: IIngredien
         console.log(`update Ingredients called`);
         //TODO: Amit integrate with automated ingredients lambda
         try {
-            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user', {accessToken: Cookies.get('makecake-token')});
+            const response =
+                await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user',
+                    {accessToken: Cookies.get('makecake-token')},
+                    {
+                        headers: {
+                            "content-type": "application/json",
+                            "Authorization": "Bearer " + Cookies.get('makecake-token')
+                        }
+                    });
             const responseBodyJSON = JSON.parse(response.data.body);
             const user_email = responseBodyJSON.email;
             console.log(response.data);

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import '../dashboard-widgets/widgets.style.css'
 import './settings.style.css'
 import InputField from "../outlinedd-input-field/input-field.component";
@@ -7,6 +7,8 @@ import {toast, ToastContainer} from "react-toastify";
 import TextField from '@mui/material/TextField';
 import Box from "@mui/material/Box";
 import axios from "axios";
+import Cookies from "js-cookie";
+import {useNavigate} from "react-router-dom";
 
 interface IOrderProps {
     className?: string
@@ -14,13 +16,38 @@ interface IOrderProps {
 
 export default function SettingsComponent({className}: IOrderProps) {
 
-    //TODO: Amit should use the data of the connected user and not hard codded data
-    const [username, setName] = useState('Ariana Broflowski');
+    const [username, setName] = useState('');
     const [templateName, setTemplateName] = useState('');
     const [smsTemplate, setSmsTemplate] = useState('');
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (!Cookies.get('makecake-token')) {
+            navigate("/");
+            return;
+        }
+        getUserData();
+    }, []);
+
+    const getUserData = async() => {
+        const response =
+            await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user',
+                {accessToken: Cookies.get('makecake-token')},
+                {
+                    headers: {
+                        "content-type": "application/json",
+                        "Authorization": "Bearer " + Cookies.get('makecake-token')
+                    }
+                });
+        const responseBodyJSON = JSON.parse(response.data.body);
+        console.log("responseBodyJSON");
+        console.log(responseBodyJSON);
+        const user_email = responseBodyJSON.username;
+        setName(user_email);
+    }
 
     const updatePasswordAndName = () => {
         //TODO: Amit implement change password using cognito
@@ -28,14 +55,20 @@ export default function SettingsComponent({className}: IOrderProps) {
 
     const createNewSMSTemplate = () => {
         try{
-            //TODO: Amit - should get connected user email
         const payload = {
             smsTemplateName:templateName,
-            konditorEmail: "tomer@gmail.com",
             smsTemplateMessage:smsTemplate
         };
         toast.promise(async ()=> {
-            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/create_sms_template',payload);
+            const response =
+                await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/create_sms_template',
+                    payload,
+                    {
+                        headers: {
+                            "Content-type": "application/json",
+                            Authorization: "Bearer " + Cookies.get('makecake-token')
+                        }
+                    });
             console.log(JSON.stringify(response));
             console.log(response.data);
         }, {

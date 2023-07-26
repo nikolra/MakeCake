@@ -40,10 +40,26 @@ export default function Orders({ className, header, description, isDashboard }: 
     const [orders, setOrders] = useState<OrderType[]>([]);
     const [filteredOrders, setFilteredOrders] = useState<OrderType[]>([]);
     const [searchString, setSearchString] = useState('');
-    const [isLoading, setIsLoading] = useState(true); // new loading state
-    const [error, setError] = useState(null); // new error state
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (!Cookies.get('makecake-token')) {
+            navigate("/");
+            return;
+        }
+        fetchOrders();
+    }, []);
+
+    useEffect(() => {
+        const filtered = orders.filter((order) => {
+            console.log(order);
+            const name = order.customer.toLowerCase();
+            const doesInclude = name.includes(searchString);
+            console.log(doesInclude);
+            return doesInclude;
+        });
+        setFilteredOrders(filtered);
+    }, [orders, searchString]);
 
     const deleteOrder = async (id: any) => {
         try {
@@ -72,8 +88,6 @@ export default function Orders({ className, header, description, isDashboard }: 
             console.error(`Error deleting order ${id}:`, error);
         }
     }
-
-
     const handleDeleteOrder = (id: any) => {
         setOrders(prevOrders => prevOrders.filter(order => order.id !== id));
     }
@@ -88,7 +102,6 @@ export default function Orders({ className, header, description, isDashboard }: 
                     }
                 });
             const apiData = JSON.parse(response.data.body);
-            //console.log(apiData);
             if(isDashboard)
             {
                 const transformedOrders = apiData.map((orderData:any) => createOrderFromData(orderData,true)).filter((orderData:any)=>orderData!=null);
@@ -104,21 +117,6 @@ export default function Orders({ className, header, description, isDashboard }: 
             console.error('Error fetching orders:', error);
         }
     };
-
-    useEffect(() => {
-        fetchOrders();
-    }, []);
-
-    useEffect(() => {
-        const filtered = orders.filter((order) => {
-            console.log(order);
-            const name = order.customer.toLowerCase();
-            const doesInclude = name.includes(searchString);
-            console.log(doesInclude);
-            return doesInclude;
-        });
-        setFilteredOrders(filtered);
-    }, [orders, searchString]);
 
     const createRecipeFromData = (recipeData:any):OrderRecipeItem => {
         return{
