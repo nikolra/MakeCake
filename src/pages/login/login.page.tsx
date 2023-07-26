@@ -15,13 +15,13 @@ export default function Login() {
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
 
-    useEffect(()=> {
+/*    useEffect(()=> {
         //if cookie has a token navigate to dashboard
         if (Cookies.get('makecake-token')) {
             navigate('/dashboard');
             return;
         }
-    },[]);
+    },[]);*/
 
     const tryLogin = async () => {
         const body = {

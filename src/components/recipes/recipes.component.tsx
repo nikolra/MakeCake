@@ -8,6 +8,7 @@ import NavigationButtonComponent from "../navigation-button/navigation-button.co
 import {toast, ToastContainer} from "react-toastify";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import Cookies from 'js-cookie';
 
 interface IRecipeProps {
     className: string,
@@ -34,21 +35,22 @@ type RecipeType = {
 };
 
 export default function Recipes({className, header, description}: IRecipeProps) {
-
-
-
     const [recipes, setRecipes] = useState<RecipeType[]>([]);
     const [searchString, setSearchString] = useState('');
     const navigate = useNavigate();
+
+
+    useEffect(() => {
+        fetchRecipes();
+    }, []);
+
+
     const deleteRecipe= async (id: any) => {
 
         try {
             const payload = {
-                user_email: "tomer@gmail.com",
                 recipe_id: id.toString()
             };
-
-
             toast.promise(async () => {
                     await axios.delete('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_recipe', {params: payload});
                 },
@@ -68,22 +70,25 @@ export default function Recipes({className, header, description}: IRecipeProps) 
     }
 
 
-const handleDeleteOrder = (id: any) => {
-    setRecipes(prevRecipes => prevRecipes.filter(recipe => recipe.recipe_id !== id));
-}
-
-    const fetchRecipes = async () => {
+  const handleDeleteOrder = (id: any) => {
+      setRecipes(prevRecipes => prevRecipes.filter(recipe => recipe.recipe_id !== id));
+  }
+  const fetchRecipes = async () => {
         try {
-            const payload = {user_email: "tomer@gmail.com"};
-            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user_recipes', {params:payload});
-            setRecipes(response.data);
+            const response =await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user_recipes',
+                {
+                    headers:{
+                        "Content-type": "application/json",
+                        Authorization: "Bearer " + Cookies.get('makecake-token')
+                    }
+                });
+            const data =JSON.parse(response.data.body);
+            setRecipes(data);
         } catch (error) {
             console.error('Error fetching orders:', error);
         }
+        console.log(3);
     };
-    useEffect(() => {
-        fetchRecipes();
-    }, []);
 
     return (
         <div className= {`dashboard-widget-container all-recipes-widget ${className}`}>

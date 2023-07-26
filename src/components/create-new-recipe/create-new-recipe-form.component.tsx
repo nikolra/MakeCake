@@ -156,6 +156,7 @@ export default function NewRecipeForm() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        updateTableFields()
         if(recipeName==="")
         {
             setQuantity(0);
@@ -167,8 +168,6 @@ export default function NewRecipeForm() {
     useEffect(() => {fetchManualIngredients(); }, []);
     useEffect(() => {fetchAutomatedIngredients(); }, []);
     useEffect(() => {fetchIngredientsName(); }, []);
-
-    useEffect(() => {updateTableFields() }, [ingredientName]);
 
 
     function updateTableFields()

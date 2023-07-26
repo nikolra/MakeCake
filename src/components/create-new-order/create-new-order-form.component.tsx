@@ -12,6 +12,7 @@ import {toast,ToastContainer,} from "react-toastify";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
+import Cookies from 'js-cookie';
 
 export default function NewOrderForm() {
 
@@ -119,9 +120,13 @@ export default function NewOrderForm() {
     }                                                                       //TODO|| and it will forget the last key and start over again
     const fetchUserRecipes = async () => {
         try {
-            const payload = {user_email: 'tomer@gmail.com'};
-            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user_recipes', {params: payload});
-            const responseData = response.data;
+            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user_recipes',{
+                headers:{
+                    "Content-type": "application/json",
+                    Authorization: "Bearer " + Cookies.get('makecake-token')
+                }
+            });
+            const responseData = JSON.parse(response.data.body);
             const recipeItems = responseData.map((item:RecipeItem) => ({
                 recipe_price: item.recipe_price,
                 recipe_name: item.recipe_name,
@@ -151,8 +156,7 @@ export default function NewOrderForm() {
             toast.error("Please add at least  one recipe to the order");
          else {
             try {
-                const orderData = {
-                    seller_email: "tomer@gmail.com",
+                const payload = {
                     order_id: order_Id,
                     buyer_email: customerName,
                     due_date: dueDate,
@@ -164,9 +168,16 @@ export default function NewOrderForm() {
                 const loadingToast = toast.info('Loading', { autoClose: false });
 
                 try {
-                    const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order', orderData);
-                    toast.dismiss(loadingToast); // Dismiss the "Loading" toast
-
+                    const response = await axios.post(
+                        'https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order',
+                        payload,
+                        {
+                            headers: {
+                                "content-type": "application/json",
+                                "Authorization": "Bearer " + Cookies.get('makecake-token')
+                            }
+                        }
+                    );
                     if (response.status === 200) {
                         toast.success('Order created successfully', { autoClose: 2000 });
                         navigate(`/orders`);

@@ -8,6 +8,7 @@ import NavigationButtonComponent from '../navigation-button/navigation-button.co
 import {useNavigate} from "react-router-dom";
 import {toast, ToastContainer} from 'react-toastify';
 import dayjs from "dayjs";
+import Cookies from 'js-cookie';
 
 interface IOrderProps {
     className: string;
@@ -74,10 +75,13 @@ export default function Orders({ className, header, description, isDashboard }: 
 
     const fetchOrders = async () => {
         try {
-            //const user = await Auth.currentAuthenticatedUser();
-            //const payload = { seller_email: user.attributes.email };
-            const payload = { seller_email: 'tomer@gmail.com'};
-            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get-all-my-orders', {params:payload});
+            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get-all-my-orders',
+                {
+                    headers:{
+                        "Content-type": "application/json",
+                        Authorization: "Bearer " + Cookies.get('makecake-token')
+                    }
+                });
             const apiData = JSON.parse(response.data.body);
             //console.log(apiData);
             if(isDashboard)

@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import 'react-toastify/dist/ReactToastify.css';
 import {toast,ToastContainer,} from "react-toastify";
 import {useNavigate} from "react-router-dom";
+import Cookies from 'js-cookie';
 
 interface IProps {
     id: string;
@@ -88,7 +89,7 @@ export default function EditOrderForm({id}: IProps) {
         }
     }, [recipeName]);
     useEffect(()=>{fetchOrder()},[]);
-    //useEffect(()=>{},[orderRecipes]);
+
 
     const deleteRecipeFromOrder = (recipeName: string) => {
         const index = orderRecipes.findIndex(recipe => recipe.recipe_name=== recipeName);
@@ -120,9 +121,13 @@ export default function EditOrderForm({id}: IProps) {
 
     const fetchUserRecipes = async () => {
         try {
-            const payload = {user_email: 'tomer@gmail.com'};
-            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user_recipes', {params: payload});
-            const responseData = response.data;
+            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user_recipes',{
+                headers:{
+                    "Content-type": "application/json",
+                    Authorization: "Bearer " + Cookies.get('makecake-token')
+                }
+            });
+            const responseData = JSON.parse(response.data.body);
             const recipeItems = responseData.map((item:RecipeItem) => ({
                 recipe_price: item.recipe_price,
                 recipe_name: item.recipe_name,
@@ -147,8 +152,7 @@ export default function EditOrderForm({id}: IProps) {
             toast.error("Please add at least  one recipe to the order");
         else {
             try {
-                const orderData = {
-                    seller_email: "tomer@gmail.com",
+                const payload = {
                     order_id: id.toString(),
                     buyer_email: customerName,
                     due_date: dueDate,
@@ -157,18 +161,28 @@ export default function EditOrderForm({id}: IProps) {
                 };
 
                 // Show "Loading" toast
+                const loadingToast = toast.info('Loading', { autoClose: false });
 
                 try {
-                    const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order', orderData);
-
+                    const response = await axios.post(
+                        'https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order',
+                        payload,
+                        {
+                            headers: {
+                                "content-type": "application/json",
+                                "Authorization": "Bearer " + Cookies.get('makecake-token')
+                            }
+                        }
+                    );
                     if (response.status === 200) {
-                        toast.success('Order updated successfully', { autoClose: 2000 });
+                        toast.success('Order created successfully', { autoClose: 2000 });
                         navigate(`/orders`);
                     } else {
-                        toast.error('Error updating order');
+                        toast.error('Error creating order');
                     }
                 } catch (error) {
-                    toast.error('Error updating order');
+                    toast.dismiss(loadingToast); // Dismiss the "Loading" toast
+                    toast.error('Error creating order');
                     console.error(error);
                 }
             } catch (error) {
@@ -181,9 +195,16 @@ export default function EditOrderForm({id}: IProps) {
 
     const fetchOrder = async () => {
         try {
-            const payload = {seller_email: 'tomer@gmail.com', order_id: id};
-            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_order', {params: payload});
-            const data=response.data;
+            const payload ={order_id:id.toString()}
+            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_order', payload,
+            {
+                headers: {
+                    "content-type": "application/json",
+                        "Authorization": "Bearer " + Cookies.get('makecake-token')
+                }
+            }
+          );
+            const data=JSON.parse(response.data.body);
             setCustomerName(data.buyer_email);
             setDateFromPicker(data.due_date);
             setOrderPrice(data.order_price);

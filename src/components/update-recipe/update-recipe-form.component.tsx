@@ -12,6 +12,7 @@ import {toast, ToastContainer} from "react-toastify";
 //import StandardInputField from "../standart-input-field/input-field.component";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import Cookies from 'js-cookie';
 
 interface IRecipeProps {
     id: string
@@ -249,8 +250,7 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
             toast.error("Recipe price can't be 0");
         } else {
             try {
-                const recipeData = {
-                    user_email: "tomer@gmail.com",
+                const payload = {
                     recipe_id: id.toString(),
                     recipe_name: recipeName,
                     recipe_price: recipePrice,
@@ -261,7 +261,14 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                 };
                 try {
 
-                    const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe', recipeData);
+                    const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe',payload,
+                        {
+                            headers: {
+                                "content-type": "application/json",
+                                "Authorization": "Bearer " + Cookies.get('makecake-token')
+                            }
+                        }
+                    );
 
                     if (response.status === 200) {
                         toast.success('recipe updated', {autoClose: 2000});
