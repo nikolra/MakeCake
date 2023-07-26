@@ -51,8 +51,15 @@ export default function Recipes({className, header, description}: IRecipeProps) 
             const payload = {
                 recipe_id: id.toString()
             };
-            toast.promise(async () => {
-                    await axios.delete('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_recipe', {params: payload});
+            toast.promise(
+                async () => {
+                    await axios.post(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_recipe`, payload,
+                        {
+                            headers:{
+                                "Content-type": "application/json",
+                                Authorization: "Bearer " + Cookies.get('makecake-token'),
+                            }
+                        });
                 },
                 {
                     pending: 'Loading',

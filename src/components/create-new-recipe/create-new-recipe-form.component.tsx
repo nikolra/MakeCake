@@ -156,7 +156,6 @@ export default function NewRecipeForm() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        updateTableFields()
         if(recipeName==="")
         {
             setQuantity(0);
@@ -164,6 +163,7 @@ export default function NewRecipeForm() {
             setAvgCost(0);
             setMaxCost(0);
         }
+        updateTableFields()
     }, [ingredientName]);
     useEffect(() => {fetchManualIngredients(); }, []);
     useEffect(() => {fetchAutomatedIngredients(); }, []);
@@ -219,7 +219,6 @@ export default function NewRecipeForm() {
 
     async function sendDataToBackend() {
         console.log(`Submit clicked`);
-        console.log(recipePrice);
         if (recipeName === "") {
             toast.error("Please enter recipe name");
         } else if (recipeIngredients.length === 0)
@@ -230,7 +229,7 @@ export default function NewRecipeForm() {
             toast.error("Recipe price can't be 0");
         } else {
             try {
-                const recipeData = {
+                const payload = {
                     recipe_id: generateNumericID(),
                     recipe_name: recipeName,
                     recipe_price: recipePrice,
@@ -239,24 +238,27 @@ export default function NewRecipeForm() {
                     ingredients_max_cost: totalMaxCost,
                     ingredients: recipeIngredients
                 };
-                try {
+                //const loadingToast = toast.info('Loading', { autoClose: false });
 
-                    const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe',
-                        recipeData,
+                try {
+                    const response = await axios.post(
+                        'https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe',
+                        payload,
                         {
                             headers: {
-                                "Content-type": "application/json",
-                                Authorization: "Bearer " + Cookies.get('makecake-token')
+                                "content-type": "application/json",
+                                "Authorization": "Bearer " + Cookies.get('makecake-token')
                             }
-                        });
-
+                        }
+                    );
                     if (response.status === 200) {
-                        toast.success('Recipe created successfully', {autoClose: 2000});
+                        toast.success('Recipe created successfully', { autoClose: 2000 });
                         navigate(`/recipes`);
                     } else {
                         toast.error('Error creating recipe');
                     }
                 } catch (error) {
+                   // toast.dismiss(loadingToast); // Dismiss the "Loading" toast
                     toast.error('Error creating recipe');
                     console.error(error);
                 }

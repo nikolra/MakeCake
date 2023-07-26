@@ -45,16 +45,19 @@ export default function Orders({ className, header, description, isDashboard }: 
     const navigate = useNavigate();
 
 
-
-    const deleteOrder= async (id: any) => {
+    const deleteOrder = async (id: any) => {
         try {
-            const payload = {
-                seller_email: 'tomer@gmail.com',
-                order_id: id.toString()
-            };
-            toast.promise(async ()=> {
-               await axios.delete(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_order`,{data:payload});
-            },
+            const payload ={order_id : id.toString()};
+            toast.promise(
+                async () => {
+                    await axios.post(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_order`, payload,
+                        {
+                            headers:{
+                                "Content-type": "application/json",
+                                Authorization: "Bearer " + Cookies.get('makecake-token'),
+                            }
+                        });
+                },
                 {
                     pending: 'Loading',
                     success: { render: 'Order deleted', autoClose: 1000 },
@@ -62,12 +65,14 @@ export default function Orders({ className, header, description, isDashboard }: 
                 }
             ).then(response => {
                 handleDeleteOrder(id);
-            });}
+            });
+        }
         catch (error)
         {
             console.error(`Error deleting order ${id}:`, error);
         }
     }
+
 
     const handleDeleteOrder = (id: any) => {
         setOrders(prevOrders => prevOrders.filter(order => order.id !== id));

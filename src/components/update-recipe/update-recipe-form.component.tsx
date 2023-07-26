@@ -215,31 +215,34 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
 
     async function fetchRecipeData()
     {
-     const  recipe_payload={user_email: "tomer@gmail.com",recipe_id:id}
+     const  payload={recipe_id:id}
         try
         {
-            const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_recipe', { params: recipe_payload });
-            const data = response.data;  // Converts the JSON string back to an object
-            console.log(data[0].recipe_price);
-            setRecipeIngredients(data[0].ingredients);
-            setRecipeName(data[0].recipe_name);
-            setRecipePrice(data[0].recipe_price);
-            setTotalMinCost(data[0].ingredients_min_cost);
-            setTotalAvgCost(data[0].ingredients_avg_cost);
-            setTotalMaxCost(data[0].ingredients_max_cost);
+            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_recipe', payload,
+                {
+                    headers: {
+                        "content-type": "application/json",
+                        "Authorization": "Bearer " + Cookies.get('makecake-token')
+                    }
+                }
+            );
+            const data=JSON.parse(response.data.body)[0];
+            setRecipeIngredients(data.ingredients);
+            setRecipeName(data.recipe_name);
+            setRecipePrice(data.recipe_price);
+            setTotalMinCost(data.ingredients_min_cost);
+            setTotalAvgCost(data.ingredients_avg_cost);
+            setTotalMaxCost(data.ingredients_max_cost);
 
         }
         catch(error)
         {
             console.log(error);
         }
-
     }
-
 
     async function sendDataToBackend() {
         console.log(`Submit clicked`);
-        console.log(recipePrice);
         if (recipeName === "") {
             toast.error("Please enter recipe name");
         } else if (recipeIngredients.length === 0)
@@ -259,9 +262,12 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                     ingredients_max_cost: totalMaxCost,
                     ingredients: recipeIngredients
                 };
-                try {
+                //const loadingToast = toast.info('Loading', { autoClose: false });
 
-                    const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe',payload,
+                try {
+                    const response = await axios.post(
+                        'https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe',
+                        payload,
                         {
                             headers: {
                                 "content-type": "application/json",
@@ -269,14 +275,14 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
                             }
                         }
                     );
-
                     if (response.status === 200) {
-                        toast.success('recipe updated', {autoClose: 2000});
+                        toast.success('Recipe updated successfully', { autoClose: 2000 });
                         navigate(`/recipes`);
                     } else {
                         toast.error('Error updating recipe');
                     }
                 } catch (error) {
+                   // toast.dismiss(loadingToast); // Dismiss the "Loading" toast
                     toast.error('Error updating recipe');
                     console.error(error);
                 }
@@ -285,7 +291,6 @@ export default function EditRecipeForm( {id}: IRecipeProps) {
             }
         }
     }
-
     async function removeIngredient(name: string) {
         console.log(`remove name: ${name}`);
         const index = recipeIngredients.findIndex(ingredient => ingredient.ingredient_name === name);

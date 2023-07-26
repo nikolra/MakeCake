@@ -46,14 +46,9 @@ export default function NewOrderForm() {
     const [totalAvgCost, setTotalAvgCost] = useState(0);
     const [recipePrice,setRecipePrice]=useState(0);
     const [currentRecipe,setCurrentRecipe]=useState<RecipeItem>();
-
-
-
-
     const [myRecipesNames, setRecipeNames] = useState<string[]>([]); //TODO: Tomer - should be initializes to all recipes names for the user that is currently logged in
     const [myCustomers, setCustomers] = useState(options1); //TODO: Eden - should be initializes to all customer names for the user that is currently logged in. (Consider saving change customer name to customer email)
     const [myRecipes, setMyRecipes] = useState<RecipeItem[]>([]);
-
     const navigate = useNavigate();
 
 
@@ -67,9 +62,6 @@ export default function NewOrderForm() {
             setMaxCost(0);
             setRecipePrice(0);
         }
-        }, [recipeName]);
-    useEffect(() => {fetchUserRecipes(); }, []);
-    useEffect(() => {
         if (myRecipes) {
             const recipe = myRecipes.find((recipe) => recipe.recipe_name === recipeName);
             if (recipe) {
@@ -81,8 +73,8 @@ export default function NewOrderForm() {
                 setQuantity(1);
             }
         }
-    }, [recipeName]);
-
+        }, [recipeName]);
+    useEffect(() => {fetchUserRecipes(); }, []);
 
     const deleteRecipeFromOrder = (recipeName: string) => {
         const index = orderRecipes.findIndex(recipe => recipe.recipe_name=== recipeName);
@@ -143,9 +135,6 @@ export default function NewOrderForm() {
         }
     };
 
-    const showCustomErrorToast = () => {
-        toast.error('Please enter customer name', { autoClose: 1000 });
-    };
 
     async function sendDataToBackend() {
         const order_Id = generateNumericID();
@@ -154,6 +143,10 @@ export default function NewOrderForm() {
         }
          else if (orderRecipes.length === 0)
             toast.error("Please add at least  one recipe to the order");
+        else if (isNaN(Number(orderPrice)))
+            toast.error("Order price must be a number");
+        else if (orderPrice === 0 || orderPrice.toString() === "0" || orderPrice.toString() === "")
+            toast.error("Order price can't be 0");
          else {
             try {
                 const payload = {
@@ -165,7 +158,7 @@ export default function NewOrderForm() {
                 };
 
                 // Show "Loading" toast
-                const loadingToast = toast.info('Loading', { autoClose: false });
+                //const loadingToast = toast.info('Loading', { autoClose: false });
 
                 try {
                     const response = await axios.post(
@@ -185,7 +178,7 @@ export default function NewOrderForm() {
                         toast.error('Error creating order');
                     }
                 } catch (error) {
-                    toast.dismiss(loadingToast); // Dismiss the "Loading" toast
+                    //toast.dismiss(loadingToast); // Dismiss the "Loading" toast
                     toast.error('Error creating order');
                     console.error(error);
                 }

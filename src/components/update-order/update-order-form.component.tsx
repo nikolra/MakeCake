@@ -150,6 +150,10 @@ export default function EditOrderForm({id}: IProps) {
         }
         else if (orderRecipes.length === 0)
             toast.error("Please add at least  one recipe to the order");
+        else if (isNaN(Number(orderPrice)))
+            toast.error("Order price must be a number");
+        else if (orderPrice === 0 || orderPrice.toString() === "0" || orderPrice.toString() === "")
+            toast.error("Order price can't be 0");
         else {
             try {
                 const payload = {
@@ -161,7 +165,7 @@ export default function EditOrderForm({id}: IProps) {
                 };
 
                 // Show "Loading" toast
-                const loadingToast = toast.info('Loading', { autoClose: false });
+                //const loadingToast = toast.info('Loading', { autoClose: false });
 
                 try {
                     const response = await axios.post(
@@ -175,14 +179,14 @@ export default function EditOrderForm({id}: IProps) {
                         }
                     );
                     if (response.status === 200) {
-                        toast.success('Order created successfully', { autoClose: 2000 });
+                        toast.success('Order updated successfully', { autoClose: 2000 });
                         navigate(`/orders`);
                     } else {
-                        toast.error('Error creating order');
+                        toast.error('Error updating order');
                     }
                 } catch (error) {
-                    toast.dismiss(loadingToast); // Dismiss the "Loading" toast
-                    toast.error('Error creating order');
+                    //toast.dismiss(loadingToast); // Dismiss the "Loading" toast
+                    toast.error('Error updating order');
                     console.error(error);
                 }
             } catch (error) {
@@ -204,11 +208,11 @@ export default function EditOrderForm({id}: IProps) {
                 }
             }
           );
-            const data=JSON.parse(response.data.body);
+            const data=JSON.parse(response.data.body)[0];
             setCustomerName(data.buyer_email);
             setDateFromPicker(data.due_date);
             setOrderPrice(data.order_price);
-            console.log(data.recipes);
+            //console.log(data.recipes);
             const recipeItems = data.recipes.map((item:RecipeItem) => (
                 {
                 recipe_price: item.recipe_price,
