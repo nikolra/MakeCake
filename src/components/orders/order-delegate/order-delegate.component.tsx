@@ -77,7 +77,7 @@ function OrderDelegate(props: IOrderProps) {
                                         <span>{recipe.recipe_quantity}</span>
                                     </div>
                                     <div className="order-delegate-recipe-title-item">
-                                        <span>{recipe.recipe_price}₪</span>
+                                        <span>{recipe.recipe_price*recipe.recipe_quantity}₪</span>
                                     </div>
 
                                 </div>

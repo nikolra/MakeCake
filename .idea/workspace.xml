@@ -5,40 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c7a2437d-b918-4d33-803d-084c99b088ba" name="Changes" comment=".">
-      <change beforePath="$PROJECT_DIR$/src/components/create-new-customer/create-new-customer-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-customer/create-new-customer-form.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/create-new-ingredient/create-new-ingredient-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-ingredient/create-new-ingredient-form.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/create-new-order/create-new-order-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-order/create-new-order-form.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/create-new-order/recipe-delegate/recipe-delegate.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-order/recipe-delegate/recipe-delegate.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/create-new-recipe/create-new-recipe-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-recipe/create-new-recipe-form.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/customers/customers.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/customers/customers.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard-panel/dashboard-panel.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard-panel/dashboard-panel.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard-widgets/best-customers/best-customers.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard-widgets/best-customers/best-customers.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard-widgets/income/income.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard-widgets/income/income.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ingredients/ingrediants.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ingredients/ingrediants.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/create-new-recipe/ingredient-delegate/ingredient-delegate.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-recipe/ingredient-delegate/ingredient-delegate.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/orders/order-delegate/order-delegate.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/orders/order-delegate/order-delegate.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/orders/orders.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/orders/orders.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/outlinedd-input-field/input-field.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/outlinedd-input-field/input-field.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/recipes/recipes-delegate/recipe-delegate.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recipes/recipes-delegate/recipe-delegate.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/recipes/recipes.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recipes/recipes.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/settings/settings.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/settings/settings.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/update-customer/update-customer-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/update-customer/update-customer-form.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/update-recipe/update-recipe-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/update-recipe/update-recipe-form.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/user/user.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/user/user.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/customers/add-customer.page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/customers/add-customer.page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/customers/customers.page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/customers/customers.page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/customers/edit-customer.page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/customers/edit-customer.page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ingredients/add-ingredient.page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ingredients/add-ingredient.page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ingredients/edit-ingredient.page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ingredients/edit-ingredient.page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ingredients/ingredients.page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ingredients/ingredients.page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/layouts/dashboard.layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/layouts/dashboard.layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/layouts/main.layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/layouts/main.layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/login/login.page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/login.page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/orders/add-order.page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/orders/add-order.page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/orders/edit-order.page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/orders/edit-order.page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/orders/orders.page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/orders/orders.page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/password-restore/password-restore.page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/password-restore/password-restore.page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/recipes/add-recipe.page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/recipes/add-recipe.page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/recipes/edit-recipe.page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/recipes/edit-recipe.page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/recipes/recipes.page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/recipes/recipes.page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/settings/settings.page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/settings/settings.page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,29 +25,32 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/package.json" />
+  </component>
   <component name="ProjectId" id="2S1dxdZDC2S9O80gALivd4eH1gK" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "Merging main",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.editor",
-    "ts.external.directory.path": "C:\\Users\\Tomer\\WebstormProjects\\MakeCake\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Tomer\\WebstormProjects\\MakeCake\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -109,7 +89,9 @@
       <workItem from="1690323043757" duration="9365000" />
       <workItem from="1690364817003" duration="12975000" />
       <workItem from="1690391868912" duration="4702000" />
-      <workItem from="1690402584862" duration="697000" />
+      <workItem from="1690402584862" duration="7181000" />
+      <workItem from="1690410463082" duration="2550000" />
+      <workItem from="1690453439606" duration="15524000" />
     </task>
     <task id="LOCAL-00001" summary="implemented best customers widget">
       <option name="closed" value="true" />
@@ -231,7 +213,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690403617635</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary=".">
+      <option name="closed" value="true" />
+      <created>1690403822889</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1690403822889</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -262,5 +252,17 @@
     <MESSAGE value="orders+recipes integrated with cognito" />
     <MESSAGE value="." />
     <option name="LAST_COMMIT_MESSAGE" value="." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx</url>
+          <line>52</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

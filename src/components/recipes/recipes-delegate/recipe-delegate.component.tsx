@@ -85,13 +85,13 @@ function RecipeDelegate(props: IRecipeProps) {
                         <span>Quantity</span>
                     </div>
                     <div className="all-recipes-delegate-recipe-title-item">
-                        <span>Lowest Price</span>
+                        <span>Lowest ingredient cost</span>
                     </div>
                     <div className="all-recipes-delegate-recipe-title-item">
-                        <span>Average Price</span>
+                        <span>Average ingredient cost</span>
                     </div>
                     <div className="all-recipes-delegate-recipe-title-item">
-                        <span>Highest Price</span>
+                        <span>Highest ingredient cost</span>
                     </div>
                 </div>
                 {
@@ -113,13 +113,13 @@ function RecipeDelegate(props: IRecipeProps) {
                                     <span>{ingredient.quantity} {ingredient.measurement_unit}</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.minCost === 0 ? "" :ingredient.minCost}₪</span>
+                                    <span>{ingredient.minCost*ingredient.quantity}₪</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.avgCost === 0 ? "" :ingredient.avgCost}₪</span>
+                                    <span>{ingredient.avgCost*ingredient.quantity}₪</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.maxCost === 0 ? "" :ingredient.maxCost}₪</span>
+                                    <span>{ingredient.maxCost*ingredient.quantity}₪</span>
                                 </div>
                             </div>
                         )

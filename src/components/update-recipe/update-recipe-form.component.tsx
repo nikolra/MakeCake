@@ -164,6 +164,17 @@ export default function EditRecipeForm({id}: IRecipeProps) {
 
 
     useEffect(() => {
+        if(recipeName==="")
+        {
+            setQuantity(0);
+            setMinCost(0);
+            setAvgCost(0);
+            setMaxCost(0);
+        }
+        updateTableFields()
+    }, [ingredientName]);
+
+    useEffect(() => {
         if (!Cookies.get('makecake-token')){
             navigate('/');
             return;
@@ -172,9 +183,12 @@ export default function EditRecipeForm({id}: IRecipeProps) {
         fetchIngredientsName();
         fetchRecipeData();
     }, []);
+
+/*
     useEffect(() => {
-        updateTableFields()
-    }, [ingredientName]);
+        console.log(recipeIngredients);
+    }, [recipeIngredients]);
+*/
 
 
     function updateTableFields() {
@@ -209,10 +223,10 @@ export default function EditRecipeForm({id}: IRecipeProps) {
         //TODO: Amit - implement!
     }
 
-
+/*
     useEffect(() => {
         console.log(recipePrice);
-    }, [recipePrice])
+    }, [recipePrice])*/
 
     async function fetchRecipeData() {
         const payload = {recipe_id: id}
@@ -232,7 +246,6 @@ export default function EditRecipeForm({id}: IRecipeProps) {
             setTotalMinCost(data.ingredients_min_cost);
             setTotalAvgCost(data.ingredients_avg_cost);
             setTotalMaxCost(data.ingredients_max_cost);
-
         } catch (error) {
             console.log(error);
         }
@@ -290,12 +303,16 @@ export default function EditRecipeForm({id}: IRecipeProps) {
     }
 
     async function removeIngredient(name: string) {
-        console.log(`remove name: ${name}`);
         const index = recipeIngredients.findIndex(ingredient => ingredient.ingredient_name === name);
+        const ingredient = recipeIngredients[index];
+        setTotalMinCost(totalMinCost-ingredient.minCost*ingredient.quantity);
+        setTotalAvgCost(totalAvgCost-ingredient.avgCost*ingredient.quantity);
+        setTotalMaxCost(totalMaxCost-ingredient.maxCost*ingredient.quantity);
         const newIngredients = [...recipeIngredients];
         newIngredients.splice(index, 1);
         setRecipeIngredients(newIngredients);
     }
+
 
 
     function addIngredient() {
@@ -304,9 +321,10 @@ export default function EditRecipeForm({id}: IRecipeProps) {
         else if (quantity === 0 || !ingredientName)
             toast.error(`Please choose quantity greater that 0`);
         else {
-            const recipeIngredientFromRecipe = recipeIngredients.find((ingredient) => ingredient === currentIngredient);
-            if (recipeIngredientFromRecipe)
+            const recipeIngredientFromRecipe = recipeIngredients.find((ingredient) => ingredient.ingredient_name === currentIngredient?.ingredient_name);    /// check if the ingredient exist in the recipe
+            if (recipeIngredientFromRecipe) {
                 recipeIngredientFromRecipe.quantity = recipeIngredientFromRecipe.quantity + quantity;
+            }
             else if (recipeIngredients && currentIngredient) {
                 setRecipeIngredients([...recipeIngredients, currentIngredient]);
                 currentIngredient.quantity = quantity;
@@ -417,7 +435,7 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                                     '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
                                 onChange={(e: any) => {
-                                    setQuantity(e.target.value)
+                                    setQuantity(Number(e.target.value))
                                 }}
                             >
                                 <TextField variant="standard" id="standard-number" label={'Quantity'} type="number"
@@ -435,7 +453,7 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                                 }}
                             >
                                 <TextField disabled={true} id="standard-basic" label={'Min Cost'} variant="standard"
-                                           value={minCost === 0 ? "" : minCost}/>
+                                           value={minCost === 0 ? "" : minCost*quantity}/>
                             </Box>
                             <Box
                                 component="div"
@@ -447,7 +465,7 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                                 }}
                             >
                                 <TextField disabled={true} id="standard-basic" label={'Avg Cost'} variant="standard"
-                                           value={avgCost === 0 ? "" : avgCost}/>
+                                           value={avgCost === 0 ? "" : avgCost*quantity}/>
                             </Box>
                             <Box
                                 component="div"
@@ -459,7 +477,7 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                                 }}
                             >
                                 <TextField disabled={true} id="standard-basic" label={'Max Cost'} variant="standard"
-                                           value={maxCost === 0 ? "" : maxCost}/>
+                                           value={maxCost === 0 ? "" : maxCost*quantity}/>
                             </Box>
                         </div>
                         <div className="recipes-list">
@@ -469,7 +487,8 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                                                                key={ingredient.ingredient_name}
                                                                name={ingredient.ingredient_name}
                                                                quantity={ingredient.quantity}
-                                                               minCost={ingredient.minCost} avgCost={ingredient.avgCost}
+                                                               minCost={ingredient.minCost}
+                                                               avgCost={ingredient.avgCost}
                                                                maxCost={ingredient.maxCost}
                                                                measurement_unit={ingredient.measurement_unit}
                                     />

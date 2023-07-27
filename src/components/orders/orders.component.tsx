@@ -139,7 +139,7 @@ export default function Orders({ className, header, description, isDashboard }: 
         else {
             const orderRecipes = orderData.recipes.L.map(createRecipeFromData);
             console.log(orderRecipes);
-            const customer = orderData.buyer_email.S;
+            const customer = orderData.buyer_name.S;
             return {
                 id: orderData.order_id.S,
                 dueDate: orderDate,
