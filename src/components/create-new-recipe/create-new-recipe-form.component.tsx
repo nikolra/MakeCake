@@ -10,6 +10,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import Cookies from "js-cookie";
+import InputAdornment from "@mui/material/InputAdornment";
 
 export default function NewRecipeForm() {
 
@@ -311,21 +312,34 @@ export default function NewRecipeForm() {
                 </div>
 
                 <div className={"new-recipe-price"}>
-
                     <Box
                         component="div"
                         sx={{
-                            width: 400,
+                            width: 255,
                             maxWidth: '100%',
-                            m: 1
+                            m: '0 0 6px 0'
                         }}
                     >
-                        <TextField disabled={false} fullWidth id="outlined-basic" label={"Recipe Price"}
-                                   variant="outlined" defaultValue={recipePrice}
-                                   value={recipePrice === 0 ? "" : recipePrice}
-                                   onChange={(e: any) => {
-                                       setRecipePrice(Number(e.target.value))
-                                   }}/>
+                        <TextField
+                            fullWidth
+                            id="outlined-basic"
+                            label="Recipe Price"
+                            variant="outlined"
+                            value={recipePrice === 0 ? "" : recipePrice}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                const inputValue = e.target.value;
+                                // Ensure only positive numeric input is allowed (excluding zero and negative values)
+                                if (/^\d*\.?\d*$/.test(inputValue) && inputValue !== "." && inputValue !== "0") {
+                                    setRecipePrice(Number(inputValue));
+                                }
+                            }}
+                            // Set inputMode to 'numeric' to display a numeric keyboard on mobile devices
+                            inputMode="numeric"
+                            // Display the dollar sign ($) at the start of the input field to indicate the currency
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">₪</InputAdornment>,
+                            }}
+                        />
                     </Box>
 
                 </div>

@@ -13,6 +13,7 @@ import {toast, ToastContainer} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import Cookies from 'js-cookie';
+import InputAdornment from "@mui/material/InputAdornment";
 
 interface IRecipeProps {
     id: string
@@ -375,12 +376,26 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                             m: 1
                         }}
                     >
-                        <TextField disabled={false} fullWidth id="outlined-basic" label={"Recipe Priece"}
-                                   variant="outlined" defaultValue={recipePrice}
-                                   value={recipePrice === 0 ? "" : recipePrice}
-                                   onChange={(e: any) => {
-                                       setRecipePrice(Number(e.target.value))
-                                   }}/>
+                        <TextField
+                            fullWidth
+                            id="outlined-basic"
+                            label="Recipe Price"
+                            variant="outlined"
+                            value={recipePrice === 0 ? "" : recipePrice}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                const inputValue = e.target.value;
+                                // Ensure only positive numeric input is allowed (excluding zero and negative values)
+                                if (/^\d*\.?\d*$/.test(inputValue) && inputValue !== "." && inputValue !== "0") {
+                                    setRecipePrice(Number(inputValue));
+                                }
+                            }}
+                            // Set inputMode to 'numeric' to display a numeric keyboard on mobile devices
+                            inputMode="numeric"
+                            // Display the dollar sign ($) at the start of the input field to indicate the currency
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">₪</InputAdornment>,
+                            }}
+                        />
                     </Box>
 
                 </div>

@@ -13,6 +13,7 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
 import Cookies from 'js-cookie';
+import InputAdornment from "@mui/material/InputAdornment";
 
 interface ICustomer {
     name: string;
@@ -92,6 +93,11 @@ export default function NewOrderForm() {
         }
     }, [recipeName]);
 
+    useEffect(() => {
+console.log(orderRecipes);
+    }, [orderRecipes]);
+
+
     const fetchCustomers = async () => {
         const payload = {};
         const response =
@@ -108,6 +114,8 @@ export default function NewOrderForm() {
         console.log(response);
 
     }
+
+
 
     const deleteRecipeFromOrder = (recipeName: string) => {
         const index = orderRecipes.findIndex(recipe => recipe.recipe_name === recipeName);
@@ -226,7 +234,6 @@ export default function NewOrderForm() {
             }
             else {
                 let newPrice=0;
-                let recipeprice=0;
                 if(manualPrice !== 0 && recipe.recipe_price !== manualPrice) {
                     newPrice=((orderPrice-(recipe.recipe_price*recipe.recipe_quantity)));
                     recipe.recipe_price = manualPrice / quantity;
@@ -237,7 +244,6 @@ export default function NewOrderForm() {
                 setOrderPrice(newPrice);
                 setManualPrice(0)
                 addTotalMinIngredientCost(recipe.ingredients_min_cost * quantity);
-                console.log(recipe.ingredients_min_cost * quantity);
                 addTotalAvgIngredientCost(recipe.ingredients_avg_cost * quantity);
                 addTotalMaxIngredientCost(recipe.ingredients_max_cost * quantity);
             }
@@ -247,13 +253,15 @@ export default function NewOrderForm() {
             const recipeFromMyRecipes =myRecipes.find((recipe:any) => recipe.recipe_name === recipeName);
             if(recipeFromMyRecipes) {
                 if(manualPrice !== 0 && recipeFromMyRecipes.recipe_price !== manualPrice) {
+                    console.log(`price change`);
                         recipeFromMyRecipes.recipe_price = manualPrice / quantity;
                         addToOrderPrice(manualPrice);
                     }
-                else
+                else {
                     addToOrderPrice(recipePrice * quantity);
+                }
                 setOrderRecipes([...orderRecipes, recipeFromMyRecipes]);
-                console.log(recipeFromMyRecipes.ingredients_min_cost * quantity);
+                recipeFromMyRecipes.recipe_quantity = quantity;
                 addTotalMinIngredientCost(recipeFromMyRecipes.ingredients_min_cost * quantity);
                 addTotalAvgIngredientCost(recipeFromMyRecipes.ingredients_avg_cost * quantity);
                 addTotalMaxIngredientCost(recipeFromMyRecipes.ingredients_max_cost * quantity);
@@ -306,11 +314,26 @@ export default function NewOrderForm() {
                             m: '0 0 6px 0'
                         }}
                     >
-                        <TextField fullWidth id="outlined-basic" label={"Order Price"} variant="outlined"
-                                   defaultValue={orderPrice} value={orderPrice === 0 ? "" : orderPrice}
-                                   onChange={(e: any) => {
-                                       setOrderPrice(Number(e.target.value))
-                                   }}/>
+                        <TextField
+                            fullWidth
+                            id="outlined-basic"
+                            label="Order Price"
+                            variant="outlined"
+                            value={orderPrice === 0 ? "" : orderPrice}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                const inputValue = e.target.value;
+                                // Ensure only positive numeric input is allowed (excluding zero and negative values)
+                                if (/^\d*\.?\d*$/.test(inputValue) && inputValue !== "." && inputValue !== "0") {
+                                    setOrderPrice(Number(inputValue));
+                                }
+                            }}
+                            // Set inputMode to 'numeric' to display a numeric keyboard on mobile devices
+                            inputMode="numeric"
+                            // Display the dollar sign ($) at the start of the input field to indicate the currency
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">₪</InputAdornment>,
+                            }}
+                        />
                     </Box>
                 </div>
             </div>

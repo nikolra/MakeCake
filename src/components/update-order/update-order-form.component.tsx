@@ -13,6 +13,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import {toast,ToastContainer,} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import Cookies from 'js-cookie';
+import InputAdornment from '@mui/material/InputAdornment';
+
 
 interface IProps {
     id: string;
@@ -323,15 +325,29 @@ export default function EditOrderForm({id}: IProps) {
                             m: '0 0 6px 0'
                         }}
                     >
-                        <TextField  fullWidth id="outlined-basic" label={"Order Price"} variant="outlined" defaultValue={orderPrice} value={orderPrice ===0 ? "" : orderPrice}
-                                    onChange={(e: any) => {
-                                        console.log(`1234`)
-                                        setOrderPrice(Number(e.target.value))
-                                    }}/>
+                        <TextField
+                            fullWidth
+                            id="outlined-basic"
+                            label="Order Price"
+                            variant="outlined"
+                            value={orderPrice === 0 ? "" : orderPrice}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                const inputValue = e.target.value;
+                                // Ensure only positive numeric input is allowed (excluding zero and negative values)
+                                if (/^\d*\.?\d*$/.test(inputValue) && inputValue !== "." && inputValue !== "0") {
+                                    setOrderPrice(Number(inputValue));
+                                }
+                            }}
+                            // Set inputMode to 'numeric' to display a numeric keyboard on mobile devices
+                            inputMode="numeric"
+                            // Display the dollar sign ($) at the start of the input field to indicate the currency
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">₪</InputAdornment>,
+                            }}
+                        />
                     </Box>
                 </div>
             </div>
-
              <div className="orders">
                 <div className="recipes-header-title-row">
                     <div className="orders-header-text">
