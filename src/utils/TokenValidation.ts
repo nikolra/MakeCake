@@ -19,8 +19,9 @@ const validateToken = async (token: string | undefined, navigate: Function) => {
             deleteToken(navigate);
         }
         return `${decodedToken.given_name} ${decodedToken.family_name}`;
-    } catch {
+    } catch(e) {
         console.log("Token not valid!");
+        console.log(e);
         deleteToken(navigate);
     }
 }
