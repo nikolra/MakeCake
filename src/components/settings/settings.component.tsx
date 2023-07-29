@@ -8,7 +8,6 @@ import TextField from '@mui/material/TextField';
 import Box from "@mui/material/Box";
 import axios from "axios";
 import Cookies from "js-cookie";
-import {useNavigate} from "react-router-dom";
 
 interface IOrderProps {
     className?: string,
