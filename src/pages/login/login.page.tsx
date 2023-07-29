@@ -3,7 +3,6 @@ import {Link, useNavigate} from 'react-router-dom';
 import DonutPanel from '../../components/donut-panel/donut-panel.component'
 import LogoComponent from '../../components/logo/logo.component'
 import LabeledField from '../../components/labeled-input/labeled-input.component'
-import CheckBox from '../../components/checkbox/checkbox.component'
 import axios from 'axios';
 import {ToastContainer, toast} from 'react-toastify';
 import './login.style.css';
@@ -69,10 +68,6 @@ export default function Login() {
                                       onChange={(e: any) => {
                                           setPassword(e.target.value)
                                       }}/>
-                        <div className="remember-forgot-container">
-                            <CheckBox text="Remember me"/>
-                            <Link className={'forgot-button'} to="forgot-password">Forgot password</Link>
-                        </div>
                         <button className='button button-gradient' onClick={tryLogin}>Sign In</button>
                     </div>
                     <div>
