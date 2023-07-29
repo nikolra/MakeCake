@@ -6,6 +6,7 @@ import BestCustomersDelegate from "./best-customers-delegate.component";
 import axios from 'axios';
 import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
+import {validateToken} from "../../../utils/TokenValidation";
 
 const {promisify} = require('util');
 
@@ -20,8 +21,7 @@ export default function WeekOrders() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!Cookies.get('makecake-token')) {
-            navigate("/");
+        if (!validateToken(Cookies.get('makecake-token'), navigate)) {
             return;
         }
         fetchTopCustomers();

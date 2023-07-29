@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {toast, ToastContainer} from 'react-toastify';
 import dayjs from "dayjs";
 import Cookies from 'js-cookie';
+import {validateToken} from "../../utils/TokenValidation";
 
 interface IOrderProps {
     className: string;
@@ -43,11 +44,10 @@ export default function Orders({ className, header, description, isDashboard }: 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!Cookies.get('makecake-token')) {
-            navigate("/");
-            return;
+        const func = async () => {
+            await fetchOrders();
         }
-        fetchOrders();
+        func();
     }, []);
 
     useEffect(() => {

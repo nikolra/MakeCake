@@ -36,12 +36,11 @@ export default function Customers({className, header, description}: ICustomerPro
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!Cookies.get('makecake-token')) {
-            navigate("/");
-            return;
+        const func = async () => {
+            await fetchCustomerDetails();
+            await fetchSMSTemplateNames();
         }
-        fetchCustomerDetails();
-        fetchSMSTemplateNames();
+        func();
     }, []);
 
     useEffect(() => {

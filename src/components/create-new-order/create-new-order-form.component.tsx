@@ -60,17 +60,14 @@ export default function NewOrderForm() {
     const [myCustomers, setCustomers] = useState<ICustomer[]>();
     const [manualPrice , setManualPrice]=useState(0);
 
-
     const navigate = useNavigate();
 
-
     useEffect(() => {
-        if (!Cookies.get('makecake-token')) {
-            navigate("/");
-            return;
+        const  func = async () => {
+            await fetchUserRecipes();
+            await fetchCustomers();
         }
-        fetchUserRecipes();
-        fetchCustomers();
+        func();
     }, []);
     useEffect(() => {
         if (recipeName === "") {
@@ -92,11 +89,9 @@ export default function NewOrderForm() {
             }
         }
     }, [recipeName]);
-
     useEffect(() => {
-console.log(orderRecipes);
+        console.log(orderRecipes);
     }, [orderRecipes]);
-
 
     const fetchCustomers = async () => {
         const payload = {};
@@ -112,10 +107,7 @@ console.log(orderRecipes);
         const names = response.data.map((customer: ICustomer) => {return `${customer.name} - ${customer.email}`});
         setCustomersNames(names);
         console.log(response);
-
     }
-
-
 
     const deleteRecipeFromOrder = (recipeName: string) => {
         const index = orderRecipes.findIndex(recipe => recipe.recipe_name === recipeName);

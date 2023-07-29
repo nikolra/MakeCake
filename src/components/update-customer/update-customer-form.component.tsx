@@ -31,15 +31,14 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
 
 
     useEffect(() => {
-        if (!Cookies.get('makecake-token')) {
-            navigate("/");
-            return;
+        const func = async () => {
+            await fetchCustomer();
+            if (!customer) {
+                toast.error('Error getting custoemr data');
+                return;
+            }
         }
-        fetchCustomer();
-        if (!customer) {
-            toast.error('Error getting custoemr data');
-            return;
-        }
+        func();
     }, []);
 
     async function fetchCustomer() {

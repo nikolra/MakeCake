@@ -21,10 +21,6 @@ export default function NewIngredientForm() {
 
     async function sendDataToBackend() {
         console.log(`Submit clicked`);
-        if (!Cookies.get('makecake-token')){
-            navigate('/');
-            return;
-        }
         try {
             let calc_avg_price = (minPrice + maxPrice) / 2.0;
             const body = {

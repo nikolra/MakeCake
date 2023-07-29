@@ -38,10 +38,7 @@ export default function Login() {
                 }
             )
             // Assuming the response contains a token field
-            console.log(response);
             const token = response.data.body.token;
-
-            console.log(token);
             if (token && response.status === 200) {
                 Cookies.set('makecake-token', token, { expires: 1 });
                 navigate('/dashboard');
@@ -54,7 +51,6 @@ export default function Login() {
             toast.error('Error during login')
         }
     };
-
 
     return (
         <div className="pages">

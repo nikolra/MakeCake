@@ -150,6 +150,13 @@ export default function NewRecipeForm() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        const func = async () => {
+            await fetchIngredients();
+            await fetchIngredientsName();
+        }
+        func();
+    }, []);
+    useEffect(() => {
         if(recipeName==="")
         {
             setQuantity(0);
@@ -159,15 +166,6 @@ export default function NewRecipeForm() {
         }
         updateTableFields()
     }, [ingredientName]);
-    useEffect(() => {
-        if (!Cookies.get('makecake-token')) {
-            navigate("/");
-            return;
-        }
-        fetchIngredients();
-        fetchIngredientsName();
-        }, []);
-
 
     function updateTableFields() {
        const ingredient = ingredients.find(ingredient=>ingredient.ingredient_name===ingredientName);
@@ -179,6 +177,7 @@ export default function NewRecipeForm() {
            setMaxCost(ingredient.maxCost);
        }
     }
+
     function fetchIngredientsName() {
         //TODO: Nikol - understand with Amit if needed and how
         const automatedNames=automatedIngredients.map((ingredient:IRecipeIngredientType)=> {return ingredient.ingredient_name})

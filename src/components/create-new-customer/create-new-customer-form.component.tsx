@@ -64,7 +64,8 @@ export default function NewCustomerForm() {
     }
 
     const phoneNumberValidator = (phone: string) :boolean => {
-        const phoneNumberRegex = /\b[0245]\d{2}-\d{7}\b/;
+        const phoneNumberRegex = /^\+\d{1,3}\s?\(?\d{1,}\)?[-.\s]?\d{1,}[-.\s]?\d{1,}[-.\s]?\d{1,}$/;
+
         const regex = new RegExp(phoneNumberRegex);
         return regex.test(phone) || phone == "";
     }

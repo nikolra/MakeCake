@@ -1,26 +1,18 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import '../../App.css'
 import './customers.style.css'
 import EditCustomerForm from "../../components/update-customer/update-customer-form.component";
-import {useNavigate, useParams} from "react-router-dom";
-import Cookies from "js-cookie";
+import {useParams} from "react-router-dom";
+
 
 export default function EditCustomerPage() {
 
-    const navigate = useNavigate();
+    const {email} = useParams();
 
-    useEffect(() => {
-        if (!Cookies.get('makecake-token')) {
-            navigate("/");
-            return;
-        }
-    }, []);
-
-    const { email } = useParams();
-    console.log(`email = ${email}`);
     return (
         <div className="data-container">
-            <EditCustomerForm email = {email? email : "1"}/>
+            <EditCustomerForm email={email ? email : "1"}/>
         </div>
+
     )
 }

@@ -41,11 +41,10 @@ export default function Recipes({className, header, description}: IRecipeProps) 
 
 
     useEffect(() => {
-        if (!Cookies.get('makecake-token')) {
-            navigate("/");
-            return;
+        const func = async () => {
+            await fetchRecipes();
         }
-        fetchRecipes();
+        func();
     }, []);
 
 

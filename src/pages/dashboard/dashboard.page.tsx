@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import './dashboard.style.css'
 import Income from "../../components/dashboard-widgets/income/income.component";
@@ -7,24 +7,21 @@ import WeekOrders from "../../components/dashboard-widgets/best-customers/best-c
 import {ToastContainer} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import Cookies from "js-cookie";
+import {validateToken} from "../../utils/TokenValidation";
 
 export default function Dashboard() {
 
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        if (!Cookies.get('makecake-token'))
-            navigate("/");
-    }, []);
+    return (
 
-  return (
-    <div className="data-container dashboard-container">
-        <div className="dashboard-content">
-            <Orders className="today-orders" header="Today orders" description="Orders for today" isDashboard={true}/>
-            <WeekOrders/>
-            <Income/>
+        <div className="data-container dashboard-container">
+            <div className="dashboard-content">
+                <Orders className="today-orders" header="Today orders" description="Orders for today"
+                        isDashboard={true}/>
+                <WeekOrders/>
+                <Income/>
+            </div>
             <ToastContainer/>
         </div>
-    </div>
-  )
+    )
 }

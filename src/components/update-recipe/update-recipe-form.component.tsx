@@ -176,21 +176,13 @@ export default function EditRecipeForm({id}: IRecipeProps) {
     }, [ingredientName]);
 
     useEffect(() => {
-        if (!Cookies.get('makecake-token')){
-            navigate('/');
-            return;
+        const func = async () => {
+            await fetchIngredients();
+            await fetchIngredientsName();
+            await fetchRecipeData();
         }
-        fetchIngredients();
-        fetchIngredientsName();
-        fetchRecipeData();
+        func();
     }, []);
-
-/*
-    useEffect(() => {
-        console.log(recipeIngredients);
-    }, [recipeIngredients]);
-*/
-
 
     function updateTableFields() {
         const ingredient = ingredients.find(ingredient => ingredient.ingredient_name === ingredientName);

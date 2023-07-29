@@ -8,6 +8,7 @@ import Dropdown from '../../dropdown/dropdown.component'
 import axios from "axios";
 import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
+import {validateToken} from "../../../utils/TokenValidation";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -71,11 +72,14 @@ export default function Income() {
     );
 
     const navigate = useNavigate();
+
     useEffect(() => {
-        if (!Cookies.get('makecake-token')) {
-            navigate("/");
+        if (!validateToken(Cookies.get('makecake-token'), navigate)) {
             return;
         }
+    }, []);
+
+    useEffect(() => {
         rangeChanged(range);
     }, [range]);
 

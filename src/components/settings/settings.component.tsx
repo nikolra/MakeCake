@@ -11,12 +11,13 @@ import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
 
 interface IOrderProps {
-    className?: string
+    className?: string,
+    username: string
 }
 
-export default function SettingsComponent({className}: IOrderProps) {
+export default function SettingsComponent({className, username}: IOrderProps) {
 
-    const [username, setName] = useState('');
+    const [name, setName] = useState(username);
     const [templateName, setTemplateName] = useState('');
     const [smsTemplate, setSmsTemplate] = useState('');
     const [oldPassword, setOldPassword] = useState('');
@@ -24,30 +25,6 @@ export default function SettingsComponent({className}: IOrderProps) {
     const [repeatPassword, setRepeatPassword] = useState('');
 
     const navigate = useNavigate();
-    useEffect(() => {
-        if (!Cookies.get('makecake-token')) {
-            navigate("/");
-            return;
-        }
-        getUserData();
-    }, []);
-
-    const getUserData = async() => {
-        const response =
-            await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user',
-                {accessToken: Cookies.get('makecake-token')},
-                {
-                    headers: {
-                        "content-type": "application/json",
-                        "Authorization": "Bearer " + Cookies.get('makecake-token')
-                    }
-                });
-        const responseBodyJSON = JSON.parse(response.data.body);
-        console.log("responseBodyJSON");
-        console.log(responseBodyJSON);
-        const user_email = responseBodyJSON.username;
-        setName(user_email);
-    }
 
     const updatePasswordAndName = () => {
         //TODO: Amit implement change password using cognito
@@ -86,7 +63,7 @@ export default function SettingsComponent({className}: IOrderProps) {
         <div className={`dashboard-widget-container settings-widget ${className}`}>
             <div className="settings-header">
                 <div className="settings-header-title-col">
-                    <InputField setValueDelegate={setName} label="Name" width={300} value={username}/>
+                    <InputField setValueDelegate={setName} label="Name" width={300} value={name}/>
                     <LabeledField title='Password' inputClassName={"password-field-input"} className={'setting-label-field'}
                                   placeholder='Enter your current password' type="password" required={true}
                                   onChange={(e: any) => {
