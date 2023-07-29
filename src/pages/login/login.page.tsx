@@ -37,16 +37,19 @@ export default function Login() {
                 }
             )
             // Assuming the response contains a token field
-            const token = response.data.body.token;
+            console.error('Login: ', response.data);
+            console.error('idToken: ', response.data.body.idToken);
+            console.error('accessToken: ', response.data.body.accessToken);
+            const token = response.data.body.idToken;
             if (token && response.data.statusCode === 200) {
-                Cookies.set('makecake-token', token, { expires: 1 });
+                Cookies.set('makecake-token', response.data.body.idToken, { expires: 1 });
+                Cookies.set('makecake-accessToken', response.data.body.accessToken, { expires: 1 });
                 navigate('/dashboard');
             } else {
-                console.error('Login failed: ', response.data.body);
+                console.error('Login failed: ', response);
                 toast.error('Login failed')
             }
         } catch (error) {
-            console.error('Error during login:', error)
             toast.error('Error during login')
         }
     };

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import '../dashboard-widgets/widgets.style.css'
 import './settings.style.css'
 import InputField from "../outlinedd-input-field/input-field.component";
@@ -24,10 +24,40 @@ export default function SettingsComponent({className, username}: IOrderProps) {
     const [newPassword, setNewPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
 
-    const navigate = useNavigate();
-
-    const updatePasswordAndName = () => {
-        //TODO: Amit implement change password using cognito
+    const updatePasswordAndName = async () => {
+        if(!newPassword)
+            toast.error(`Please your new password`);
+        else if(!repeatPassword)
+            toast.error(`Please repeat your new password`);
+        else if(!oldPassword)
+            toast.error(`Please enter current password`);
+        else if(newPassword !== repeatPassword)
+            toast.error(`Passwords do not match`);
+        try {
+            const payload = {
+                    PreviousPassword: oldPassword,
+                    ProposedPassword: newPassword,
+                    AccessToken: Cookies.get('makecake-accessToken')
+            };
+            const response = await axios.post("https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/change_password",
+                payload,
+                {
+                    headers: {
+                        "Content-type": "application/json",
+                        Authorization: "Bearer " + Cookies.get('makecake-token')
+                    }
+                });
+            if (response.data.statusCode === 200) {
+                toast.success(`Password changed`)
+                setNewPassword("");
+                setOldPassword("");
+                setRepeatPassword("");
+            } else {
+                toast.error(`Error changing password`)
+            }
+        } catch (error) {
+            toast.error('Error changing password');
+        }
     }
 
     const createNewSMSTemplate = () => {

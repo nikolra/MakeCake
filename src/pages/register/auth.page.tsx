@@ -31,7 +31,6 @@ export default function AuthPage() {
                 toast.error(`Error verifying  ${email}`)
             }
         } catch (error) {
-            console.error('Error during login:', error)
             toast.error('Error during authentication')
         }
     };

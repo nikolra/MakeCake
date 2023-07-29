@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {Link, useNavigate} from 'react-router-dom';
 import DonutPanel from '../../components/donut-panel/donut-panel.component'
 import './password-restore.style.css'
 import LabeledField from '../../components/labeled-input/labeled-input.component'
 import validator from 'validator';
 import {toast, ToastContainer} from "react-toastify";
-import Cookies from "js-cookie";
+import axios from "axios";
 
 export default function PasswordRestore() {
 
@@ -14,13 +14,27 @@ export default function PasswordRestore() {
 
     const navigate = useNavigate();
 
-    function passwordRestoration() {
+    async function passwordRestoration() {
+        console.log('Password restoration');
         if (!isValidEmail)
             toast.error(`Please enter a valid email address`);
         else {
-            //TODO: Amit implement login with cognito
-            console.log('Password restoration');
-            navigate('/set-new-password');
+            try {
+                const payload = {
+                    email: email,
+                }
+                const response = await axios.post("https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/send_reset_mail",
+                    payload);
+                if (response.data.statusCode === 200) {
+                    navigate('/set-new-password');
+                    toast.success(`Reset mail sent to ${email}`)
+                } else {
+                    console.error('Auth failed: ', response.data.body);
+                    toast.error(`Error sending mail to ${email}`)
+                }
+            } catch (error) {
+                toast.error('Error ending mail');
+            }
         }
     }
 

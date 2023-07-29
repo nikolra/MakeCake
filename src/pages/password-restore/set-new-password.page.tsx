@@ -31,20 +31,26 @@ export default function SetNewPasswordPage() {
             toast.error(`Please your new password`);
         else if(!repeatPassword)
             toast.error(`Please repeat your new password`);
+        else if(newPassword !== repeatPassword)
+            toast.error(`Passwords do not match`);
         else {
-            //TODO - Amit implement integration
             try {
-                toast.promise(async () => {
+                const payload = {
+                    email: email,
+                    verificationCode:code,
+                    newPassword: newPassword
+                }
+                const response = await axios.post("https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/forgot_password",
+                    payload);
+                if (response.data.statusCode === 200) {
                     navigate('/');
-                    // const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/customer', payload);
-                }, {
-                    // @ts-ignore
-                    loading: 'Loading',
-                    // success: `Created customer ${customerName}, ${email}`,
-                    // error: `Error creating customer ${customerName}, ${email}`
-                });
+                    toast.success(`New Password defined for ${email}`)
+                } else {
+                    console.error('Auth failed: ', response.data.body);
+                    toast.error(`Error defining new password for ${email}`)
+                }
             } catch (error) {
-                console.error(JSON.stringify(error));
+                toast.error('Error defining new password');
             }
         }
     };

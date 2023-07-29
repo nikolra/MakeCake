@@ -7,7 +7,7 @@ import {validateToken} from "../../utils/TokenValidation";
 export default function DashboardLayout() {
 
     const [username, setName] = useState('');
-    const [isTokenValidated, setIsTokenValidated] = useState(false);
+    const [isTokenValidated, setIsTokenValidated] = useState(true);
 
     const navigate = useNavigate();
 
