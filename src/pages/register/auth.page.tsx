@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import DonutPanel from '../../components/donut-panel/donut-panel.component'
 import LogoComponent from '../../components/logo/logo.component'
 import LabeledField from '../../components/labeled-input/labeled-input.component'
@@ -15,19 +15,24 @@ export default function AuthPage() {
 
 
     const sendDataToBackend = async () => {
-        //TODO - Amit implement integration
         try {
-            toast.promise(async ()=> {
+            const payload = {
+                email: email,
+                verificationCode: code
+            }
+            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/signup_confirm',
+                payload);
+
+            if (response.data.statusCode === 200) {
                 navigate('/');
-                // const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/customer', payload);
-            }, {
-                // @ts-ignore
-                loading: 'Loading',
-                // success: `Created customer ${customerName}, ${email}`,
-                // error: `Error creating customer ${customerName}, ${email}`
-            });
+                toast.success(`Verified ${email}`)
+            } else {
+                console.error('Auth failed: ', response.data.body);
+                toast.error(`Error verifying  ${email}`)
+            }
         } catch (error) {
-            console.error(JSON.stringify(error));
+            console.error('Error during login:', error)
+            toast.error('Error during authentication')
         }
     };
 

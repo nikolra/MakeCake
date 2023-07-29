@@ -28,7 +28,6 @@ export default function Login() {
             email: email,
             password: password
         };
-
         try {
             const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', body, {
                     headers: {
@@ -39,11 +38,11 @@ export default function Login() {
             )
             // Assuming the response contains a token field
             const token = response.data.body.token;
-            if (token && response.status === 200) {
+            if (token && response.data.statusCode === 200) {
                 Cookies.set('makecake-token', token, { expires: 1 });
                 navigate('/dashboard');
             } else {
-                console.error('Login failed: ', response.data.message);
+                console.error('Login failed: ', response.data.body);
                 toast.error('Login failed')
             }
         } catch (error) {
