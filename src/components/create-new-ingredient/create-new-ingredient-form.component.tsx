@@ -22,11 +22,13 @@ export default function NewIngredientForm() {
     async function sendDataToBackend() {
         console.log(`Submit clicked`);
         try {
-            let calc_avg_price = (minPrice + maxPrice) / 2.0;
             const body = {
                 "code": code,
                 "name": ingredientName,
-                "price": calc_avg_price,
+                "min_price": minPrice,
+                "min_store": minPriceStore,
+                "max_price": maxPrice,
+                "max_store": maxPriceStore
             }
             try {
                 const response =
@@ -39,6 +41,7 @@ export default function NewIngredientForm() {
                             }
                         });
                 toast.success(`${ingredientName} Added Successfully`);
+                navigate('/ingredients');
             }
             catch (error) {
                 console.error(`Error adding: ${ingredientName}`, error);

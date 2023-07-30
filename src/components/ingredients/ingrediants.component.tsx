@@ -46,43 +46,36 @@ export default function Ingredients({className, header, description}: IIngredien
     const updateIngredients = async () => {
         console.log(`update Ingredients called`);
         //TODO: Amit integrate with automated ingredients lambda
-        try {
-            const response =
-                await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user',
-                    {accessToken: Cookies.get('makecake-token')},
-                    {
-                        headers: {
-                            "content-type": "application/json",
-                            "Authorization": "Bearer " + Cookies.get('makecake-token')
-                        }
-                    });
-            const responseBodyJSON = JSON.parse(response.data.body);
-            const user_email = responseBodyJSON.email;
-            console.log(response.data);
-
             const body = {
                 "table_name": "mnl_ingredients",
-                "field_name": "user_email",
-                "search_value": user_email
+                "field_name": "user_email"
             }
-            console.log(body);
             try {
-                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_mnl_ingredients', body);
+                const response =
+                    await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_mnl_ingredients',
+                        body,
+                        {
+                            headers: {
+                                "Content-type": "application/json",
+                                Authorization: "Bearer " + Cookies.get('makecake-token')
+                            }
+                        });
                 const data = response.data;
                 console.log('data#####:', data);
                 const formattedIngredients = data.map((ingredient: any) => {
                     return {
-                        id: ingredient.code.S,
-                        name: ingredient.name.S,
+                        id: ingredient.code,
+                        name: ingredient.name,
                         minCost: {
-                            price: ingredient.min_price.N,
-                            supermarketName: ingredient.min_store.S
+                            price: ingredient.min_price,
+                            supermarketName: ingredient.min_store
                         },
                         maxCost: {
-                            price: ingredient.max_price.N,
-                            supermarketName: ingredient.max_store.S
+                            price: ingredient.max_price,
+                            supermarketName: ingredient.max_store
                         },
-                        avgCost: ingredient.avg_price.N
+                        avgCost: ingredient.avg_price,
+                        isManual: ingredient.is_manual
                     };
                 });
                 setIngredients(formattedIngredients);
@@ -93,11 +86,6 @@ export default function Ingredients({className, header, description}: IIngredien
                 toast.error(`Error getting ingredients`);
 
             }
-        }
-        catch (error) {
-            console.error(`Error getting user email`, error);
-            toast.error(`Error getting user email`);
-        }
     }
 
     const deleteIngredients = (id: string) => {
