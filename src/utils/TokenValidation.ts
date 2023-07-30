@@ -12,6 +12,8 @@ const validateToken = async (token: string | undefined, navigate: Function) => {
         clientId: "509f2sths1o41vc95ofrt5hfff"
     });
     try {
+        console.log("token");
+        console.log(token);
         const decodedToken = await verifier.verify(token);
         console.log("Token is valid. Payload:", decodedToken);
         // const currentTimestampInSeconds = Math.floor(Date.now() / 1000) - 60 * 5;
