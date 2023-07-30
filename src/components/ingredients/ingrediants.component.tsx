@@ -75,7 +75,7 @@ export default function Ingredients({className, header, description}: IIngredien
                             supermarketName: ingredient.max_store
                         },
                         avgCost: ingredient.avg_price,
-                        isManual: ingredient.is_manual
+                        isManual: (ingredient.is_menual === "true") ? true : false
                     };
                 });
                 setIngredients(formattedIngredients);
@@ -88,9 +88,31 @@ export default function Ingredients({className, header, description}: IIngredien
             }
     }
 
-    const deleteIngredients = (id: string) => {
+    const deleteIngredients = async (id: string) => {
         console.log(`delete ingredient called`);
-        //TODO: Amit integrate with automated ingredients lambda
+        //TODO: Amit integrate with manual ingredients lambda
+        const body = {
+            code: id
+        }
+        console.log('body:', body)
+        try {
+            const response =
+                await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_mnl_ingredient',
+                    body,
+                    {
+                        headers: {
+                            "Content-type": "application/json",
+                            Authorization: "Bearer " + Cookies.get('makecake-token')
+                        }
+                    });
+            console.log('response:', response);
+            toast.success(`Ingredient deleted successfully`);
+            updateIngredients();
+        }
+        catch (error) {
+            console.error(`Error deleting ingredient`, error);
+            toast.error(`Error deleting ingredient`);
+        }
     }
 
     return (
