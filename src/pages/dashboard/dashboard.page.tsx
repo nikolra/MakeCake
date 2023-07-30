@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-
 import './dashboard.style.css'
 import Income from "../../components/dashboard-widgets/income/income.component";
 import Orders from "../../components/orders/orders.component";
@@ -11,16 +10,29 @@ import {validateToken} from "../../utils/TokenValidation";
 
 export default function Dashboard() {
 
+    const [isTokenValidated, setIsTokenValidated] = useState(true);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = Cookies.get('makecake-token');
+        const func = async () => {
+            await validateToken(token, navigate);
+            setIsTokenValidated(true);
+        }
+        func();
+    }, []);
 
     return (
-
         <div className="data-container dashboard-container">
-            <div className="dashboard-content">
-                <Orders className="today-orders" header="Today orders" description="Orders for today"
-                        isDashboard={true}/>
-                <WeekOrders/>
-                <Income/>
-            </div>
+            {isTokenValidated &&
+                <div className="dashboard-content">
+                    <Orders className="today-orders" header="Today orders" description="Orders for today"
+                            isDashboard={true}/>
+                    <WeekOrders/>
+                    <Income/>
+                </div>
+            }
             <ToastContainer/>
         </div>
     )

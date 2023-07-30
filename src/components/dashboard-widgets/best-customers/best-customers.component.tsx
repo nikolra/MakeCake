@@ -8,8 +8,6 @@ import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
 import {validateToken} from "../../../utils/TokenValidation";
 
-const {promisify} = require('util');
-
 type Customer = {
     number: number;
     orders: number;
@@ -21,10 +19,14 @@ export default function WeekOrders() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!validateToken(Cookies.get('makecake-token'), navigate)) {
-            return;
+        const func = async () => {
+            if (! (await validateToken(Cookies.get('makecake-token'), navigate))) {
+                return;
+            }
+            await fetchTopCustomers();
         }
-        fetchTopCustomers();
+        func();
+
     }, []);
 
     async function fetchTopCustomers() {

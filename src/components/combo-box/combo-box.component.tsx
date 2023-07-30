@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react'
+import React, {useState} from 'react'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
@@ -14,9 +14,6 @@ interface IProps {
 const ComboBox = ({setValueDelegate, label, options, initialValue = "", isDisabled = false}: IProps) => {
     const [names, setNames] = useState(options);
     const [value, setValue] = React.useState<string | null>(initialValue);
-    useEffect(() => {
-        setValue(initialValue);
-    }, [initialValue]);
 
     return (
         <div className="combo-box">

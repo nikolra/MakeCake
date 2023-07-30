@@ -15,7 +15,6 @@ export default function Login() {
     const navigate = useNavigate()
 
     useEffect(()=> {
-        //if cookie has a token navigate to dashboard
         if (Cookies.get('makecake-token')) {
             navigate('/dashboard');
             return;

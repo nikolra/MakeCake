@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import './dashboard-panel.style.css'
 import DashboardLink from '../dashboard-link/dashboard-link.component'
 import {solid} from '@fortawesome/fontawesome-svg-core/import.macro'
@@ -6,8 +6,6 @@ import User from '../user/user.component'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {NavLink, useNavigate} from "react-router-dom";
 import Cookies from "js-cookie";
-import {validateToken} from "../../utils/TokenValidation";
-import {Interface} from "readline";
 
 interface IProps {
     username:string

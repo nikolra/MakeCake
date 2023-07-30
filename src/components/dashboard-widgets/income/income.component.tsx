@@ -74,9 +74,12 @@ export default function Income() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!validateToken(Cookies.get('makecake-token'), navigate)) {
-            return;
+        const func = async () => {
+            if (!(await validateToken(Cookies.get('makecake-token'), navigate))) {
+                return;
+            }
         }
+        func();
     }, []);
 
     useEffect(() => {

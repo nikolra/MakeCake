@@ -5,11 +5,9 @@ import axios from 'axios';
 import OrderDelegate from './order-delegate/order-delegate.component';
 import SearchField from '../search-field/search-field.component';
 import NavigationButtonComponent from '../navigation-button/navigation-button.component';
-import {useNavigate} from "react-router-dom";
 import {toast, ToastContainer} from 'react-toastify';
 import dayjs from "dayjs";
 import Cookies from 'js-cookie';
-import {validateToken} from "../../utils/TokenValidation";
 
 interface IOrderProps {
     className: string;
@@ -41,7 +39,6 @@ export default function Orders({ className, header, description, isDashboard }: 
     const [orders, setOrders] = useState<OrderType[]>([]);
     const [filteredOrders, setFilteredOrders] = useState<OrderType[]>([]);
     const [searchString, setSearchString] = useState('');
-    const navigate = useNavigate();
 
     useEffect(() => {
         const func = async () => {

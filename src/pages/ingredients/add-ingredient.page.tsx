@@ -1,13 +1,30 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import '../../App.css'
 import './ingredients.style.css'
 import NewIngredientForm from "../../components/create-new-ingredient/create-new-ingredient-form.component";
+import {useNavigate} from "react-router-dom";
+import Cookies from "js-cookie";
+import {validateToken} from "../../utils/TokenValidation";
 
 export default function AddIngredient() {
+    const [isTokenValidated, setIsTokenValidated] = useState(true);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = Cookies.get('makecake-token');
+        const func = async () => {
+            await validateToken(token, navigate);
+            setIsTokenValidated(true);
+        }
+        func();
+    }, []);
 
     return (
         <div className="data-container">
-            <NewIngredientForm/>
+            {isTokenValidated &&
+                <NewIngredientForm/>
+            }
         </div>
     )
 }

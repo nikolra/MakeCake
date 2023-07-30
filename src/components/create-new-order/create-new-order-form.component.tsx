@@ -3,12 +3,11 @@ import '../../App.css';
 import './create-new-order-form.style.css';
 import RecipeDelegate from "./recipe-delegate/recipe-delegate.component";
 import DatePicker from "../date-picker/date-picker.component";
-import ComboBox from "../combo-box/combo-box.component";
 import dayjs from 'dayjs';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
-import {toast, ToastContainer,} from "react-toastify";
+import {toast} from "react-toastify";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -69,6 +68,7 @@ export default function NewOrderForm() {
         }
         func();
     }, []);
+
     useEffect(() => {
         if (recipeName === "") {
             setQuantity(0);
@@ -89,9 +89,6 @@ export default function NewOrderForm() {
             }
         }
     }, [recipeName]);
-    useEffect(() => {
-        console.log(orderRecipes);
-    }, [orderRecipes]);
 
     const fetchCustomers = async () => {
         const payload = {};

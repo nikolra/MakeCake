@@ -1,15 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import '../../App.css';
 import './update-recipe-form.style.css';
-import OutlinedInputField from "../outlinedd-input-field/input-field.component";
-import {makeIngredient} from "../create-new-recipe/dev-data";
 import IngredientDelegate from "../create-new-recipe/ingredient-delegate/ingredient-delegate.component";
-import {devRecipes} from "../recipes/dev-data"
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import {toast, ToastContainer} from "react-toastify";
-//import StandardInputField from "../standart-input-field/input-field.component";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import Cookies from 'js-cookie';
@@ -17,11 +13,6 @@ import InputAdornment from "@mui/material/InputAdornment";
 
 interface IRecipeProps {
     id: string
-}
-
-interface ICost {
-    price: number,
-    supermarketName: string
 }
 
 type IRecipeIngredientType = {
@@ -216,10 +207,6 @@ export default function EditRecipeForm({id}: IRecipeProps) {
         //TODO: Amit - implement!
     }
 
-/*
-    useEffect(() => {
-        console.log(recipePrice);
-    }, [recipePrice])*/
 
     async function fetchRecipeData() {
         const payload = {recipe_id: id}
