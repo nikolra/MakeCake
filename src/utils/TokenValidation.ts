@@ -14,10 +14,10 @@ const validateToken = async (token: string | undefined, navigate: Function) => {
     try {
         const decodedToken = await verifier.verify(token);
         console.log("Token is valid. Payload:", decodedToken);
-        const currentTimestampInSeconds = Math.floor(Date.now() / 1000) - 60 * 5;
-        if(decodedToken.exp < currentTimestampInSeconds) {
-            deleteToken(navigate);
-        }
+        // const currentTimestampInSeconds = Math.floor(Date.now() / 1000) - 60 * 5;
+        // if(decodedToken.exp < currentTimestampInSeconds) {
+        //     deleteToken(navigate);
+        // }
         return `${decodedToken.given_name} ${decodedToken.family_name}`;
     } catch(e) {
         console.log("Token not valid!");
