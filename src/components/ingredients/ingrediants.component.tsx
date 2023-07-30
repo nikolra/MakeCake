@@ -15,77 +15,77 @@ interface IIngredientProps{
     description: string
 }
 
+interface IIngredientData{
+    id: string,
+    name: string,
+    minCost: number,
+    avgCost: number,
+    maxCost: number,
+    isManual: boolean
+}
+
 export default function Ingredients({className, header, description}: IIngredientProps) {
 
-    const [ingredients, setIngredients] = useState(devIngredients);
+    const [ingredients, setIngredients] = useState<IIngredientData[]>();
     const [filteredIngredients, setFilteredIngredients] = useState(ingredients);
     const [searchString, setSearchString] = useState('');
 
     useEffect( () => {
-        const filtered = ingredients.filter((ingredient) => {
+        const filtered = ingredients?.filter((ingredient) => {
             const name = ingredient.name;
             console.log(name, searchString, name.includes(searchString))
             return name.includes(searchString);
         })
-        setFilteredIngredients(filtered)
+        setFilteredIngredients(filtered? filtered : [])
     }, [ingredients, searchString]);
+
+    useEffect(() => {
+        updateIngredients();
+    }, []);
 
     const updateIngredients = async () => {
         console.log(`update Ingredients called`);
         //TODO: Amit integrate with automated ingredients lambda
-        try {
-            const response =
-                await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user',
-                    {accessToken: Cookies.get('makecake-token')},
-                    {
-                        headers: {
-                            "content-type": "application/json",
-                            "Authorization": "Bearer " + Cookies.get('makecake-token')
-                        }
-                    });
-            const responseBodyJSON = JSON.parse(response.data.body);
-            const user_email = responseBodyJSON.email;
-            console.log(response.data);
-
             const body = {
                 "table_name": "mnl_ingredients",
-                "field_name": "user_email",
-                "search_value": user_email
+                "field_name": "user_email"
             }
-            console.log(body);
             try {
-                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_mnl_ingredients', body);
+                const response =
+                    await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_mnl_ingredients',
+                        body,
+                        {
+                            headers: {
+                                "Content-type": "application/json",
+                                Authorization: "Bearer " + Cookies.get('makecake-token')
+                            }
+                        });
                 const data = response.data;
                 console.log('data#####:', data);
                 const formattedIngredients = data.map((ingredient: any) => {
                     return {
-                        id: ingredient.code.S,
-                        name: ingredient.name.S,
+                        id: ingredient.code,
+                        name: ingredient.name,
                         minCost: {
-                            price: String(ingredient.price.N),
-                            supermarketName: 'a'
+                            price: ingredient.min_price,
+                            supermarketName: ingredient.min_store
                         },
                         maxCost: {
-                            price: String(ingredient.price.N),
-                            supermarketName: 'b'
+                            price: ingredient.max_price,
+                            supermarketName: ingredient.max_store
                         },
-                        avgCost: String(ingredient.price.N)
+                        avgCost: ingredient.avg_price,
+                        isManual: ingredient.is_manual
                     };
                 });
                 setIngredients(formattedIngredients);
                 console.log('formattedIngredients:', formattedIngredients);
-                setFilteredIngredients(formattedIngredients);
             }
             catch (error) {
                 console.error(`Error getting ingredients`, error);
                 toast.error(`Error getting ingredients`);
 
             }
-        }
-        catch (error) {
-            console.error(`Error getting user email`, error);
-            toast.error(`Error getting user email`);
-        }
     }
 
     const deleteIngredients = (id: string) => {
@@ -125,7 +125,7 @@ export default function Ingredients({className, header, description}: IIngredien
             <div className="all-ingredients-list-container">
                 <div className="all-ingredients-list">
                     {
-                        filteredIngredients.map((ingredient) => {
+                        filteredIngredients?.map((ingredient) => {
                             return <IngredientDelegate deleteDelegate={deleteIngredients} key={ingredient.id} data={ingredient} />
                         })
                     }
