@@ -145,6 +145,8 @@ export default function EditOrderForm({id}: IProps) {
                     Authorization: "Bearer " + Cookies.get('makecake-token')
                 }
             });
+            if(response.status!==200)
+                toast.error("Loading recipes failed");
             const responseData = JSON.parse(response.data.body);
             const recipeItems = responseData.map((item: RecipeItem) => ({
                 recipe_price: item.recipe_price,
@@ -220,6 +222,8 @@ export default function EditOrderForm({id}: IProps) {
                     }
                 }
             );
+            if(response.status!==200)
+                toast.error("Loading order failed");
             const data = JSON.parse(response.data.body)[0];
             console.log(data);
             setCustomerEmail(data.buyer_email);

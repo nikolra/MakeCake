@@ -89,6 +89,8 @@ export default function Recipes({className, header, description}: IRecipeProps) 
                         Authorization: "Bearer " + Cookies.get('makecake-token')
                     }
                 });
+            if(response.status!==200)
+                toast.error("Loading recipes failed");
             const data = JSON.parse(response.data.body);
             setRecipes(data);
         } catch (error) {

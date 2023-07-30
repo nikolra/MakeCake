@@ -219,6 +219,8 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                     }
                 }
             );
+            if(response.status!==200)
+                toast.error("Loading recipes failed");
             const data = JSON.parse(response.data.body)[0];
             setRecipeIngredients(data.ingredients);
             setRecipeName(data.recipe_name);

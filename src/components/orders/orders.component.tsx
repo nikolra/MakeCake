@@ -98,6 +98,9 @@ export default function Orders({ className, header, description, isDashboard }: 
                         Authorization: "Bearer " + Cookies.get('makecake-token')
                     }
                 });
+            if(response.status!==200)
+                toast.error("Loading orders failed");
+
             const apiData = JSON.parse(response.data.body);
             if(isDashboard)
             {
