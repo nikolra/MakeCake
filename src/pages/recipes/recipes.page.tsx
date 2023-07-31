@@ -12,11 +12,8 @@ export default function Recipes() {
 
     useEffect(() => {
         const token = Cookies.get('makecake-token');
-        const func = async () => {
-            await validateToken(token, navigate);
-            setIsTokenValidated(true);
-        }
-        func();
+        validateToken(token, navigate);
+        setIsTokenValidated(true);
     }, []);
 
     return (

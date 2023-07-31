@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Bar } from 'react-chartjs-2';
+import React, {useState, useEffect} from 'react'
+import {Bar} from 'react-chartjs-2';
 import {Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,} from 'chart.js';
 
 import '../widgets.style.css'
@@ -60,7 +60,7 @@ export default function Income() {
     const [total, setTotal] = useState(0);
     const [data, setData] = useState(
         {
-            labels:[""],
+            labels: [""],
             datasets: [
                 {
                     data: [0],
@@ -74,15 +74,11 @@ export default function Income() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const func = async () => {
-            if (!(await validateToken(Cookies.get('makecake-token'), navigate))) {
-                return;
-            }
-        }
-        func();
+        validateToken(Cookies.get('makecake-token'), navigate);
     }, []);
 
     useEffect(() => {
+        validateToken(Cookies.get('makecake-token'), navigate);
         rangeChanged(range);
     }, [range]);
 
@@ -138,7 +134,7 @@ export default function Income() {
                 </div>
             </div>
             <div className="chart-container">
-                <Bar options={options} data={data} />
+                <Bar options={options} data={data}/>
             </div>
         </div>
     )

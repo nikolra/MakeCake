@@ -12,16 +12,13 @@ export default function Ingredients() {
 
     useEffect(() => {
         const token = Cookies.get('makecake-token');
-        const func = async () => {
-            await validateToken(token, navigate);
-            setIsTokenValidated(true);
-        }
-        func();
+        validateToken(token, navigate);
+        setIsTokenValidated(true);
     }, []);
 
     return (
         <div className="data-container">
-            { isTokenValidated &&
+            {isTokenValidated &&
                 <AllIngredients className="all-ingredients-container" header="Ingredients"
                                 description="All ingredients"/>
             }

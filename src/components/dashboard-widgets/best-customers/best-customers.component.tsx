@@ -20,9 +20,7 @@ export default function WeekOrders() {
 
     useEffect(() => {
         const func = async () => {
-            if (! (await validateToken(Cookies.get('makecake-token'), navigate))) {
-                return;
-            }
+            validateToken(Cookies.get('makecake-token'), navigate)
             await fetchTopCustomers();
         }
         func();

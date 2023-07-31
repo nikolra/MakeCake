@@ -34,6 +34,7 @@ export default function DashboardPanel({username} :IProps) {
                     <NavLink to={"/"} className={'link active'} onClick={() => {
                         navigate("/");
                         Cookies.remove('makecake-token');
+                        Cookies.remove('makecake-accessToken');
                     }}>
                         <span className="text">{"Log out"}</span>
                     </NavLink>

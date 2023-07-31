@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react'
 import '../dashboard-widgets/widgets.style.css'
 import './ingredients.style.css'
 import IngredientDelegate from './ingredients-delegate/ingrediant-delegate.component'
-import {devIngredients} from "./dev-data";
 import SearchField from "../search-field/search-field.component";
 import NavigationButtonComponent from "../navigation-button/navigation-button.component";
 import {toast, ToastContainer} from "react-toastify";
@@ -75,7 +74,7 @@ export default function Ingredients({className, header, description}: IIngredien
                             supermarketName: ingredient.max_store
                         },
                         avgCost: ingredient.avg_price,
-                        isManual: (ingredient.is_menual === "true") ? true : false
+                        isManual: ingredient.is_menual === "true"
                     };
                 });
                 setIngredients(formattedIngredients);

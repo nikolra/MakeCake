@@ -16,11 +16,8 @@ export default function EditIngredientPage() {
 
     useEffect(() => {
         const token = Cookies.get('makecake-token');
-        const func = async () => {
-            await validateToken(token, navigate);
+            validateToken(token, navigate);
             setIsTokenValidated(true);
-        }
-        func();
     }, []);
 
     return (

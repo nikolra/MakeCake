@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import '../../App.css';
 import './create-new-recipe-form.style.css';
-import OutlinedInputField from "../outlinedd-input-field/input-field.component";
 import IngredientDelegate from "./ingredient-delegate/ingredient-delegate.component";
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";

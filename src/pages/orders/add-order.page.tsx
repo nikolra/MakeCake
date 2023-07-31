@@ -14,16 +14,13 @@ export default function AddOrder() {
 
     useEffect(() => {
         const token = Cookies.get('makecake-token');
-        const func = async () => {
-            await validateToken(token, navigate);
-            setIsTokenValidated(true);
-        }
-        func();
+        validateToken(token, navigate);
+        setIsTokenValidated(true);
     }, []);
 
     return (
         <div className="data-container">
-            { isTokenValidated &&
+            {isTokenValidated &&
                 <NewOrderForm/>
             }
         </div>

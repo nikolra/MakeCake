@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import '../dashboard-widgets/widgets.style.css'
 import './recipes.style.css'
-import './dev-data';
 import RecipeDelegate from './recipes-delegate/recipe-delegate.component'
 import SearchField from "../search-field/search-field.component";
 import NavigationButtonComponent from "../navigation-button/navigation-button.component";
 import {toast, ToastContainer} from "react-toastify";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
 import Cookies from 'js-cookie';
 
 interface IRecipeProps {
@@ -20,8 +18,6 @@ type IngredientType = {
     id: string;
     ingredient_name: string;
     ingredient_price: number;
-    //ingredient_price: number;
-    //ingredient_price: number;
     ingredient_quantity: number;
 };
 
@@ -37,8 +33,6 @@ type RecipeType = {
 export default function Recipes({className, header, description}: IRecipeProps) {
     const [recipes, setRecipes] = useState<RecipeType[]>([]);
     const [searchString, setSearchString] = useState('');
-    const navigate = useNavigate();
-
 
     useEffect(() => {
         const func = async () => {
@@ -68,7 +62,7 @@ export default function Recipes({className, header, description}: IRecipeProps) 
                     success: {render: 'recipe deleted', autoClose: 1000},
                     error: {render: 'Error deleting recipe', autoClose: 1000}
                 }
-            ).then(response => {
+            ).then(() => {
                 handleDeleteOrder(id);
             });
         } catch (error) {
