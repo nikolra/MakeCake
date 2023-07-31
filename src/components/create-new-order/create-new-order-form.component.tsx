@@ -101,6 +101,8 @@ export default function NewOrderForm() {
                         Authorization: "Bearer " + Cookies.get('makecake-token')
                     }
                 });
+        if(response.status!==200)
+            toast.error("Loading customers failed");
         const names = response.data.map((customer: ICustomer) => {return `${customer.name} - ${customer.email}`});
         setCustomersNames(names);
         console.log(response);
@@ -149,6 +151,8 @@ export default function NewOrderForm() {
                     Authorization: "Bearer " + Cookies.get('makecake-token')
                 }
             });
+            if(response.status!==200)
+                toast.error("Loading recipes failed");
             const responseData = JSON.parse(response.data.body);
             const recipeItems = responseData.map((item: RecipeItem) => ({
                 recipe_price: item.recipe_price,
