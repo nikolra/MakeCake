@@ -5,7 +5,6 @@ import axios from 'axios';
 import OrderDelegate from './order-delegate/order-delegate.component';
 import SearchField from '../search-field/search-field.component';
 import NavigationButtonComponent from '../navigation-button/navigation-button.component';
-import {useNavigate} from "react-router-dom";
 import {toast, ToastContainer} from 'react-toastify';
 import dayjs from "dayjs";
 import Cookies from 'js-cookie';
@@ -40,21 +39,38 @@ export default function Orders({ className, header, description, isDashboard }: 
     const [orders, setOrders] = useState<OrderType[]>([]);
     const [filteredOrders, setFilteredOrders] = useState<OrderType[]>([]);
     const [searchString, setSearchString] = useState('');
-    const [isLoading, setIsLoading] = useState(true); // new loading state
-    const [error, setError] = useState(null); // new error state
-    const navigate = useNavigate();
 
+    useEffect(() => {
+        const func = async () => {
+            await fetchOrders();
+        }
+        func();
+    }, []);
 
+    useEffect(() => {
+        const filtered = orders.filter((order) => {
+            console.log(order);
+            const name = order.customer.toLowerCase();
+            const doesInclude = name.includes(searchString);
+            console.log(doesInclude);
+            return doesInclude;
+        });
+        setFilteredOrders(filtered);
+    }, [orders, searchString]);
 
-    const deleteOrder= async (id: any) => {
+    const deleteOrder = async (id: any) => {
         try {
-            const payload = {
-                seller_email: 'tomer@gmail.com',
-                order_id: id.toString()
-            };
-            toast.promise(async ()=> {
-               await axios.delete(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_order`,{data:payload});
-            },
+            const payload ={order_id : id.toString()};
+            toast.promise(
+                async () => {
+                    await axios.post(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_order`, payload,
+                        {
+                            headers:{
+                                "Content-type": "application/json",
+                                Authorization: "Bearer " + Cookies.get('makecake-token'),
+                            }
+                        });
+                },
                 {
                     pending: 'Loading',
                     success: { render: 'Order deleted', autoClose: 1000 },
@@ -62,13 +78,13 @@ export default function Orders({ className, header, description, isDashboard }: 
                 }
             ).then(response => {
                 handleDeleteOrder(id);
-            });}
+            });
+        }
         catch (error)
         {
             console.error(`Error deleting order ${id}:`, error);
         }
     }
-
     const handleDeleteOrder = (id: any) => {
         setOrders(prevOrders => prevOrders.filter(order => order.id !== id));
     }
@@ -82,8 +98,10 @@ export default function Orders({ className, header, description, isDashboard }: 
                         Authorization: "Bearer " + Cookies.get('makecake-token')
                     }
                 });
+            if(response.status!==200)
+                toast.error("Loading orders failed");
+
             const apiData = JSON.parse(response.data.body);
-            //console.log(apiData);
             if(isDashboard)
             {
                 const transformedOrders = apiData.map((orderData:any) => createOrderFromData(orderData,true)).filter((orderData:any)=>orderData!=null);
@@ -99,21 +117,6 @@ export default function Orders({ className, header, description, isDashboard }: 
             console.error('Error fetching orders:', error);
         }
     };
-
-    useEffect(() => {
-        fetchOrders();
-    }, []);
-
-    useEffect(() => {
-        const filtered = orders.filter((order) => {
-            console.log(order);
-            const name = order.customer.toLowerCase();
-            const doesInclude = name.includes(searchString);
-            console.log(doesInclude);
-            return doesInclude;
-        });
-        setFilteredOrders(filtered);
-    }, [orders, searchString]);
 
     const createRecipeFromData = (recipeData:any):OrderRecipeItem => {
         return{
@@ -136,7 +139,7 @@ export default function Orders({ className, header, description, isDashboard }: 
         else {
             const orderRecipes = orderData.recipes.L.map(createRecipeFromData);
             console.log(orderRecipes);
-            const customer = orderData.buyer_email.S;
+            const customer = orderData.buyer_name.S;
             return {
                 id: orderData.order_id.S,
                 dueDate: orderDate,

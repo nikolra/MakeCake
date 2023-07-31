@@ -20,29 +20,38 @@ export default function NewIngredientForm() {
 
 
     async function sendDataToBackend() {
-        const body = {
-            "code": code,
-            "name": ingredientName,
-            "min_price": minPrice,
-            "min_store": minPriceStore,
-            "max_price": maxPrice,
-            "max_store": maxPriceStore
-        }
+        console.log(`Submit clicked`);
         try {
-            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/create_new_mnl_ingredient',
-                body,{
-                    headers:{
-                        "Content-type": "application/json",
-                        Authorization: "Bearer " + Cookies.get('makecake-token')
-                    }});
-            if(response.data.status === 200) {
-                toast.success(`${ingredientName} Added Successfully`);
+            const body = {
+                "code": code,
+                "name": ingredientName,
+                "min_price": minPrice,
+                "min_store": minPriceStore,
+                "max_price": maxPrice,
+                "max_store": maxPriceStore
             }
-        } catch (error) {
-            console.error(`Error adding: ${ingredientName}`, error);
-            toast.error(`Error adding: ${ingredientName}`);
+            try {
+                const response =
+                    await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/create_new_mnl_ingredient',
+                        body,
+                        {
+                            headers: {
+                                "Content-type": "application/json",
+                                Authorization: "Bearer " + Cookies.get('makecake-token')
+                            }
+                        });
+                toast.success(`${ingredientName} Added Successfully`);
+                navigate('/ingredients');
+            }
+            catch (error) {
+                console.error(`Error adding: ${ingredientName}`, error);
+                toast.error(`Error adding: ${ingredientName}`);
+            }
         }
-        navigate('/ingredients');
+        catch (error) {
+            console.error(`Error getting user email`, error);
+            toast.error(`Error getting user email`);
+        }
     }
 
     return (

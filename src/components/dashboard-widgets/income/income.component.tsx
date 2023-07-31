@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Bar } from 'react-chartjs-2';
+import React, {useState, useEffect} from 'react'
+import {Bar} from 'react-chartjs-2';
 import {Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,} from 'chart.js';
 
 import '../widgets.style.css'
@@ -7,6 +7,8 @@ import './income.style.css'
 import Dropdown from '../../dropdown/dropdown.component'
 import axios from "axios";
 import Cookies from "js-cookie";
+import {useNavigate} from "react-router-dom";
+import {validateToken} from "../../../utils/TokenValidation";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -52,13 +54,13 @@ export default function Income() {
     let chartData = {
         y: [""],
         x: [0]
-    }
+    };
 
-    const [range, setRange] = useState('Week')
-    const [total, setTotal] = useState(0)
+    const [range, setRange] = useState('Week');
+    const [total, setTotal] = useState(0);
     const [data, setData] = useState(
         {
-            labels:[""],
+            labels: [""],
             datasets: [
                 {
                     data: [0],
@@ -67,9 +69,16 @@ export default function Income() {
                 }
             ]
         }
-    )
+    );
+
+    const navigate = useNavigate();
 
     useEffect(() => {
+        validateToken(Cookies.get('makecake-token'), navigate);
+    }, []);
+
+    useEffect(() => {
+        validateToken(Cookies.get('makecake-token'), navigate);
         rangeChanged(range);
     }, [range]);
 
@@ -125,7 +134,7 @@ export default function Income() {
                 </div>
             </div>
             <div className="chart-container">
-                <Bar options={options} data={data} />
+                <Bar options={options} data={data}/>
             </div>
         </div>
     )

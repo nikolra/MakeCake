@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react'
 import '../dashboard-widgets/widgets.style.css'
 import './ingredients.style.css'
 import IngredientDelegate from './ingredients-delegate/ingrediant-delegate.component'
-import {devIngredients} from "./dev-data";
 import SearchField from "../search-field/search-field.component";
 import NavigationButtonComponent from "../navigation-button/navigation-button.component";
 import {toast, ToastContainer} from "react-toastify";
@@ -15,52 +14,51 @@ interface IIngredientProps{
     description: string
 }
 
+interface IIngredientData{
+    id: string,
+    name: string,
+    minCost: number,
+    avgCost: number,
+    maxCost: number,
+    isManual: boolean
+}
+
 export default function Ingredients({className, header, description}: IIngredientProps) {
 
-    const [ingredients, setIngredients] = useState(devIngredients);
+    const [ingredients, setIngredients] = useState<IIngredientData[]>();
     const [filteredIngredients, setFilteredIngredients] = useState(ingredients);
     const [searchString, setSearchString] = useState('');
 
     useEffect( () => {
-        const filtered = ingredients.filter((ingredient) => {
+        const filtered = ingredients?.filter((ingredient) => {
             const name = ingredient.name;
             console.log(name, searchString, name.includes(searchString))
             return name.includes(searchString);
         })
-        setFilteredIngredients(filtered)
+        setFilteredIngredients(filtered? filtered : [])
     }, [ingredients, searchString]);
+
+    useEffect(() => {
+        updateIngredients();
+    }, []);
 
     const updateIngredients = async () => {
         console.log(`update Ingredients called`);
         //TODO: Amit integrate with automated ingredients lambda
-        try {
-                const user_body = {
-                    accessToken: Cookies.get('makecake-token')
-                }
-            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_user',
-                user_body,{
-                headers: {
-                    "Content-type": "application/json",
-                    Authorization: "Bearer " + Cookies.get('makecake-token')
-                }});
-
-            console.log(response.data.body);
-            const responseBodyJSON = JSON.parse(response.data.body);
-            const user_email = responseBodyJSON.email;
-
             const body = {
                 "table_name": "mnl_ingredients",
-                "field_name": "user_email",
-                "search_value": user_email
+                "field_name": "user_email"
             }
-            console.log(body);
             try {
-                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_mnl_ingredients',
-                    body,{
-                        headers:{
-                            "Content-type": "application/json",
-                            Authorization: "Bearer " + Cookies.get('makecake-token')
-                        }});
+                const response =
+                    await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_mnl_ingredients',
+                        body,
+                        {
+                            headers: {
+                                "Content-type": "application/json",
+                                Authorization: "Bearer " + Cookies.get('makecake-token')
+                            }
+                        });
                 const data = response.data;
                 console.log('data#####:', data);
                 const formattedIngredients = data.map((ingredient: any) => {
@@ -68,35 +66,52 @@ export default function Ingredients({className, header, description}: IIngredien
                         id: ingredient.code,
                         name: ingredient.name,
                         minCost: {
-                            price: String(ingredient.min_price),
+                            price: ingredient.min_price,
                             supermarketName: ingredient.min_store
                         },
                         maxCost: {
-                            price: String(ingredient.max_price),
+                            price: ingredient.max_price,
                             supermarketName: ingredient.max_store
                         },
-                        avgCost: String(ingredient.price.N)
+                        avgCost: ingredient.avg_price,
+                        isManual: ingredient.is_menual === "true"
                     };
                 });
                 setIngredients(formattedIngredients);
                 console.log('formattedIngredients:', formattedIngredients);
-                setFilteredIngredients(formattedIngredients);
             }
             catch (error) {
                 console.error(`Error getting ingredients`, error);
                 toast.error(`Error getting ingredients`);
 
             }
-        }
-        catch (error) {
-            console.error(`Error getting user email`, error);
-            toast.error(`Error getting user email`);
-        }
     }
 
-    const deleteIngredients = (id: string) => {
+    const deleteIngredients = async (id: string) => {
         console.log(`delete ingredient called`);
-        //TODO: Amit integrate with automated ingredients lambda
+        //TODO: Amit integrate with manual ingredients lambda
+        const body = {
+            code: id
+        }
+        console.log('body:', body)
+        try {
+            const response =
+                await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_mnl_ingredient',
+                    body,
+                    {
+                        headers: {
+                            "Content-type": "application/json",
+                            Authorization: "Bearer " + Cookies.get('makecake-token')
+                        }
+                    });
+            console.log('response:', response);
+            toast.success(`Ingredient deleted successfully`);
+            updateIngredients();
+        }
+        catch (error) {
+            console.error(`Error deleting ingredient`, error);
+            toast.error(`Error deleting ingredient`);
+        }
     }
 
     return (
@@ -131,7 +146,7 @@ export default function Ingredients({className, header, description}: IIngredien
             <div className="all-ingredients-list-container">
                 <div className="all-ingredients-list">
                     {
-                        filteredIngredients.map((ingredient) => {
+                        filteredIngredients?.map((ingredient) => {
                             return <IngredientDelegate deleteDelegate={deleteIngredients} key={ingredient.id} data={ingredient} />
                         })
                     }

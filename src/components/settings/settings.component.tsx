@@ -7,35 +7,74 @@ import {toast, ToastContainer} from "react-toastify";
 import TextField from '@mui/material/TextField';
 import Box from "@mui/material/Box";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 interface IOrderProps {
-    className?: string
+    className?: string,
+    username: string
 }
 
-export default function SettingsComponent({className}: IOrderProps) {
+export default function SettingsComponent({className, username}: IOrderProps) {
 
-    //TODO: Amit should use the data of the connected user and not hard codded data
-    const [username, setName] = useState('Ariana Broflowski');
+    const [name, setName] = useState(username);
     const [templateName, setTemplateName] = useState('');
     const [smsTemplate, setSmsTemplate] = useState('');
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
 
-    const updatePasswordAndName = () => {
-        //TODO: Amit implement change password using cognito
+    const updatePasswordAndName = async () => {
+        if(!newPassword)
+            toast.error(`Please your new password`);
+        else if(!repeatPassword)
+            toast.error(`Please repeat your new password`);
+        else if(!oldPassword)
+            toast.error(`Please enter current password`);
+        else if(newPassword !== repeatPassword)
+            toast.error(`Passwords do not match`);
+        try {
+            const payload = {
+                    PreviousPassword: oldPassword,
+                    ProposedPassword: newPassword,
+                    AccessToken: Cookies.get('makecake-accessToken')
+            };
+            const response = await axios.post("https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/change_password",
+                payload,
+                {
+                    headers: {
+                        "Content-type": "application/json",
+                        Authorization: "Bearer " + Cookies.get('makecake-token')
+                    }
+                });
+            if (response.data.statusCode === 200) {
+                toast.success(`Password changed`)
+                setNewPassword("");
+                setOldPassword("");
+                setRepeatPassword("");
+            } else {
+                toast.error(`Error changing password`)
+            }
+        } catch (error) {
+            toast.error('Error changing password');
+        }
     }
 
     const createNewSMSTemplate = () => {
         try{
-            //TODO: Amit - should get connected user email
         const payload = {
             smsTemplateName:templateName,
-            konditorEmail: "tomer@gmail.com",
             smsTemplateMessage:smsTemplate
         };
         toast.promise(async ()=> {
-            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/create_sms_template',payload);
+            const response =
+                await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/create_sms_template',
+                    payload,
+                    {
+                        headers: {
+                            "Content-type": "application/json",
+                            Authorization: "Bearer " + Cookies.get('makecake-token')
+                        }
+                    });
             console.log(JSON.stringify(response));
             console.log(response.data);
         }, {
@@ -53,7 +92,7 @@ export default function SettingsComponent({className}: IOrderProps) {
         <div className={`dashboard-widget-container settings-widget ${className}`}>
             <div className="settings-header">
                 <div className="settings-header-title-col">
-                    <InputField setValueDelegate={setName} label="Name" width={300} value={username}/>
+                    <InputField setValueDelegate={setName} label="Name" width={300} value={name}/>
                     <LabeledField title='Password' inputClassName={"password-field-input"} className={'setting-label-field'}
                                   placeholder='Enter your current password' type="password" required={true}
                                   onChange={(e: any) => {

@@ -20,7 +20,7 @@ export default function Register() {
     const tryRegister = async () => {
         const body = {
             email: email,
-            phone_num: "+972541111111",
+            phone_num: "+9728786719",
             given_name: firstName,
             family_name: lastName,
             repeat_password: repeatPassword,

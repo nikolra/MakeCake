@@ -25,16 +25,16 @@ function RecipeDelegate(props: IRecipeProps) {
                     <span>{quantity}</span>
                 </div>
                 <div className="recipe-delegate-table-container">
-                    <span>{minCost}₪</span>
+                    <span>{minCost.toFixed(2)}₪</span>
                 </div>
                 <div className="recipe-delegate-table-container">
-                    <span>{avgCost}₪</span>
+                    <span>{avgCost.toFixed(2)}₪</span>
                 </div>
                 <div className="recipe-delegate-table-container">
-                    <span>{maxCost}₪</span>
+                    <span>{maxCost.toFixed(2)}₪</span>
                 </div>
                 <div className="recipe-delegate-table-container">
-                    <span>{price}₪</span>
+                    <span>{price.toFixed(2)}₪</span>
                 </div>
                 <div className="recipe-delegate-table-container align-right">
                     <button className="expand-button" onClick={() => {

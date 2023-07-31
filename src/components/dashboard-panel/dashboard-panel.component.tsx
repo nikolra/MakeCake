@@ -7,14 +7,18 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {NavLink, useNavigate} from "react-router-dom";
 import Cookies from "js-cookie";
 
-export default function DashboardPanel() {
+interface IProps {
+    username:string
+}
+
+export default function DashboardPanel({username} :IProps) {
     const [currentIndex, setIndex] = useState(0);
     const navigate = useNavigate();
 
     return (
         <div className="dashboard-side-panel">
             <div className='user-section-container'>
-                <User/>
+                <User username={username}/>
             </div>
             <div className="navigation-container">
                 <DashboardLink to="/dashboard" text="Dashboard" icon={solid('chart-simple')}/>
@@ -25,12 +29,12 @@ export default function DashboardPanel() {
                 <DashboardLink to="/settings" text="Settings" icon={solid('gear')}/>
             </div>
             <div className='logout-container'>
-                {/*<DashboardLink to="/" text="Log out"/>*/}
                 <div className="container">
                     <FontAwesomeIcon icon={solid('right-from-bracket')} className={'icon active'}/>
                     <NavLink to={"/"} className={'link active'} onClick={() => {
                         navigate("/");
                         Cookies.remove('makecake-token');
+                        Cookies.remove('makecake-accessToken');
                     }}>
                         <span className="text">{"Log out"}</span>
                     </NavLink>

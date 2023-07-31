@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import validator from 'validator';
+import Cookies from "js-cookie";
 
 export default function NewCustomerForm() {
 
@@ -29,7 +30,6 @@ export default function NewCustomerForm() {
             toast.error(`Please enter a valid phone number`);
         else try {
             const payload = {
-                seller_email: "tomer@gmail.com", //TODO: Amit - should user the mail of the connected user
                 name: customerName,
                 phone_number: phoneNumber,
                 email_address: email,
@@ -38,8 +38,16 @@ export default function NewCustomerForm() {
             toast.promise(async ()=> {
                 navigate('/customers');
                 console.log('create customer:', payload);
-                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/customer', payload);
-                //TODO: Eden.Nikol - understand why showing error on success
+                const response =
+                    await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/customer',
+                        payload,
+                        {
+                            headers: {
+                                "Content-type": "application/json",
+                                Authorization: "Bearer " + Cookies.get('makecake-token')
+                            }
+                        });
+                //TODO: Eden - understand why showing error on success
                 console.log('create customer response status:', response.status);
                 console.log('create customer response data:', response.data);
                 console.log(JSON.stringify(response));
@@ -56,7 +64,8 @@ export default function NewCustomerForm() {
     }
 
     const phoneNumberValidator = (phone: string) :boolean => {
-        const phoneNumberRegex = /\b[0245]\d{2}-\d{7}\b/;
+        const phoneNumberRegex = /^\+\d{1,3}\s?\(?\d{1,}\)?[-.\s]?\d{1,}[-.\s]?\d{1,}[-.\s]?\d{1,}$/;
+
         const regex = new RegExp(phoneNumberRegex);
         return regex.test(phone) || phone == "";
     }

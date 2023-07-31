@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import '../../App.css';
 import './update-customer-form.style.css';
 import InputField from "../outlinedd-input-field/input-field.component";
-import {devCustomers} from "../customers/dev-data";
 import axios from "axios";
 import {toast, ToastContainer} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import Cookies from "js-cookie";
 
 interface ICustomerProps {
     email: string;
@@ -31,29 +31,41 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
 
 
     useEffect(() => {
-        async function fetchCustomer() {
-            try {
-                const payload = {
-                    seller_email: "tomer@gmail.com" //TODO: Amit - should user the mail of the connected user
-                }
-                //TODO: Eden - Consider using the lambda that Amit created to get a single customer from DDB
-                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/all-customers', payload);
-                const customers = response.data;
-                const customerData = customers.find((customer: { email: string; }) => customer.email === email);
-
-                if (customerData) {
-                    setCustomer(customerData);
-                    setCustomerName(customerData.name);
-                    setPhoneNumber(customerData.phoneNumber);
-                    setAddress(customerData.address);
-                }
-            } catch (error) {
-                console.error(JSON.stringify(error));
+        const func = async () => {
+            await fetchCustomer();
+            if (!customer) {
+                toast.error('Error getting custoemr data');
+                return;
             }
         }
+        func();
+    }, []);
 
-        fetchCustomer();
-    }, [email]);
+    async function fetchCustomer() {
+        try {
+            const payload = {}
+            const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/all-customers',
+                payload,
+                {
+                    headers: {
+                        "Content-type": "application/json",
+                        Authorization: "Bearer " + Cookies.get('makecake-token')
+                    }
+                });
+            const customers = response.data;
+            const customerData = customers.find((customer: { email: string; }) => customer.email === email);
+
+            if (customerData) {
+                setCustomer(customerData);
+                console.log(customerData.name);
+                setCustomerName(customerData.name);
+                setPhoneNumber(customerData.phoneNumber);
+                setAddress(customerData.address);
+            }
+        } catch (error) {
+            console.error(JSON.stringify(error));
+        }
+    }
 
     const phoneNumberValidator = (phone: string) :boolean => {
         const phoneNumberRegex = /\b[0245]\d{2}-\d{7}\b/;
@@ -69,14 +81,20 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
             toast.error(`Please enter a valid phone number`);
         else try {
             const payload = {
-                seller_email: "tomer@gmail.com", //TODO: Amit - should user the mail of the connected user
                 name: customerName,
                 phone_number: phoneNumber,
                 email_address: email,
                 address: address
             };
             toast.promise(async () => {
-                await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/updatecustomer', payload);
+                await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/updatecustomer',
+                    payload,
+                    {
+                        headers: {
+                            "Content-type": "application/json",
+                            Authorization: "Bearer " + Cookies.get('makecake-token')
+                        }
+                    });
                 navigate('/customers');
             }, {
                 // @ts-ignore
@@ -88,9 +106,7 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
             console.error(JSON.stringify(error));
         }
     }
-    if (!customer) {
-        return <div>Loading...</div>;
-    }
+
     return (
         <div className="dashboard-widget-container new-customer-widget-container">
             <div className="new-customers-header-title-row">
@@ -101,7 +117,20 @@ export default function UpdateCustomerForm({email} : ICustomerProps) {
             </div>
             <div className="new-customer-input-fields">
                 <div className="customer-input-field">
-                    <InputField setValueDelegate={setCustomerName} label="Customer Name" width={500} value={customerName} />
+                    <Box
+                        component="div"
+                        sx={{
+                            width: 500,
+                            maxWidth: '100%',
+                            m:  '0 0 6px 0'
+                        }}
+                    >
+                        <TextField fullWidth id="outlined-basic" label={"Customer Name"} variant="outlined" defaultValue={customerName} value={customerName}
+                                   onChange={(e: any) => {
+                                       console.log(`"Customer Name": ${e.target.value}`)
+                                       setCustomerName(e.target.value)
+                                   }}/>
+                    </Box>
                 </div>
 
                 <div className="customer-input-field">

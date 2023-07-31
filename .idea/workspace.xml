@@ -4,15 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c7a2437d-b918-4d33-803d-084c99b088ba" name="Changes" comment="recipe page and order completly finished include toasters and validation">
+    <list default="true" id="c7a2437d-b918-4d33-803d-084c99b088ba" name="Changes" comment="fixed bugs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/create-new-order/create-new-order-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-order/create-new-order-form.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/create-new-recipe/create-new-recipe-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-recipe/create-new-recipe-form.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/orders/orders.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/orders/orders.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/recipes/recipes.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recipes/recipes.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/update-recipe/update-recipe-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/update-recipe/update-recipe-form.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/login/login.page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/login.page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +19,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProjectId" id="2S1dxdZDC2S9O80gALivd4eH1gK" />
   <component name="ProjectViewState">
@@ -80,7 +81,14 @@
       <workItem from="1690320884056" duration="190000" />
       <workItem from="1690321085691" duration="6000" />
       <workItem from="1690321119556" duration="10000" />
-      <workItem from="1690323043757" duration="9250000" />
+      <workItem from="1690323043757" duration="9365000" />
+      <workItem from="1690364817003" duration="12975000" />
+      <workItem from="1690391868912" duration="4702000" />
+      <workItem from="1690402584862" duration="7181000" />
+      <workItem from="1690410463082" duration="2550000" />
+      <workItem from="1690453439606" duration="18074000" />
+      <workItem from="1690475010989" duration="92000" />
+      <workItem from="1690739673463" duration="1213000" />
     </task>
     <task id="LOCAL-00001" summary="implemented best customers widget">
       <option name="closed" value="true" />
@@ -178,7 +186,63 @@
       <option name="project" value="LOCAL" />
       <updated>1690323347867</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="orders integrated with cognito">
+      <option name="closed" value="true" />
+      <created>1690332555901</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1690332555901</updated>
+    </task>
+    <task id="LOCAL-00014" summary="orders+recipes integrated with cognito">
+      <option name="closed" value="true" />
+      <created>1690384924022</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1690384924022</updated>
+    </task>
+    <task id="LOCAL-00015" summary=".">
+      <option name="closed" value="true" />
+      <created>1690403617635</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1690403617635</updated>
+    </task>
+    <task id="LOCAL-00016" summary=".">
+      <option name="closed" value="true" />
+      <created>1690403822889</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1690403822889</updated>
+    </task>
+    <task id="LOCAL-00017" summary=".">
+      <option name="closed" value="true" />
+      <created>1690472673442</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1690472673442</updated>
+    </task>
+    <task id="LOCAL-00018" summary=".">
+      <option name="closed" value="true" />
+      <created>1690474970285</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1690474970285</updated>
+    </task>
+    <task id="LOCAL-00019" summary="fixed bugs">
+      <option name="closed" value="true" />
+      <created>1690475018775</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1690475018775</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -205,6 +269,21 @@
     <MESSAGE value="recipes finished get request isnt working for some reason other than that all should work properly" />
     <MESSAGE value="recipe page and order completly finished" />
     <MESSAGE value="recipe page and order completly finished include toasters and validation" />
-    <option name="LAST_COMMIT_MESSAGE" value="recipe page and order completly finished include toasters and validation" />
+    <MESSAGE value="orders integrated with cognito" />
+    <MESSAGE value="orders+recipes integrated with cognito" />
+    <MESSAGE value="." />
+    <MESSAGE value="fixed bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx</url>
+          <line>55</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

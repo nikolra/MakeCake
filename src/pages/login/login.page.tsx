@@ -3,7 +3,6 @@ import {Link, useNavigate} from 'react-router-dom';
 import DonutPanel from '../../components/donut-panel/donut-panel.component'
 import LogoComponent from '../../components/logo/logo.component'
 import LabeledField from '../../components/labeled-input/labeled-input.component'
-import CheckBox from '../../components/checkbox/checkbox.component'
 import axios from 'axios';
 import {ToastContainer, toast} from 'react-toastify';
 import './login.style.css';
@@ -15,20 +14,18 @@ export default function Login() {
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
 
-/*    useEffect(()=> {
-        //if cookie has a token navigate to dashboard
+    useEffect(()=> {
         if (Cookies.get('makecake-token')) {
             navigate('/dashboard');
             return;
         }
-    },[]);*/
+    },[]);
 
     const tryLogin = async () => {
         const body = {
             email: email,
             password: password
         };
-
         try {
             const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/login', body, {
                     headers: {
@@ -38,23 +35,22 @@ export default function Login() {
                 }
             )
             // Assuming the response contains a token field
-            console.log(response);
-            const token = response.data.body.token;
-
-            console.log(token);
-            if (token && response.status === 200) {
-                Cookies.set('makecake-token', token, { expires: 1 });
+            console.error('Login: ', response.data);
+            console.error('idToken: ', response.data.body.idToken);
+            console.error('accessToken: ', response.data.body.accessToken);
+            const token = response.data.body.idToken;
+            if (token && response.data.statusCode === 200) {
+                Cookies.set('makecake-token', response.data.body.idToken, { expires: 1 });
+                Cookies.set('makecake-accessToken', response.data.body.accessToken, { expires: 1 });
                 navigate('/dashboard');
             } else {
-                console.error('Login failed: ', response.data.message);
+                console.error('Login failed: ', response);
                 toast.error('Login failed')
             }
         } catch (error) {
-            console.error('Error during login:', error)
             toast.error('Error during login')
         }
     };
-
 
     return (
         <div className="pages">
@@ -71,10 +67,6 @@ export default function Login() {
                                       onChange={(e: any) => {
                                           setPassword(e.target.value)
                                       }}/>
-                        <div className="remember-forgot-container">
-                            <CheckBox text="Remember me"/>
-                            <Link className={'forgot-button'} to="forgot-password">Forgot password</Link>
-                        </div>
                         <button className='button button-gradient' onClick={tryLogin}>Sign In</button>
                     </div>
                     <div>

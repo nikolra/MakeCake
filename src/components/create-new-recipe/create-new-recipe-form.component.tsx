@@ -1,19 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import '../../App.css';
 import './create-new-recipe-form.style.css';
-import OutlinedInputField from "../outlinedd-input-field/input-field.component";
 import IngredientDelegate from "./ingredient-delegate/ingredient-delegate.component";
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
-import {toast} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import Cookies from "js-cookie";
+import InputAdornment from "@mui/material/InputAdornment";
 
 export default function NewRecipeForm() {
-
-
 
     type IRecipeIngredientType ={
         ingredient_name: string;
@@ -25,9 +23,6 @@ export default function NewRecipeForm() {
         measurement_unit:string;
         automated: boolean;
      };
-
-/*    //const [ingredients, setIngredients] = useState<Array<{ code: any, name: any, cost: any,quantity: any, automated: any }>>([]);
-    const arr: any[] = []; //TODO: Amit - delete this after integration*/
 
     /////////////////////////////////Change only at load////////////////////////////////////
     const [manualIngredients, setManualIngredients] = useState<IRecipeIngredientType[]>([
@@ -134,17 +129,16 @@ export default function NewRecipeForm() {
             automated: true,
         },
     ]);
-    const [recipeIngredients, setRecipeIngredients] = useState<IRecipeIngredientType[]>([]);//TODO this is both of them merged
+    const [recipeIngredients, setRecipeIngredients] = useState<IRecipeIngredientType[]>([]);//this is both of them merged
     const [ingredients,setIngredients] = useState<IRecipeIngredientType[]>([]);
-    const [ingredientsName,setIngredientNames]= useState<string[]>([]);//TODO this is both of them names merged
+    const [ingredientsName,setIngredientNames]= useState<string[]>([]);//this is both of them names merged
     ////////////////////////////////////Global To Order //////////////////////////////////////////
     const [recipeName, setRecipeName] = useState('');
     const [recipePrice, setRecipePrice] = useState(0);
     const [totalMinCost, setTotalMinCost] = useState(0);
     const [totalMaxCost, setTotalMaxCost] = useState(0);
     const [totalAvgCost, setTotalAvgCost] = useState(0);
- /////////////////////////////////////Change for each ingredient added ////////////////////////////////
-
+    /////////////////////////////////////Change for each ingredient added ////////////////////////////////
     const [currentIngredient,setCurrentIngredient] = useState<IRecipeIngredientType>();
     const [ingredientName, setIngredientName] = useState('');
     const [quantity, setQuantity] = useState(0);
@@ -152,11 +146,16 @@ export default function NewRecipeForm() {
     const [avgCost, setAvgCost] = useState(0);
     const [maxCost, setMaxCost] = useState(0);
 
-
     const navigate = useNavigate();
 
     useEffect(() => {
-        updateTableFields()
+        const func = async () => {
+            await fetchIngredients();
+            await fetchIngredientsName();
+        }
+        func();
+    }, []);
+    useEffect(() => {
         if(recipeName==="")
         {
             setQuantity(0);
@@ -164,14 +163,10 @@ export default function NewRecipeForm() {
             setAvgCost(0);
             setMaxCost(0);
         }
+        updateTableFields()
     }, [ingredientName]);
-    useEffect(() => {fetchManualIngredients(); }, []);
-    useEffect(() => {fetchAutomatedIngredients(); }, []);
-    useEffect(() => {fetchIngredientsName(); }, []);
 
-
-    function updateTableFields()
-    {
+    function updateTableFields() {
        const ingredient = ingredients.find(ingredient=>ingredient.ingredient_name===ingredientName);
         setCurrentIngredient(ingredient);
        if(ingredient) {
@@ -181,11 +176,11 @@ export default function NewRecipeForm() {
            setMaxCost(ingredient.maxCost);
        }
     }
-    function fetchIngredientsName()
-    {
+
+    function fetchIngredientsName() {
+        //TODO: Nikol - understand with Amit if needed and how
         const automatedNames=automatedIngredients.map((ingredient:IRecipeIngredientType)=> {return ingredient.ingredient_name})
         const manualNames = manualIngredients.map((ingredient: IRecipeIngredientType) => {return ingredient.ingredient_name+"- my"; });
-        ingredients.concat(automatedIngredients);
         let manualIIngredients = manualIngredients.map((ingredient: IRecipeIngredientType) => {
             return {...ingredient, ingredient_name: ingredient.ingredient_name + "- my"};
         });
@@ -194,21 +189,8 @@ export default function NewRecipeForm() {
         setIngredientNames(automatedNames.concat(manualNames));
     }
 
-    async function fetchManualIngredients()
-    {
-        /// get request
-
-
-        //get the names of them
-        //place them in ingredientsName
-    }
-    async function fetchAutomatedIngredients()
-    {
-        /// get request
-
-
-        //get the names of them
-        //place them in ingredientsName
+    async function fetchIngredients() {
+        //TODO: Amit - implement!
     }
     function generateNumericID() {
         const min = 100000000; // Minimum 16-digit number
@@ -219,7 +201,6 @@ export default function NewRecipeForm() {
 
     async function sendDataToBackend() {
         console.log(`Submit clicked`);
-        console.log(recipePrice);
         if (recipeName === "") {
             toast.error("Please enter recipe name");
         } else if (recipeIngredients.length === 0)
@@ -230,7 +211,7 @@ export default function NewRecipeForm() {
             toast.error("Recipe price can't be 0");
         } else {
             try {
-                const recipeData = {
+                const payload = {
                     recipe_id: generateNumericID(),
                     recipe_name: recipeName,
                     recipe_price: recipePrice,
@@ -239,19 +220,20 @@ export default function NewRecipeForm() {
                     ingredients_max_cost: totalMaxCost,
                     ingredients: recipeIngredients
                 };
-                try {
 
-                    const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe',
-                        recipeData,
+                try {
+                    const response = await axios.post(
+                        'https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe',
+                        payload,
                         {
                             headers: {
-                                "Content-type": "application/json",
-                                Authorization: "Bearer " + Cookies.get('makecake-token')
+                                "content-type": "application/json",
+                                "Authorization": "Bearer " + Cookies.get('makecake-token')
                             }
-                        });
-
+                        }
+                    );
                     if (response.status === 200) {
-                        toast.success('Recipe created successfully', {autoClose: 2000});
+                        toast.success('Recipe created successfully', { autoClose: 2000 });
                         navigate(`/recipes`);
                     } else {
                         toast.error('Error creating recipe');
@@ -267,48 +249,97 @@ export default function NewRecipeForm() {
     }
 
     async function removeIngredient(name: string) {
-        console.log(`remove name: ${name}`);
         const index = recipeIngredients.findIndex(ingredient => ingredient.ingredient_name === name);
+        const ingredient = recipeIngredients[index];
+        setTotalMinCost(totalMinCost-ingredient.minCost*ingredient.quantity);
+        setTotalAvgCost(totalAvgCost-ingredient.avgCost*ingredient.quantity);
+        setTotalMaxCost(totalMaxCost-ingredient.maxCost*ingredient.quantity);
         const newIngredients = [...recipeIngredients];
         newIngredients.splice(index, 1);
         setRecipeIngredients(newIngredients);
     }
 
     function addIngredient() {
-        if(ingredientName === "" || !ingredientName)
+        if (ingredientName === "" || !ingredientName)
             toast.error(`Please choose ingredient`);
-        else if(quantity === 0 || !ingredientName)
+        else if (quantity === 0 || !ingredientName)
             toast.error(`Please choose quantity greater that 0`);
         else {
-            const recipeIngredientFromRecipe=recipeIngredients.find((ingredient)=>ingredient===currentIngredient);
-            if(recipeIngredientFromRecipe)
-                recipeIngredientFromRecipe.quantity=recipeIngredientFromRecipe.quantity+quantity;
-            else if(recipeIngredients&&currentIngredient) 
-            {
-                setRecipeIngredients([...recipeIngredients, currentIngredient]);
-                currentIngredient.quantity=quantity;
+            const recipeIngredientFromRecipe = recipeIngredients.find((ingredient) => ingredient.ingredient_name === currentIngredient?.ingredient_name);    /// check if the ingredient exist in the recipe
+            if (recipeIngredientFromRecipe) {
+                recipeIngredientFromRecipe.quantity = recipeIngredientFromRecipe.quantity + quantity;
             }
-            if(currentIngredient) {
+            else if (recipeIngredients && currentIngredient) {
+                setRecipeIngredients([...recipeIngredients, currentIngredient]);
+                currentIngredient.quantity = quantity;
+            }
+            if (currentIngredient) {
                 setTotalMinCost(quantity * currentIngredient.minCost + totalMinCost);
                 setTotalAvgCost(quantity * currentIngredient.avgCost + totalAvgCost);
                 setTotalMaxCost(quantity * currentIngredient.maxCost + totalMaxCost);
             }
         }
-            setIngredientName('');
-            setMaxCost(0);
-            setQuantity(0);
-            setMinCost(0);
-            setAvgCost(0);
+        setIngredientName('');
+        setMaxCost(0);
+        setQuantity(0);
+        setMinCost(0);
+        setAvgCost(0);
     }
+
 
     return (
         <div className="dashboard-widget-container new-recipe-widget all-recipes-container inputs-container">
             <div className="new-recipe-input-fields">
                 <div className={"new-recipe-ingredient-name"}>
-                    <OutlinedInputField label='Recipe Name' setValueDelegate={setRecipeName} width={400}/>
+                    <Box
+                        component="div"
+                        sx={{
+                            width: 400,
+                            maxWidth: '100%',
+                            m: 1
+                        }}
+                    >
+                        <TextField disabled={false} fullWidth id="outlined-basic" label={"Recipe Name"}
+                                   variant="outlined" defaultValue={recipeName}
+                                   value={recipeName}
+                                   onChange={(e: any) => {
+                                       setRecipeName(e.target.value)
+                                   }}/>
+                    </Box>
+
                 </div>
-                <div className={"new-recipe-ingredient-name"}>
-                    <OutlinedInputField label='Recipe Price' setValueDelegate={setRecipePrice} width={400}/>
+
+                <div className={"new-recipe-price"}>
+                    <Box
+                        component="div"
+                        sx={{
+                            width: 255,
+                            maxWidth: '100%',
+                            m: '0 0 6px 0'
+                        }}
+                    >
+                        <TextField
+                            fullWidth
+                            id="outlined-basic"
+                            label="Recipe Price"
+                            variant="outlined"
+                            value={recipePrice === 0 ? "" : recipePrice}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                const inputValue = e.target.value;
+                                // Ensure only positive numeric input is allowed (excluding zero and negative values)
+                                if (/^\d*\.?\d*$/.test(inputValue) && inputValue !== "." && inputValue !== "0") {
+                                    setRecipePrice(Number(inputValue));
+                                }
+                            }}
+                            // Set inputMode to 'numeric' to display a numeric keyboard on mobile devices
+                            inputMode="numeric"
+                            // Display the dollar sign ($) at the start of the input field to indicate the currency
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">₪</InputAdornment>,
+                            }}
+                        />
+                    </Box>
+
                 </div>
             </div>
 
@@ -321,11 +352,11 @@ export default function NewRecipeForm() {
                 </div>
 
                 <div className="ingredients-widget">
-                    <div className="new-recipe-ingredients-header-ingredients-list-title">
-                        <div className="new-recipe-ingredients-header-list-title">
+                    <div className="ingredients-header-ingredients-list-title">
+                        <div className="ingredients-header-list-title">
                             <span>Name</span>
                         </div>
-                        <div className="new-recipe-ingredients-header-list-title">
+                        <div className="ingredients-header-list-title">
                             <span>Quantity</span>
                         </div>
                         <div className="new-recipe-ingredients-header-list-title">
@@ -339,15 +370,15 @@ export default function NewRecipeForm() {
                         </div>
                     </div>
 
-                    <div className="new-recipe-ingredients-list-container">
-                        <div className="new-recipe-ingredients-input">
+                    <div className="ingredients-list-container">
+                        <div className="ingredients-input ">
                             <Autocomplete
                                 disablePortal
                                 id="comcbo-box-demo"
                                 value={ingredientName}
                                 onChange={(event: any, newValue: string | null) => {
-                                    if(newValue)
-                                        setIngredientName(newValue)
+                                    if (newValue)
+                                        setIngredientName(newValue);
                                     else setIngredientName("");
 
                                 }}
@@ -361,13 +392,12 @@ export default function NewRecipeForm() {
                                     '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
                                 onChange={(e: any) => {
-                                    setQuantity(e.target.value)
+                                    setQuantity(Number(e.target.value))
                                 }}
                             >
                                 <TextField variant="standard" id="standard-number" label={'Quantity'} type="number"
-                                           defaultValue={quantity}
-                                           value={quantity === 0 ? "" : quantity}
-                                           inputProps={{min: 1, inputMode: "numeric", pattern: '[0-9]+'}}
+                                           defaultValue={quantity} value={quantity === 0 ? "" : quantity}
+                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
                                 />
                             </Box>
                             <Box
@@ -375,34 +405,49 @@ export default function NewRecipeForm() {
                                 sx={{
                                     '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
-                                onChange={(e: any) => {setMinCost(e.target.value)}}
+                                onChange={(e: any) => {
+                                    setMinCost(e.target.value)
+                                }}
                             >
-                                <TextField disabled={true} id="standard-basic" label={'Min Cost'} variant="standard" value={minCost === 0 ? "" : minCost}/>
+                                <TextField disabled={true} id="standard-basic" label={'Min Cost'} variant="standard"
+                                           value={minCost === 0 ? "" : minCost*quantity}/>
                             </Box>
                             <Box
                                 component="div"
                                 sx={{
                                     '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
-                                onChange={(e: any) => {setAvgCost(e.target.value)}}
+                                onChange={(e: any) => {
+                                    setAvgCost(e.target.value)
+                                }}
                             >
-                                <TextField disabled={true} id="standard-basic" label={'Avg Cost'} variant="standard" value={avgCost === 0 ? "" : avgCost}/>
+                                <TextField disabled={true} id="standard-basic" label={'Avg Cost'} variant="standard"
+                                           value={avgCost === 0 ? "" : avgCost*quantity}/>
                             </Box>
                             <Box
                                 component="div"
                                 sx={{
                                     '& > :not(style)': {m: 1, width: '25ch'},
                                 }}
-                                onChange={(e: any) => {setMaxCost(e.target.value)}}
+                                onChange={(e: any) => {
+                                    setMaxCost(e.target.value)
+                                }}
                             >
-                                <TextField disabled={true} id="standard-basic" label={'Max Cost'} variant="standard" value={maxCost === 0 ? "" : maxCost}/>
+                                <TextField disabled={true} id="standard-basic" label={'Max Cost'} variant="standard"
+                                           value={maxCost === 0 ? "" : maxCost*quantity}/>
                             </Box>
                         </div>
                         <div className="recipes-list">
                             {
                                 recipeIngredients.map((ingredient) => {
-                                    return <IngredientDelegate removeDelegate={removeIngredient} key={ingredient.ingredient_name} name={ingredient.ingredient_name} quantity={(ingredient.quantity)}
-                                     minCost={ingredient.minCost}  avgCost={ingredient.avgCost}     maxCost={ingredient.maxCost} measurement_unit = {ingredient.measurement_unit}
+                                    return <IngredientDelegate removeDelegate={removeIngredient}
+                                                               key={ingredient.ingredient_name}
+                                                               name={ingredient.ingredient_name}
+                                                               quantity={ingredient.quantity}
+                                                               minCost={ingredient.minCost}
+                                                               avgCost={ingredient.avgCost}
+                                                               maxCost={ingredient.maxCost}
+                                                               measurement_unit={ingredient.measurement_unit}
                                     />
                                 })
                             }
@@ -415,7 +460,7 @@ export default function NewRecipeForm() {
                             component="div"
                             sx={{
                                 width: '25ch',
-                                m:1
+                                m: 1
                             }}
                         >
                             <TextField
@@ -424,9 +469,9 @@ export default function NewRecipeForm() {
                                 label={"Order Min Cost"}
                                 variant="standard"
                                 defaultValue={totalMinCost}
-                                value={totalMinCost=== 0 ? "" : totalMinCost}
+                                value={totalMinCost === 0 ? "" : totalMinCost}
                                 onChange={(e: any) => {
-                                    setTotalMinCost(e.target.value)
+                                    setTotalMinCost(Number(e.target.value))
                                 }}
                             />
                         </Box>
@@ -434,7 +479,7 @@ export default function NewRecipeForm() {
                             component="div"
                             sx={{
                                 width: '25ch',
-                                m:1
+                                m: 1
                             }}
                         >
                             <TextField
@@ -443,9 +488,9 @@ export default function NewRecipeForm() {
                                 label={"Order Avg Cost"}
                                 variant="standard"
                                 defaultValue={totalAvgCost}
-                                value={totalAvgCost=== 0 ? "" : totalAvgCost}
+                                value={totalAvgCost === 0 ? "" : totalAvgCost}
                                 onChange={(e: any) => {
-                                    setTotalAvgCost(e.target.value)
+                                    setTotalAvgCost(Number(e.target.value))
                                 }}
                             />
                         </Box>
@@ -453,7 +498,7 @@ export default function NewRecipeForm() {
                             component="div"
                             sx={{
                                 width: '25ch',
-                                m:1
+                                m: 1
                             }}
                         >
                             <TextField
@@ -464,17 +509,22 @@ export default function NewRecipeForm() {
                                 defaultValue={totalMaxCost}
                                 value={totalMaxCost === 0 ? "" : totalMaxCost}
                                 onChange={(e: any) => {
-                                    setTotalMaxCost(e.target.value)
+                                    setTotalMaxCost(Number(e.target.value))
                                 }}
                             />
                         </Box>
-                        <button className='button-container button-text add-item-button add-ingredient-to-recipe-button' onClick={addIngredient}>Add</button>
-                        </div>
+
+                        <button className='button-container button-text add-item-button add-ingredient-to-recipe-button'
+                                onClick={addIngredient}>Add Ingredient
+                        </button>
+                    </div>
                 </div>
-             </div>
+            </div>
+
             <div className="submit-button-container">
                 <button className='button button-gradient' onClick={sendDataToBackend}>Create</button>
             </div>
+            <ToastContainer/>
         </div>
     )
 }
