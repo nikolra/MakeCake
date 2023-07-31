@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import './best-customers.style.css';
 import '../widgets.style.css';
-import {ToastContainer} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import BestCustomersDelegate from "./best-customers-delegate.component";
 import axios from 'axios';
 import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
-import {validateToken} from "../../../utils/TokenValidation";
+import {deleteToken, validateToken} from "../../../utils/TokenValidation";
 
 type Customer = {
     number: number;
@@ -46,8 +46,14 @@ export default function WeekOrders() {
                 name: item.email
             }));
             setCustomers(filteredData);
-        } catch {
-
+        }        catch (error: any) {
+            if (error.response.status === 401) {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again', { autoClose: 1500 });
+            }
+            else
+                console.error('Error deleting order:', error);
         }
     }
 
