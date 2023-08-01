@@ -226,7 +226,7 @@ export default function UpdateIngredientForm({id}: IProps) {
             </div>
 
             <div className="submit-button-container ingredient-create-button">
-                <button className='create-ingredient-button button button-gradient' onClick={sendDataToBackend}>Create
+                <button className='create-ingredient-button button button-gradient' onClick={sendDataToBackend}>Update
                 </button>
             </div>
         </div>
