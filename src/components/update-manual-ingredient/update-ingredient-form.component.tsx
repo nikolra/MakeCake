@@ -127,7 +127,7 @@ export default function UpdateIngredientForm({id}: IProps) {
         <div className="dashboard-widget-container new-ingredient-widget-container">
             <div className="new-ingredients-header-title-row">
                 <div className="new-ingredients-header-text">
-                    <span className="widget-title-text">New Ingredient</span>
+                    <span className="widget-title-text">Edit Ingredient</span>
                     <span className="widget-title-text-secondary"> </span>
                 </div>
             </div>
