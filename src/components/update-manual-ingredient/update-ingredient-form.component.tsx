@@ -24,8 +24,6 @@ interface IIngredientData{
 
 export default function UpdateIngredientForm({id}: IProps) {
 
-    //TODO: Amit - should receive real data from DB
-    //const ingredient = devIngredients.find(ingredient => ingredient.id === id) || devIngredients[0];
     const [ingredientName, setIngredientName] = useState("");
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(0);
@@ -95,7 +93,7 @@ export default function UpdateIngredientForm({id}: IProps) {
             "new_min_price": minPrice,
             "new_min_store": minPriceStore,
             "new_max_price": maxPrice,
-            "new_new_max_store": maxPriceStore
+            "new_max_store": maxPriceStore
         }
         try {
             const response =
@@ -107,7 +105,7 @@ export default function UpdateIngredientForm({id}: IProps) {
                             Authorization: "Bearer " + Cookies.get('makecake-token')
                         }
                     });
-            if(response.data.status == 200) {
+            if(response.status === 200) {
                 toast.success(`${ingredientName} Updated Successfully`);
                 navigate('/ingredients');
             }
@@ -171,7 +169,7 @@ export default function UpdateIngredientForm({id}: IProps) {
                             m: '0 2vh 1vh 0'
                         }}
                     >
-                        <TextField fullWidth id="outlined-basic" label={"Store Name"} variant="outlined" value={setMaxPriceStore}
+                        <TextField fullWidth id="outlined-basic" label={"Store Name"} variant="outlined" value={maxPriceStore}
                                    onChange={(e: any) => {
                                        console.log(`Store Name: ${e.target.value}`)
                                        setMaxPriceStore(e.target.value)
