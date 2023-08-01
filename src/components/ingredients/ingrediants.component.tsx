@@ -44,7 +44,7 @@ export default function Ingredients({className, header, description}: IIngredien
 
     const updateIngredients = async () => {
         console.log(`update Ingredients called`);
-        //TODO: Amit integrate with automated ingredients lambda (menual done)
+        //TODO: Amit integrate with automated ingredients lambda (menual DONE!)
             const body = {
                 "table_name": "mnl_ingredients",
                 "field_name": "user_email"
