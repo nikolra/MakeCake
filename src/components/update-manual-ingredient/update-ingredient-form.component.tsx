@@ -187,7 +187,7 @@ export default function UpdateIngredientForm({id}: IProps) {
                                    inputProps={{ min: 0, inputMode: "numeric", pattern: '[0-9]+' }}
                                    onChange={(e: any) => {
                                        console.log(`Highest Price: ${e.target.value}`)
-                                       setCode(e.target.value)
+                                       setMaxPrice(e.target.value)
                                    }}
                         />
                     </Box>
