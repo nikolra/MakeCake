@@ -10,6 +10,7 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import Cookies from 'js-cookie';
 import InputAdornment from "@mui/material/InputAdornment";
+import {deleteToken} from "../../utils/TokenValidation";
 
 interface IRecipeProps {
     id: string
@@ -228,8 +229,15 @@ export default function EditRecipeForm({id}: IRecipeProps) {
             setTotalMinCost(data.ingredients_min_cost);
             setTotalAvgCost(data.ingredients_avg_cost);
             setTotalMaxCost(data.ingredients_max_cost);
-        } catch (error) {
-            console.log(error);
+        } catch (error:any) {
+            if(error.response.status===401)
+            {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again',{autoClose:1500});
+            }
+            else
+                console.error('Error fetching orders:', error);
         }
     }
 
@@ -273,13 +281,25 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                     } else {
                         toast.error('Error updating recipe');
                     }
-                } catch (error) {
-                    // toast.dismiss(loadingToast); // Dismiss the "Loading" toast
-                    toast.error('Error updating recipe');
-                    console.error(error);
+                } catch (error:any) {
+                    if(error.response.status===401)
+                    {
+                        deleteToken();
+                        navigate('/');
+                        toast.error('Login expired please login again',{autoClose:1500});
+                    }
+                    else
+                        console.error('Error fetching orders:', error);
                 }
-            } catch (error) {
-                return error;
+            } catch (error:any) {
+                if(error.response.status===401)
+                {
+                    deleteToken();
+                    navigate('/');
+                    toast.error('Login expired please login again',{autoClose:1500});
+                }
+                else
+                    console.error('Error fetching orders:', error);
             }
         }
     }

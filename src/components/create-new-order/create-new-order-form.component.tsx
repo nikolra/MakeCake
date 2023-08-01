@@ -13,6 +13,7 @@ import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
 import Cookies from 'js-cookie';
 import InputAdornment from "@mui/material/InputAdornment";
+import { deleteToken } from '../../utils/TokenValidation';
 
 interface ICustomer {
     name: string;
@@ -92,20 +93,32 @@ export default function NewOrderForm() {
 
     const fetchCustomers = async () => {
         const payload = {};
-        const response =
-            await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/all-customers',
-                payload,
-                {
-                    headers: {
-                        "Content-type": "application/json",
-                        Authorization: "Bearer " + Cookies.get('makecake-token')
-                    }
-                });
-        if(response.status!==200)
-            toast.error("Loading customers failed");
-        const names = response.data.map((customer: ICustomer) => {return `${customer.name} - ${customer.email}`});
-        setCustomersNames(names);
-        console.log(response);
+        try {
+            const response =
+                await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/all-customers',
+                    payload,
+                    {
+                        headers: {
+                            "Content-type": "application/json",
+                            Authorization: "Bearer " + Cookies.get('makecake-token')
+                        }
+                    });
+            const names = response.data.map((customer: ICustomer) => {
+                return `${customer.name} - ${customer.email}`
+            });
+            setCustomersNames(names);
+            console.log(response);
+        }
+        catch (error:any) {
+            if(error.response.status===401)
+            {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again',{autoClose:1500});
+            }
+            else
+                console.error('Error fetching orders:', error);
+        }
     }
 
     const deleteRecipeFromOrder = (recipeName: string) => {
@@ -166,8 +179,15 @@ export default function NewOrderForm() {
             setMyRecipes(recipeItems);
             const recipeNames: string[] = responseData.map((recipe: any) => recipe.recipe_name);
             setRecipeNames(recipeNames);
-        } catch (error) {
-            console.error('Error fetching orders:', error);
+        } catch (error:any) {
+            if(error.response.status===401)
+            {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again',{autoClose:1500});
+            }
+            else
+                console.error('Error fetching orders:', error);
         }
     };
 
@@ -208,13 +228,25 @@ export default function NewOrderForm() {
                     } else {
                         toast.error('Error creating order');
                     }
-                } catch (error) {
-                    //toast.dismiss(loadingToast); // Dismiss the "Loading" toast
-                    toast.error('Error creating order');
-                    console.error(error);
+                } catch (error:any) {
+                    if(error.response.status===401)
+                    {
+                        deleteToken();
+                        navigate('/');
+                        toast.error('Login expired please login again',{autoClose:1500});
+                    }
+                    else
+                        console.error('Error fetching orders:', error);
                 }
-            } catch (error) {
-                return error;
+            } catch (error:any) {
+                if(error.response.status===401)
+                {
+                    deleteToken();
+                    navigate('/');
+                    toast.error('Login expired please login again',{autoClose:1500});
+                }
+                else
+                    console.error('Error fetching orders:', error);
             }
         }
     }

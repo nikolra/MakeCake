@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import Cookies from "js-cookie";
 import InputAdornment from "@mui/material/InputAdornment";
+import {deleteToken} from "../../utils/TokenValidation";
 
 export default function NewRecipeForm() {
 
@@ -238,12 +239,25 @@ export default function NewRecipeForm() {
                     } else {
                         toast.error('Error creating recipe');
                     }
-                } catch (error) {
-                    toast.error('Error creating recipe');
-                    console.error(error);
+                } catch (error:any) {
+                    if(error.response.status===401)
+                    {
+                        deleteToken();
+                        navigate('/');
+                        toast.error('Login expired please login again',{autoClose:1500});
+                    }
+                    else
+                        console.error('Error fetching orders:', error);
                 }
-            } catch (error) {
-                return error;
+            }catch (error:any) {
+                if(error.response.status===401)
+                {
+                    deleteToken();
+                    navigate('/');
+                    toast.error('Login expired please login again',{autoClose:1500});
+                }
+                else
+                    console.error('Error fetching orders:', error);
             }
         }
     }

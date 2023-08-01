@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import '../dashboard-widgets/widgets.style.css';
 import './orders.style.css';
-import axios from 'axios';
+import axios,{AxiosError} from 'axios';
 import OrderDelegate from './order-delegate/order-delegate.component';
 import SearchField from '../search-field/search-field.component';
 import NavigationButtonComponent from '../navigation-button/navigation-button.component';
 import {toast, ToastContainer} from 'react-toastify';
 import dayjs from "dayjs";
 import Cookies from 'js-cookie';
+import { deleteToken } from '../../utils/TokenValidation';
+import {useNavigate} from "react-router-dom";
 
 interface IOrderProps {
     className: string;
@@ -39,6 +41,7 @@ export default function Orders({ className, header, description, isDashboard }: 
     const [orders, setOrders] = useState<OrderType[]>([]);
     const [filteredOrders, setFilteredOrders] = useState<OrderType[]>([]);
     const [searchString, setSearchString] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const func = async () => {
@@ -60,16 +63,26 @@ export default function Orders({ className, header, description, isDashboard }: 
 
     const deleteOrder = async (id: any) => {
         try {
-            const payload ={order_id : id.toString()};
+            const payload = { order_id: id.toString() };
             toast.promise(
                 async () => {
-                    await axios.post(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_order`, payload,
-                        {
-                            headers:{
-                                "Content-type": "application/json",
-                                Authorization: "Bearer " + Cookies.get('makecake-token'),
-                            }
-                        });
+                    try {
+                        await axios.post(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_order`, payload,
+                            {
+                                headers: {
+                                    "Content-type": "application/json",
+                                    Authorization: "Bearer " + Cookies.get('makecake-token'),
+                                }
+                            });
+                    } catch (error:any) {
+                        if (error.response && error.response.status === 401) {
+                            deleteToken();
+                            navigate('/');
+                            toast.error('Login expired please login again', { autoClose: 5000 });
+                        }
+                        // Re-throw the error to be caught by toast.promise
+                        throw error;
+                    }
                 },
                 {
                     pending: 'Loading',
@@ -80,17 +93,24 @@ export default function Orders({ className, header, description, isDashboard }: 
                 handleDeleteOrder(id);
             });
         }
-        catch (error)
-        {
-            console.error(`Error deleting order ${id}:`, error);
+        catch (error: any) {
+            if (error.response.status === 401) {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again', { autoClose: 1500 });
+            }
+            else
+                console.error('Error deleting order:', error);
         }
     }
+
     const handleDeleteOrder = (id: any) => {
         setOrders(prevOrders => prevOrders.filter(order => order.id !== id));
     }
 
     const fetchOrders = async () => {
         try {
+            console.log(1);
             const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get-all-my-orders',
                 {
                     headers:{
@@ -98,9 +118,6 @@ export default function Orders({ className, header, description, isDashboard }: 
                         Authorization: "Bearer " + Cookies.get('makecake-token')
                     }
                 });
-            if(response.status!==200)
-                toast.error("Loading orders failed");
-
             const apiData = JSON.parse(response.data.body);
             if(isDashboard)
             {
@@ -113,8 +130,15 @@ export default function Orders({ className, header, description, isDashboard }: 
                 setOrders(transformedOrders);
                 console.log(orders);
             }
-        } catch (error) {
-            console.error('Error fetching orders:', error);
+        } catch (error:any) {
+            if(error.response.status===401)
+            {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again',{autoClose:1500});
+            }
+            else
+                console.error('Error fetching orders:', error);
         }
     };
 

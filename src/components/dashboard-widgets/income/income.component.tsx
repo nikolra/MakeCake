@@ -8,7 +8,8 @@ import Dropdown from '../../dropdown/dropdown.component'
 import axios from "axios";
 import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
-import {validateToken} from "../../../utils/TokenValidation";
+import {deleteToken, validateToken} from "../../../utils/TokenValidation";
+import {toast} from "react-toastify";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -87,32 +88,43 @@ export default function Income() {
             rangeString: rangeString
         };
         console.log(payload);
-        const response =
-            await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/calculate_income',
-                payload,
-                {
-                    headers: {
-                        "Content-type": "application/json",
-                        Authorization: "Bearer " + Cookies.get('makecake-token')
+        try {
+            const response =
+                await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/calculate_income',
+                    payload,
+                    {
+                        headers: {
+                            "Content-type": "application/json",
+                            Authorization: "Bearer " + Cookies.get('makecake-token')
+                        }
+                    });
+            console.log(response);
+            chartData.x = response.data.x;
+            chartData.y = response.data.y;
+            console.log(chartData);
+            let totalForRange = 0;
+            chartData.x.forEach((data => totalForRange += data));
+            setTotal(totalForRange);
+            setData({
+                labels: chartData.y,
+                datasets: [
+                    {
+                        data: chartData.x,
+                        backgroundColor: chartColor,
+                        borderRadius: chartBorderRadius
                     }
-                });
-        console.log(response);
-        chartData.x = response.data.x;
-        chartData.y = response.data.y;
-        console.log(chartData);
-        let totalForRange = 0;
-        chartData.x.forEach((data => totalForRange += data));
-        setTotal(totalForRange);
-        setData({
-            labels: chartData.y,
-            datasets: [
-                {
-                    data: chartData.x,
-                    backgroundColor: chartColor,
-                    borderRadius: chartBorderRadius
-                }
-            ]
-        });
+                ]
+            });
+        }
+        catch (error: any) {
+            if (error.response.status === 401) {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again', { autoClose: 1500 });
+            }
+            else
+                console.error('Error deleting order:', error);
+        }
         // setRange(rangeString);
     }
 

@@ -14,6 +14,7 @@ import {toast, ToastContainer,} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import Cookies from 'js-cookie';
 import InputAdornment from '@mui/material/InputAdornment';
+import {deleteToken} from "../../utils/TokenValidation";
 
 
 interface IProps {
@@ -160,8 +161,15 @@ export default function EditOrderForm({id}: IProps) {
             const recipeNames: string[] = responseData.map((recipe: any) => recipe.recipe_name);
             setRecipeNames(recipeNames);
             return recipeItems
-        } catch (error) {
-            console.error('Error fetching orders:', error);
+        } catch (error:any) {
+            if(error.response.status===401)
+            {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again',{autoClose:1500});
+            }
+            else
+                console.error('Error fetching orders:', error);
         }
     };
 
@@ -201,12 +209,25 @@ export default function EditOrderForm({id}: IProps) {
                     } else {
                         toast.error('Error updating order');
                     }
-                } catch (error) {
-                    toast.error('Error updating order');
-                    console.error(error);
+                } catch (error:any) {
+                    if(error.response.status===401)
+                    {
+                        deleteToken();
+                        navigate('/');
+                        toast.error('Login expired please login again',{autoClose:1500});
+                    }
+                    else
+                        console.error('Error fetching orders:', error);
                 }
-            } catch (error) {
-                return error;
+            } catch (error:any) {
+                if(error.response.status===401)
+                {
+                    deleteToken();
+                    navigate('/');
+                    toast.error('Login expired please login again',{autoClose:1500});
+                }
+                else
+                    console.error('Error fetching orders:', error);
             }
         }
     }
@@ -246,8 +267,15 @@ export default function EditOrderForm({id}: IProps) {
                 addTotalMaxIngredientCost(item.ingredients_max_cost);
             })
             return recipeItems;
-        } catch (error) {
-            console.error('Error fetching orders:', error);
+        } catch (error:any) {
+            if(error.response.status===401)
+            {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again',{autoClose:1500});
+            }
+            else
+                console.error('Error fetching orders:', error);
         }
     };
 
