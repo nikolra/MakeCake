@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import '../../App.css';
 import './update-ingredient-form.style.css';
-import InputField from "../outlinedd-input-field/input-field.component";
-import NumericInputField from "../numeric-input-field/input-field.component";
-import {devIngredients} from "../ingredients/dev-data";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import {toast} from "react-toastify";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 
 interface IProps {
     id: string
@@ -48,8 +47,8 @@ export default function UpdateIngredientForm({id}: IProps) {
                 console.log("11", ingredient);
                 setIngredientName(ingredient.name);
                 setMinPrice(ingredient.min_price);
-                setMaxPrice(ingredient.max_store);
-                setMinPriceStore(ingredient.min_price);
+                setMaxPrice(ingredient.max_price);
+                setMinPriceStore(ingredient.min_store);
                 setMaxPriceStore(ingredient.max_store);
                 setCode(ingredient.code);
             }
@@ -133,17 +132,98 @@ export default function UpdateIngredientForm({id}: IProps) {
             </div>
             <div className="update-ingredient-input-fields">
                 <div className="ingredient-input-field">
-                    <InputField setValueDelegate={setIngredientName} label="Ingredient Name" width={290} value={ingredientName} margin={'0 2vh 1vh 0'}/>
-                    <InputField setValueDelegate={setCode} label="Ingredient Code" width={195} value={code} disabled={true}/>
+                    <Box
+                        component="div"
+                        sx={{
+                            width: 290,
+                            maxWidth: '100%',
+                            m: '0 2vh 1vh 0'
+                        }}
+                    >
+                        <TextField fullWidth id="outlined-basic" label={"Ingredient Name"} variant="outlined"value={ingredientName}
+                                   onChange={(e: any) => {
+                                       console.log(`Ingredient Name: ${e.target.value}`)
+                                       setIngredientName(e.target.value)
+                                   }}/>
+                    </Box>
+                    <Box
+                        component="div"
+                        sx={{
+                            width: 195,
+                            maxWidth: '100%',
+                            m: '0 0 6px 0'
+                        }}
+                    >
+                        <TextField disabled={true} fullWidth id="outlined-basic" label={"Ingredient Code"} variant="outlined" value={code}
+                                   onChange={(e: any) => {
+                                       console.log(`Ingredient Code: ${e.target.value}`)
+                                       setCode(e.target.value)
+                                   }}/>
+                    </Box>
                 </div>
 
                 <div className="ingredient-input-field">
-                    <InputField setValueDelegate={setMaxPriceStore} label="Store Name" width={290} value={maxPriceStore} margin={'0 2vh 1vh 0'}/>
-                    <NumericInputField setValueDelegate={setMaxPrice} label="Highest Price" width={195} value={maxPrice}/>
+                    <Box
+                        component="div"
+                        sx={{
+                            width: 290,
+                            maxWidth: '100%',
+                            m: '0 2vh 1vh 0'
+                        }}
+                    >
+                        <TextField fullWidth id="outlined-basic" label={"Store Name"} variant="outlined" value={setMaxPriceStore}
+                                   onChange={(e: any) => {
+                                       console.log(`Store Name: ${e.target.value}`)
+                                       setMaxPriceStore(e.target.value)
+                                   }}/>
+                    </Box>
+                    <Box
+                        component="div"
+                        sx={{
+                            width: 195,
+                            maxWidth: '100%',
+                            m: '0 0 6px 0'
+                        }}
+                    >
+                        <TextField fullWidth id="outlined-number" label={"Highest Price"} variant="outlined" value={maxPrice} type="number"
+                                   inputProps={{ min: 0, inputMode: "numeric", pattern: '[0-9]+' }}
+                                   onChange={(e: any) => {
+                                       console.log(`Highest Price: ${e.target.value}`)
+                                       setCode(e.target.value)
+                                   }}
+                        />
+                    </Box>
                 </div>
                 <div className="ingredient-input-field">
-                    <InputField setValueDelegate={setMinPriceStore} label="Store Name" width={290} value={minPriceStore} margin={'0 2vh 1vh 0'}/>
-                    <NumericInputField setValueDelegate={setMinPrice} label="Lowest Price" width={195} value={minPrice}/>
+                    <Box
+                        component="div"
+                        sx={{
+                            width: 290,
+                            maxWidth: '100%',
+                            m: '0 2vh 1vh 0'
+                        }}
+                    >
+                        <TextField fullWidth id="outlined-basic" label={"Store Name"} variant="outlined" value={minPriceStore}
+                                   onChange={(e: any) => {
+                                       console.log(`Store Name: ${e.target.value}`)
+                                       setMinPriceStore(e.target.value)
+                                   }}/>
+                    </Box>
+                    <Box
+                        component="div"
+                        sx={{
+                            width: 195,
+                            maxWidth: '100%',
+                            m: '0 0 6px 0'
+                        }}
+                    >
+                        <TextField fullWidth id="outlined-number" label={"Lowest Price"} variant="outlined" value={minPrice} type="number"
+                                   inputProps={{ min: 0, inputMode: "numeric", pattern: '[0-9]+' }}
+                                   onChange={(e: any) => {
+                                       console.log(`Lowest Price: ${e.target.value}`)
+                                       setMinPrice(e.target.value)
+                                   }}/>
+                    </Box>
                 </div>
             </div>
 
