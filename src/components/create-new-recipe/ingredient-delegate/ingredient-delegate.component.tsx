@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import './ingredient-delegate.style.css'
 
@@ -22,22 +22,22 @@ function IngredientDelegate(props: IIngredientProps) {
             `ingredient-delegate-main-container ingredient-delegate-text`
         }>
             <div className="ingredient-delegate-container">
-                <div className="ingredient-delegate-table-container">
+                <div className="recipe-delegate-table-container">
                     <span>{name}</span>
                 </div>
-                <div className="ingredient-delegate-table-container">
+                <div className="recipe-delegate-table-container">
                     <span>{quantity} {measurement_unit}</span>
                 </div>
-                <div className="ingredient-delegate-table-container">
+                <div className="recipe-delegate-table-container">
                     <span>{minCost*quantity}₪</span>
                 </div>
-                <div className="ingredient-delegate-table-container">
+                <div className="recipe-delegate-table-container">
                     <span>{avgCost*quantity}₪</span>
                 </div>
-                <div className="ingredient-delegate-table-container">
+                <div className="recipe-delegate-table-container">
                     <span>{maxCost*quantity}₪</span>
                 </div>
-                <div className="ingredient-delegate-table-container align-right">
+                <div className="recipe-delegate-table-container align-right">
                     <button className="expand-button" onClick={() => {
                         removeDelegate(name);
                     }}>
