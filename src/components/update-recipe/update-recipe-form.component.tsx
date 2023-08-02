@@ -10,130 +10,25 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import Cookies from 'js-cookie';
 import InputAdornment from "@mui/material/InputAdornment";
+import {deleteToken} from "../../utils/TokenValidation";
 
 interface IRecipeProps {
     id: string
 }
 
 type IRecipeIngredientType = {
-    ingredient_name: string;
-    ingredient_code: string;
+    name: string;
     minCost: number;
     avgCost: number;
     maxCost: number;
     quantity: number;
-    measurement_unit: string;
-    automated: boolean;
+    //measurement_unit: string;
 };
 
 
 export default function EditRecipeForm({id}: IRecipeProps) {
 
     /////////////////////////////////Change only at load////////////////////////////////////
-    const [manualIngredients, setManualIngredients] = useState<IRecipeIngredientType[]>([
-        {
-            ingredient_name: "Flour",
-            ingredient_code: "10001",
-            minCost: 2,
-            avgCost: 2,
-            maxCost: 2,
-            quantity: 0,
-            measurement_unit: "gram",
-            automated: false,
-        },
-        {
-            ingredient_name: "Sugar",
-            ingredient_code: "10002",
-            minCost: 1.5,
-            avgCost: 1.5,
-            maxCost: 1.5,
-            quantity: 0,
-            measurement_unit: "gram",
-            automated: false,
-        },
-        {
-            ingredient_name: "Salt",
-            ingredient_code: "10003",
-            minCost: 0.5,
-            avgCost: 0.5,
-            maxCost: 0.5,
-            quantity: 0,
-            measurement_unit: "gram",
-            automated: false,
-        },
-        {
-            ingredient_name: "Baking Powder",
-            ingredient_code: "10004",
-            minCost: 1.2,
-            avgCost: 1.2,
-            maxCost: 1.2,
-            quantity: 0,
-            measurement_unit: "gram",
-            automated: false,
-        },
-        {
-            ingredient_name: "Vanilla Extract",
-            ingredient_code: "10005",
-            minCost: 3,
-            avgCost: 3,
-            maxCost: 3,
-            quantity: 0,
-            measurement_unit: "ml",
-            automated: false,
-        },
-    ]);//TODO: Amit - should be initialized to all ingredients name on page load
-    const [automatedIngredients, setAutomatedIngredients] = useState<IRecipeIngredientType[]>([
-        {
-            ingredient_name: "Olive Oil",
-            ingredient_code: "10006",
-            minCost: 5,
-            avgCost: 6,
-            maxCost: 7,
-            quantity: 0,
-            measurement_unit: "ml",
-            automated: true,
-        },
-        {
-            ingredient_name: "Onion",
-            ingredient_code: "10007",
-            minCost: 1.2,
-            avgCost: 1.5,
-            maxCost: 1.8,
-            quantity: 0,
-            measurement_unit: "gram",
-            automated: true,
-        },
-        {
-            ingredient_name: "Tomatoes",
-            ingredient_code: "10008",
-            minCost: 2.5,
-            avgCost: 3,
-            maxCost: 3.5,
-            quantity: 0,
-            measurement_unit: "gram",
-            automated: true,
-        },
-        {
-            ingredient_name: "Cheddar Cheese",
-            ingredient_code: "10009",
-            minCost: 3,
-            avgCost: 3.25,
-            maxCost: 3.5,
-            quantity: 0,
-            measurement_unit: "gram",
-            automated: true,
-        },
-        {
-            ingredient_name: "Fresh Basil",
-            ingredient_code: "10010",
-            minCost: 1.5,
-            avgCost: 1.75,
-            maxCost: 2,
-            quantity: 0,
-            measurement_unit: "gram",
-            automated: true,
-        },
-    ]);
     const [recipeIngredients, setRecipeIngredients] = useState<IRecipeIngredientType[]>([]);//this is both of them merged
     const [ingredients, setIngredients] = useState<IRecipeIngredientType[]>([]);
     const [ingredientsName, setIngredientNames] = useState<string[]>([]);//this is both of them names merged
@@ -169,14 +64,13 @@ export default function EditRecipeForm({id}: IRecipeProps) {
     useEffect(() => {
         const func = async () => {
             await fetchIngredients();
-            await fetchIngredientsName();
             await fetchRecipeData();
         }
         func();
     }, []);
 
     function updateTableFields() {
-        const ingredient = ingredients.find(ingredient => ingredient.ingredient_name === ingredientName);
+        const ingredient = ingredients.find(ingredient => ingredient.name === ingredientName);
         setCurrentIngredient(ingredient);
         if (ingredient) {
             setQuantity(1);
@@ -186,25 +80,41 @@ export default function EditRecipeForm({id}: IRecipeProps) {
         }
     }
 
-    function fetchIngredientsName() {
-        //TODO: Nikol - understand with Amit if needed and how
-        const automatedNames = automatedIngredients.map((ingredient: IRecipeIngredientType) => {
-            return ingredient.ingredient_name
-        })
-        const manualNames = manualIngredients.map((ingredient: IRecipeIngredientType) => {
-            return ingredient.ingredient_name + "- my";
-        });
-        ingredients.concat(automatedIngredients);
-        let manualIIngredients = manualIngredients.map((ingredient: IRecipeIngredientType) => {
-            return {...ingredient, ingredient_name: ingredient.ingredient_name + "- my"};
-        });
-        const merged = manualIIngredients.concat(automatedIngredients);
-        setIngredients(merged);
-        setIngredientNames(automatedNames.concat(manualNames));
-    }
-
     async function fetchIngredients() {
-        //TODO: Amit - implement!
+        const body = {
+            "table_name": "mnl_ingredients",
+            "field_name": "user_email"
+        }
+        try {
+            const response =
+                await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_mnl_ingredients',
+                    body,
+                    {
+                        headers: {
+                            "Content-type": "application/json",
+                            Authorization: "Bearer " + Cookies.get('makecake-token')
+                        }
+                    });
+            const data = response.data;
+            console.log('data#####:', data);
+            const formattedIngredients = data.map((ingredient: any) => {
+                return {
+                    name: ingredient.name,
+                    minCost: ingredient.min_price,
+                    maxCost: ingredient.max_price,
+                    avgCost: ingredient.avg_price,
+                    quantity: 2
+                };
+            });
+            console.log('formattedIngredients#####:', formattedIngredients);
+            setIngredients(formattedIngredients);
+            const names = formattedIngredients.map((ingredient: any) => ingredient.name);
+            setIngredientNames(names);
+        }
+        catch (error) {
+            console.error(`Error fetching ingredients`, error);
+            toast.error(`Error fetching ingredients`);
+        }
     }
 
 
@@ -228,8 +138,15 @@ export default function EditRecipeForm({id}: IRecipeProps) {
             setTotalMinCost(data.ingredients_min_cost);
             setTotalAvgCost(data.ingredients_avg_cost);
             setTotalMaxCost(data.ingredients_max_cost);
-        } catch (error) {
-            console.log(error);
+        } catch (error:any) {
+            if(error.response.status===401)
+            {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again',{autoClose:1500});
+            }
+            else
+                console.error('Error fetching orders:', error);
         }
     }
 
@@ -273,19 +190,31 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                     } else {
                         toast.error('Error updating recipe');
                     }
-                } catch (error) {
-                    // toast.dismiss(loadingToast); // Dismiss the "Loading" toast
-                    toast.error('Error updating recipe');
-                    console.error(error);
+                } catch (error:any) {
+                    if(error.response.status===401)
+                    {
+                        deleteToken();
+                        navigate('/');
+                        toast.error('Login expired please login again',{autoClose:1500});
+                    }
+                    else
+                        console.error('Error fetching orders:', error);
                 }
-            } catch (error) {
-                return error;
+            } catch (error:any) {
+                if(error.response.status===401)
+                {
+                    deleteToken();
+                    navigate('/');
+                    toast.error('Login expired please login again',{autoClose:1500});
+                }
+                else
+                    console.error('Error fetching orders:', error);
             }
         }
     }
 
     async function removeIngredient(name: string) {
-        const index = recipeIngredients.findIndex(ingredient => ingredient.ingredient_name === name);
+        const index = recipeIngredients.findIndex(ingredient => ingredient.name === name);
         const ingredient = recipeIngredients[index];
         setTotalMinCost(totalMinCost-ingredient.minCost*ingredient.quantity);
         setTotalAvgCost(totalAvgCost-ingredient.avgCost*ingredient.quantity);
@@ -303,7 +232,7 @@ export default function EditRecipeForm({id}: IRecipeProps) {
         else if (quantity === 0 || !ingredientName)
             toast.error(`Please choose quantity greater that 0`);
         else {
-            const recipeIngredientFromRecipe = recipeIngredients.find((ingredient) => ingredient.ingredient_name === currentIngredient?.ingredient_name);    /// check if the ingredient exist in the recipe
+            const recipeIngredientFromRecipe = recipeIngredients.find((ingredient) => ingredient.name === currentIngredient?.name);    /// check if the ingredient exist in the recipe
             if (recipeIngredientFromRecipe) {
                 recipeIngredientFromRecipe.quantity = recipeIngredientFromRecipe.quantity + quantity;
             }
@@ -480,13 +409,13 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                             {
                                 recipeIngredients.map((ingredient) => {
                                     return <IngredientDelegate removeDelegate={removeIngredient}
-                                                               key={ingredient.ingredient_name}
-                                                               name={ingredient.ingredient_name}
+                                                               key={ingredient.name}
+                                                               name={ingredient.name}
                                                                quantity={ingredient.quantity}
                                                                minCost={ingredient.minCost}
                                                                avgCost={ingredient.avgCost}
                                                                maxCost={ingredient.maxCost}
-                                                               measurement_unit={ingredient.measurement_unit}
+                                                               //measurement_unit={ingredient.measurement_unit}
                                     />
                                 })
                             }

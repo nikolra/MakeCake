@@ -7,6 +7,8 @@ import NavigationButtonComponent from "../navigation-button/navigation-button.co
 import {toast, ToastContainer} from "react-toastify";
 import axios from "axios";
 import Cookies from 'js-cookie';
+import {deleteToken} from "../../utils/TokenValidation";
+import {useNavigate} from "react-router-dom";
 
 interface IRecipeProps {
     className: string,
@@ -33,6 +35,7 @@ type RecipeType = {
 export default function Recipes({className, header, description}: IRecipeProps) {
     const [recipes, setRecipes] = useState<RecipeType[]>([]);
     const [searchString, setSearchString] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const func = async () => {
@@ -49,26 +52,43 @@ export default function Recipes({className, header, description}: IRecipeProps) 
             };
             toast.promise(
                 async () => {
-                    await axios.post(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_recipe`, payload,
-                        {
-                            headers: {
-                                "Content-type": "application/json",
-                                Authorization: "Bearer " + Cookies.get('makecake-token'),
-                            }
-                        });
+                    try {
+                        await axios.post(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_recipe`, payload,
+                            {
+                                headers: {
+                                    "Content-type": "application/json",
+                                    Authorization: "Bearer " + Cookies.get('makecake-token'),
+                                }
+                            });
+                    } catch (error:any) {
+                        if (error.response && error.response.status === 401) {
+                            deleteToken();
+                            navigate('/');
+                            toast.error('Login expired please login again',{autoClose:5000});
+                        }
+                        throw error;
+                    }
                 },
                 {
                     pending: 'Loading',
-                    success: {render: 'recipe deleted', autoClose: 1000},
+                    success: {render: 'Recipe deleted', autoClose: 1000},
                     error: {render: 'Error deleting recipe', autoClose: 1000}
                 }
             ).then(() => {
                 handleDeleteOrder(id);
             });
-        } catch (error) {
-            console.error(`Error deleting recipe ${id}:`, error);
+        } catch (error:any) {
+            if(error.response.status===401)
+            {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again',{autoClose:5000});
+            }
+            else
+                console.error('Error fetching orders:', error);
         }
     }
+
 
 
     const handleDeleteOrder = (id: any) => {
@@ -87,10 +107,16 @@ export default function Recipes({className, header, description}: IRecipeProps) 
                 toast.error("Loading recipes failed");
             const data = JSON.parse(response.data.body);
             setRecipes(data);
-        } catch (error) {
-            console.error('Error fetching orders:', error);
+        } catch (error:any) {
+            if(error.response.status===401)
+            {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again',{autoClose:1500});
+            }
+            else
+                console.error('Error fetching orders:', error);
         }
-        console.log(3);
     };
 
     return (

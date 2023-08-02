@@ -8,15 +8,16 @@ interface IIngredientProps{
     minCost:number,
     avgCost:number,
     maxCost:number,
-    measurement_unit:string
+    measurement_unit?:string
     removeDelegate: Function
 }
 
 function IngredientDelegate(props: IIngredientProps) {
-    const {name, quantity, minCost,avgCost,maxCost,measurement_unit,removeDelegate} = props;
+    const {name, quantity, minCost,avgCost,maxCost,measurement_unit = "",removeDelegate} = props;
 
 
     return (
+        //TODO: Tomer - mishmash in quantity- talk with Nikol
         <div className={
             `ingredient-delegate-main-container ingredient-delegate-text`
         }>
@@ -34,11 +35,11 @@ function IngredientDelegate(props: IIngredientProps) {
                     <span>{avgCost*quantity}₪</span>
                 </div>
                 <div className="ingredient-delegate-table-container">
-                    <span>{maxCost*quantity} ₪</span>
+                    <span>{maxCost*quantity}₪</span>
                 </div>
                 <div className="ingredient-delegate-table-container align-right">
                     <button className="expand-button" onClick={() => {
-                        props.removeDelegate(name);
+                        removeDelegate(name);
                     }}>
                         <span>Remove</span>
                     </button>
