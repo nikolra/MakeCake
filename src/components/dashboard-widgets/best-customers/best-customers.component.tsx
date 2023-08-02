@@ -48,7 +48,7 @@ export default function WeekOrders() {
             setCustomers(filteredData);
         } catch (error: any) {
             console.error('Error getting top buyers:', error);
-            if (error.response.status === 401) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
                 toast.error('Login expired please login again', {autoClose: 1500});

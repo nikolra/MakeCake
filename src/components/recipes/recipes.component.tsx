@@ -58,7 +58,7 @@ export default function Recipes({className, header, description}: IRecipeProps) 
                 });
             handleDeleteOrder(id);
         } catch (error: any) {
-            if (error.response.status === 401) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
                 toast.error('Login expired please login again', {autoClose: 5000});
@@ -87,7 +87,7 @@ export default function Recipes({className, header, description}: IRecipeProps) 
             const data = JSON.parse(response.data.body);
             setRecipes(data);
         } catch (error: any) {
-            if (error.response.status === 401) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
                 toast.error('Login expired please login again', {autoClose: 5000});

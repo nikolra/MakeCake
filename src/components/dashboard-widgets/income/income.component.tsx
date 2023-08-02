@@ -117,7 +117,7 @@ export default function Income() {
         }
         catch (error: any) {
             console.error('Error getting income data:', error);
-            if (error.response.status === 401) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
                 toast.error('Login expired please login again', { autoClose: 1500 });
@@ -127,7 +127,6 @@ export default function Income() {
                 toast.error('Error getting income data, please try again later', {autoClose: 1500});
             }
         }
-        // setRange(rangeString);
     }
 
     return (

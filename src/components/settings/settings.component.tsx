@@ -58,7 +58,7 @@ export default function SettingsComponent({className, username}: IOrderProps) {
                 toast.error(`Error changing password`)
             }
         } catch (error: any) {
-            if (error.response.status === 401) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
                 toast.error('Login expired please login again', {autoClose: 5000});
@@ -86,15 +86,8 @@ export default function SettingsComponent({className, username}: IOrderProps) {
                     });
             console.log(JSON.stringify(response));
             console.log(response.data);
-            // }, {
-            //     // @ts-ignore
-            //     loading: 'Loading',
-            //     success: `Created template ${templateName}`,
-            //     error: `Error creating template ${templateName}`
-            // });
         } catch (error: any) {
-            // console.error(JSON.stringify(error));
-            if (error.response.status === 401) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
                 toast.error('Login expired please login again', {autoClose: 5000});

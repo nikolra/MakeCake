@@ -57,7 +57,6 @@ export default function NewOrderForm() {
     const [myRecipesNames, setRecipeNames] = useState<string[]>([]);
     const [myCustomersNames, setCustomersNames] = useState<string[]>([""]);
     const [myRecipes, setMyRecipes] = useState<RecipeItem[]>([]);
-    const [myCustomers, setCustomers] = useState<ICustomer[]>();
     const [manualPrice, setManualPrice] = useState(0);
 
     const navigate = useNavigate();
@@ -109,7 +108,7 @@ export default function NewOrderForm() {
             setCustomersNames(names);
             console.log(response);
         } catch (error: any) {
-            if (error.response.status === 401) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
                 toast.error('Login expired please login again', {autoClose: 1500});
@@ -179,7 +178,7 @@ export default function NewOrderForm() {
             const recipeNames: string[] = responseData.map((recipe: any) => recipe.recipe_name);
             setRecipeNames(recipeNames);
         } catch (error: any) {
-            if (error.response.status === 401) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
                 toast.error('Login expired please login again', {autoClose: 1500});
@@ -227,7 +226,7 @@ export default function NewOrderForm() {
                     toast.error('Error creating order');
                 }
             } catch (error: any) {
-                if (error.response.status === 401) {
+                if (error.response.status === 401 || error.response.status === 403) {
                     deleteToken();
                     navigate('/');
                     toast.error('Login expired please login again', {autoClose: 1500});

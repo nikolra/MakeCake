@@ -13,16 +13,6 @@ interface IProps {
     id: string
 }
 
-interface IIngredientData{
-    id: string,
-    name: string,
-    minCost: number,
-    avgCost: number,
-    maxCost: number,
-    minCostStore: string,
-    avgCostStore: string
-}
-
 export default function UpdateIngredientForm({id}: IProps) {
 
     const [ingredientName, setIngredientName] = useState("");
@@ -82,7 +72,7 @@ export default function UpdateIngredientForm({id}: IProps) {
         }
         catch (error: any) {
             console.error(`Error updating: ${ingredientName}`, error);
-            if (error.response.status === 401) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
                 toast.error('Login expired please login again', {autoClose: 5000});
@@ -123,7 +113,7 @@ export default function UpdateIngredientForm({id}: IProps) {
             }
         } catch (error: any) {
             console.error(`Error updating: ${ingredientName}`, error);
-            if (error.response.status === 401) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
                 toast.error('Login expired please login again', {autoClose: 5000});
@@ -152,7 +142,7 @@ export default function UpdateIngredientForm({id}: IProps) {
                             m: '0 2vh 1vh 0'
                         }}
                     >
-                        <TextField fullWidth id="outlined-basic" label={"Ingredient Name"} variant="outlined"value={ingredientName}
+                        <TextField fullWidth id="outlined-basic" label={"Ingredient Name"} variant="outlined" value={ingredientName}
                                    onChange={(e: any) => {
                                        console.log(`Ingredient Name: ${e.target.value}`)
                                        setIngredientName(e.target.value)

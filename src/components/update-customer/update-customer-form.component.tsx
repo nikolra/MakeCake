@@ -62,8 +62,16 @@ export default function UpdateCustomerForm({email}: ICustomerProps) {
                 setPhoneNumber(customerData.phoneNumber);
                 setAddress(customerData.address);
             }
-        } catch (error) {
-            // console.error(JSON.stringify(error));
+        } catch (error: any) {
+            console.error('Error getting customers:', error);
+            if (error.response.status === 401 || error.response.status === 403) {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again', {autoClose: 1500});
+            } else {
+
+                toast.error('Error getting customers, please try again later', {autoClose: 1500});
+            }
         }
     }
 
@@ -87,25 +95,19 @@ export default function UpdateCustomerForm({email}: ICustomerProps) {
                     email_address: email,
                     address: address
                 };
-                toast.promise(async () => {
-                    await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/updatecustomer',
-                        payload,
-                        {
-                            headers: {
-                                "Content-type": "application/json",
-                                Authorization: "Bearer " + Cookies.get('makecake-token')
-                            }
-                        });
-                    navigate('/customers');
-                }, {
-                    // @ts-ignore
-                    loading: 'Loading',
-                    success: `Updated customer ${customerName}, ${email}`,
-                    error: `Error updating customer ${customerName}, ${email}`
-                });
+                await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/updatecustomer',
+                    payload,
+                    {
+                        headers: {
+                            "Content-type": "application/json",
+                            Authorization: "Bearer " + Cookies.get('makecake-token')
+                        }
+                    });
+                navigate('/customers');
+                toast.success(`Updated customer ${customerName}, ${email}`, {autoClose: 5000});
             } catch (error: any) {
                 console.error(JSON.stringify(error));
-                if (error.response.status === 401) {
+                if (error.response.status === 401 || error.response.status === 403) {
                     deleteToken();
                     navigate('/');
                     toast.error('Login expired please login again', {autoClose: 5000});

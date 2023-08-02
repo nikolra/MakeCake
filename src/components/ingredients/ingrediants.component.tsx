@@ -70,7 +70,7 @@ export default function Ingredients({className, header, description}: IIngredien
             console.log('formattedIngredients:', formattedIngredients);
         } catch (error: any) {
             console.error(`Error getting ingredients`, error);
-            if (error.response.status === 401) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
                 toast.error('Login expired please login again', {autoClose: 1500});
@@ -100,10 +100,9 @@ export default function Ingredients({className, header, description}: IIngredien
             toast.success(`Ingredient deleted successfully`);
             const newIngredients = ingredients.filter(ingredient => ingredient.id !== id);
             setIngredients(newIngredients);
-            // updateIngredients();
         } catch (error: any) {
             console.error(`Error getting ingredients`, error);
-            if (error.response.status === 401) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
                 toast.error('Login expired please login again', {autoClose: 1500});

@@ -74,7 +74,7 @@ export default function Orders({className, header, description, isDashboard}: IO
             handleDeleteOrder(id);
         } catch (error: any) {
             console.error(`Error deleting order`, error);
-            if (error.response.status === 401) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
                 toast.error('Login expired please login again', {autoClose: 1500});
@@ -108,7 +108,7 @@ export default function Orders({className, header, description, isDashboard}: IO
                 console.log(orders);
             }
         } catch (error: any) {
-            if (error.response.status === 401) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
                 toast.error('Login expired please login again', {autoClose: 1500});
