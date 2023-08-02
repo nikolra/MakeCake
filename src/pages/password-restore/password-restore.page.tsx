@@ -33,7 +33,7 @@ export default function PasswordRestore() {
                     toast.error(`Error sending mail to ${email}`)
                 }
             } catch (error) {
-                toast.error('Error ending mail');
+                toast.error('Error sending mail, please try again later');
             }
         }
     }

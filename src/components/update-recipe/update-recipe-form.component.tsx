@@ -111,12 +111,19 @@ export default function EditRecipeForm({id}: IRecipeProps) {
             const names = formattedIngredients.map((ingredient: any) => ingredient.name);
             setIngredientNames(names);
         }
-        catch (error) {
-            console.error(`Error fetching ingredients`, error);
-            toast.error(`Error fetching ingredients`);
+        catch (error: any) {
+            if(error.response.status===401)
+            {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again',{autoClose:1500});
+            }
+            else{
+                console.error('Error fetching ingredients:', error);
+                toast.error(`Error fetching ingredients, please try again later`, {autoClose: 5000});
+            }
         }
     }
-
 
     async function fetchRecipeData() {
         const payload = {recipe_id: id}
@@ -145,8 +152,10 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                 navigate('/');
                 toast.error('Login expired please login again',{autoClose:1500});
             }
-            else
-                console.error('Error fetching orders:', error);
+            else{
+                console.error('Error fetching recipes:', error);
+                toast.error(`Error fetching recipes, please try again later`, {autoClose: 5000});
+            }
         }
     }
 
@@ -171,9 +180,6 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                     ingredients_max_cost: totalMaxCost,
                     ingredients: recipeIngredients
                 };
-                //const loadingToast = toast.info('Loading', { autoClose: false });
-
-                try {
                     const response = await axios.post(
                         'https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe',
                         payload,
@@ -190,16 +196,6 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                     } else {
                         toast.error('Error updating recipe');
                     }
-                } catch (error:any) {
-                    if(error.response.status===401)
-                    {
-                        deleteToken();
-                        navigate('/');
-                        toast.error('Login expired please login again',{autoClose:1500});
-                    }
-                    else
-                        console.error('Error fetching orders:', error);
-                }
             } catch (error:any) {
                 if(error.response.status===401)
                 {
@@ -207,8 +203,10 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                     navigate('/');
                     toast.error('Login expired please login again',{autoClose:1500});
                 }
-                else
-                    console.error('Error fetching orders:', error);
+                else{
+                    console.error('Error creating new recipe:', error);
+                    toast.error(`Error creating new recipe, please try again later`, {autoClose: 5000});
+                }
             }
         }
     }

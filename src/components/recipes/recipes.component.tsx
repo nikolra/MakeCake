@@ -28,8 +28,6 @@ type RecipeType = {
     recipe_name: string;
     recipe_price: number
     ingredients: IngredientType[];
-
-
 };
 
 export default function Recipes({className, header, description}: IRecipeProps) {
@@ -50,45 +48,26 @@ export default function Recipes({className, header, description}: IRecipeProps) 
             const payload = {
                 recipe_id: id.toString()
             };
-            toast.promise(
-                async () => {
-                    try {
-                        await axios.post(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_recipe`, payload,
-                            {
-                                headers: {
-                                    "Content-type": "application/json",
-                                    Authorization: "Bearer " + Cookies.get('makecake-token'),
-                                }
-                            });
-                    } catch (error:any) {
-                        if (error.response && error.response.status === 401) {
-                            deleteToken();
-                            navigate('/');
-                            toast.error('Login expired please login again',{autoClose:5000});
-                        }
-                        throw error;
-                    }
-                },
+
+            await axios.post(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_recipe`, payload,
                 {
-                    pending: 'Loading',
-                    success: {render: 'Recipe deleted', autoClose: 1000},
-                    error: {render: 'Error deleting recipe', autoClose: 1000}
-                }
-            ).then(() => {
-                handleDeleteOrder(id);
-            });
-        } catch (error:any) {
-            if(error.response.status===401)
-            {
+                    headers: {
+                        "Content-type": "application/json",
+                        Authorization: "Bearer " + Cookies.get('makecake-token'),
+                    }
+                });
+            handleDeleteOrder(id);
+        } catch (error: any) {
+            if (error.response.status === 401) {
                 deleteToken();
                 navigate('/');
-                toast.error('Login expired please login again',{autoClose:5000});
+                toast.error('Login expired please login again', {autoClose: 5000});
+            } else {
+                console.error('Error deleting order:', error);
+                toast.error('Error deleting order, try again later', {autoClose: 5000});
             }
-            else
-                console.error('Error fetching orders:', error);
         }
     }
-
 
 
     const handleDeleteOrder = (id: any) => {
@@ -103,19 +82,19 @@ export default function Recipes({className, header, description}: IRecipeProps) 
                         Authorization: "Bearer " + Cookies.get('makecake-token')
                     }
                 });
-            if(response.status!==200)
+            if (response.status !== 200)
                 toast.error("Loading recipes failed");
             const data = JSON.parse(response.data.body);
             setRecipes(data);
-        } catch (error:any) {
-            if(error.response.status===401)
-            {
+        } catch (error: any) {
+            if (error.response.status === 401) {
                 deleteToken();
                 navigate('/');
-                toast.error('Login expired please login again',{autoClose:1500});
+                toast.error('Login expired please login again', {autoClose: 5000});
+            } else {
+                console.error('Error fetching recipes:', error);
+                toast.error('Login deleting recipe, try again later', {autoClose: 5000});
             }
-            else
-                console.error('Error fetching orders:', error);
         }
     };
 

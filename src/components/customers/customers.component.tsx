@@ -9,6 +9,7 @@ import axios from 'axios';
 import {toast, ToastContainer} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import Cookies from "js-cookie";
+import {deleteToken} from "../../utils/TokenValidation";
 
 interface ICustomerProps {
     className: string;
@@ -52,39 +53,36 @@ export default function Customers({className, header, description}: ICustomerPro
     }, [customers, searchString]);
     const fetchSMSTemplateNames = async () => {
         try {
-            const payload = {};
-            toast.promise(async () => {
-                const response =
-                    await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_all_sms_templates',
-                        payload,
-                        {
-                            headers: {
-                                "Content-type": "application/json",
-                                Authorization: "Bearer " + Cookies.get('makecake-token')
-                            }
-                        });
-                const data = response.data;
-                console.log(data);
-                setTemplates(data);
-            }, {
-                // @ts-ignore
-                loading: 'Loading',
-                success: `Get all SMS template names`,
-                error: `Error getting all SMS template names`
-            });
-
-        } catch (error) {
-            console.error(JSON.stringify(error));
+            const response =
+                await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get_all_sms_templates',
+                    {}, {
+                        headers: {
+                            "Content-type": "application/json",
+                            Authorization: "Bearer " + Cookies.get('makecake-token')
+                        }
+                    });
+            const data = response.data;
+            console.log(data);
+            setTemplates(data);
+        } catch (error: any) {
+            console.log(error);
+            if (error.response.status === 401 || error.response.status === 403) {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again', {autoClose: 5000});
+            } else {
+                console.error('Error getting all SMS template names', error);
+                toast.error('Error getting all SMS template names, please try again later', {autoClose: 5000});
+            }
         }
     }
 
-    const deleteCustomer = (customerEmail: string) => {
+    const deleteCustomer = async (customerEmail: string) => {
         console.log('Deleting customer:', customerEmail);
         const payload = {
             email_address: customerEmail
         };
-        toast.promise(async () => {
-            navigate('/customers');
+        try {
             console.log('Deleting customer:', customerEmail);
             const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete-customer',
                 payload,
@@ -98,12 +96,18 @@ export default function Customers({className, header, description}: ICustomerPro
             console.log('Delete customer response data:', response.data);
             const updatedCustomers = customers.filter(customer => customer.email !== customerEmail);
             setCustomers(updatedCustomers);
-        }, {
-            // @ts-ignore
-            loading: 'Loading',
-            success: `Delete customer ${customerEmail}`,
-            error: `Error deleting customer ${customerEmail}`
-        });
+            navigate('/customers');
+        } catch (error: any) {
+            console.log(error);
+            if (error.response.status === 401 || error.response.status === 403) {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again', {autoClose: 5000});
+            } else {
+                console.error(`Error deleting customer ${customerEmail}`, error);
+                toast.error(`Error deleting customer ${customerEmail}, please try again later`, {autoClose: 5000});
+            }
+        }
     }
 
     const fetchCustomerDetails = async () => {
@@ -121,8 +125,16 @@ export default function Customers({className, header, description}: ICustomerPro
             console.log(response);
             console.log('formattedCustomers:', response.data);
             setFilteredCustomers(response.data);
-        } catch (error) {
-            console.error('Error fetching customer details:', error);
+        } catch (error: any) {
+            console.log('fetch customers error', error);
+            if (error.response.status === 401 || error.response.status === 403) {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again', {autoClose: 5000});
+            } else {
+                console.error(`Error fetching customers`, error);
+                toast.error(`Error fetching customers, please try again later`, {autoClose: 5000});
+            }
         }
     };
 

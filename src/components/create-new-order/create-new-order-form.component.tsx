@@ -13,7 +13,7 @@ import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
 import Cookies from 'js-cookie';
 import InputAdornment from "@mui/material/InputAdornment";
-import { deleteToken } from '../../utils/TokenValidation';
+import {deleteToken} from '../../utils/TokenValidation';
 
 interface ICustomer {
     name: string;
@@ -36,7 +36,7 @@ export default function NewOrderForm() {
         ingredients_max_cost: number;
         recipe_quantity: number;
         recipe_price: number;
-        default_price:number;
+        default_price: number;
     }
 
 
@@ -58,12 +58,12 @@ export default function NewOrderForm() {
     const [myCustomersNames, setCustomersNames] = useState<string[]>([""]);
     const [myRecipes, setMyRecipes] = useState<RecipeItem[]>([]);
     const [myCustomers, setCustomers] = useState<ICustomer[]>();
-    const [manualPrice , setManualPrice]=useState(0);
+    const [manualPrice, setManualPrice] = useState(0);
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        const  func = async () => {
+        const func = async () => {
             await fetchUserRecipes();
             await fetchCustomers();
         }
@@ -108,27 +108,26 @@ export default function NewOrderForm() {
             });
             setCustomersNames(names);
             console.log(response);
-        }
-        catch (error:any) {
-            if(error.response.status===401)
-            {
+        } catch (error: any) {
+            if (error.response.status === 401) {
                 deleteToken();
                 navigate('/');
-                toast.error('Login expired please login again',{autoClose:1500});
+                toast.error('Login expired please login again', {autoClose: 1500});
+            } else {
+                console.error('Error fetching customers:', error);
+                toast.error('Error fetching customers, please try again later', {autoClose: 5000});
             }
-            else
-                console.error('Error fetching orders:', error);
         }
     }
 
     const deleteRecipeFromOrder = (recipeName: string) => {
         const index = orderRecipes.findIndex(recipe => recipe.recipe_name === recipeName);
         const newOrders = [...orderRecipes];
-        addToOrderPrice(-(orderRecipes[index].recipe_price*orderRecipes[index].recipe_quantity));
+        addToOrderPrice(-(orderRecipes[index].recipe_price * orderRecipes[index].recipe_quantity));
         addTotalMinIngredientCost(-(orderRecipes[index].ingredients_min_cost * orderRecipes[index].recipe_quantity));
         addTotalAvgIngredientCost(-(orderRecipes[index].ingredients_avg_cost * orderRecipes[index].recipe_quantity));
         addTotalMaxIngredientCost(-(orderRecipes[index].ingredients_max_cost * orderRecipes[index].recipe_quantity));
-        orderRecipes[index].recipe_price=orderRecipes[index].default_price;
+        orderRecipes[index].recipe_price = orderRecipes[index].default_price;
         newOrders.splice(index, 1);
         setOrderRecipes(newOrders);
     }
@@ -164,7 +163,7 @@ export default function NewOrderForm() {
                     Authorization: "Bearer " + Cookies.get('makecake-token')
                 }
             });
-            if(response.status!==200)
+            if (response.status !== 200)
                 toast.error("Loading recipes failed");
             const responseData = JSON.parse(response.data.body);
             const recipeItems = responseData.map((item: RecipeItem) => ({
@@ -174,20 +173,20 @@ export default function NewOrderForm() {
                 ingredients_max_cost: item.ingredients_max_cost,
                 ingredients_avg_cost: item.ingredients_avg_cost,
                 quantity: 0,
-                default_price:item.recipe_price,
+                default_price: item.recipe_price,
             }));
             setMyRecipes(recipeItems);
             const recipeNames: string[] = responseData.map((recipe: any) => recipe.recipe_name);
             setRecipeNames(recipeNames);
-        } catch (error:any) {
-            if(error.response.status===401)
-            {
+        } catch (error: any) {
+            if (error.response.status === 401) {
                 deleteToken();
                 navigate('/');
-                toast.error('Login expired please login again',{autoClose:1500});
-            }
-            else
+                toast.error('Login expired please login again', {autoClose: 1500});
+            } else {
                 console.error('Error fetching orders:', error);
+                toast.error('Error fetching customers, please try again later', {autoClose: 5000});
+            }
         }
     };
 
@@ -211,78 +210,63 @@ export default function NewOrderForm() {
                     recipes: orderRecipes,
                     order_price: orderPrice
                 };
-                try {
-                    const response = await axios.post(
-                        'https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order',
-                        payload,
-                        {
-                            headers: {
-                                "content-type": "application/json",
-                                "Authorization": "Bearer " + Cookies.get('makecake-token')
-                            }
-                        }
-                    );
-                    if (response.status === 200) {
-                        toast.success('Order created successfully', {autoClose: 2000});
-                        navigate(`/orders`);
-                    } else {
-                        toast.error('Error creating order');
-                    }
-                } catch (error:any) {
-                    if(error.response.status===401)
+                const response = await axios.post(
+                    'https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order',
+                    payload,
                     {
-                        deleteToken();
-                        navigate('/');
-                        toast.error('Login expired please login again',{autoClose:1500});
+                        headers: {
+                            "content-type": "application/json",
+                            "Authorization": "Bearer " + Cookies.get('makecake-token')
+                        }
                     }
-                    else
-                        console.error('Error fetching orders:', error);
+                );
+                if (response.status === 200) {
+                    toast.success('Order created successfully', {autoClose: 2000});
+                    navigate(`/orders`);
+                } else {
+                    toast.error('Error creating order');
                 }
-            } catch (error:any) {
-                if(error.response.status===401)
-                {
+            } catch (error: any) {
+                if (error.response.status === 401) {
                     deleteToken();
                     navigate('/');
-                    toast.error('Login expired please login again',{autoClose:1500});
-                }
-                else
+                    toast.error('Login expired please login again', {autoClose: 1500});
+                } else {
                     console.error('Error fetching orders:', error);
+                    toast.error('Error fetching orders, please try again later', {autoClose: 5000});
+                }
             }
         }
     }
 
     function addRecipeToOrder() {
-        const recipe = orderRecipes.find((recipe:any) => recipe.recipe_name === recipeName);
-        if(recipe) {
-            if(recipe.recipe_name==="") {
+        const recipe = orderRecipes.find((recipe: any) => recipe.recipe_name === recipeName);
+        if (recipe) {
+            if (recipe.recipe_name === "") {
                 toast.error("please choose recipe");
-            }
-            else {
-                let newPrice=0;
-                if(manualPrice !== 0 && recipe.recipe_price !== manualPrice) {
-                    newPrice=((orderPrice-(recipe.recipe_price*recipe.recipe_quantity)));
+            } else {
+                let newPrice = 0;
+                if (manualPrice !== 0 && recipe.recipe_price !== manualPrice) {
+                    newPrice = ((orderPrice - (recipe.recipe_price * recipe.recipe_quantity)));
                     recipe.recipe_price = manualPrice / quantity;
                 }
 
                 recipe.recipe_quantity = recipe.recipe_quantity + quantity;
-                newPrice += recipe.recipe_quantity*recipe.recipe_price;
+                newPrice += recipe.recipe_quantity * recipe.recipe_price;
                 setOrderPrice(newPrice);
                 setManualPrice(0)
                 addTotalMinIngredientCost(recipe.ingredients_min_cost * quantity);
                 addTotalAvgIngredientCost(recipe.ingredients_avg_cost * quantity);
                 addTotalMaxIngredientCost(recipe.ingredients_max_cost * quantity);
             }
-        }
-        else
-        {
-            const recipeFromMyRecipes =myRecipes.find((recipe:any) => recipe.recipe_name === recipeName);
-            if(recipeFromMyRecipes) {
-                if(manualPrice !== 0 && recipeFromMyRecipes.recipe_price !== manualPrice) {
+        } else {
+            const recipeFromMyRecipes = myRecipes.find((recipe: any) => recipe.recipe_name === recipeName);
+            if (recipeFromMyRecipes) {
+                if (manualPrice !== 0 && recipeFromMyRecipes.recipe_price !== manualPrice) {
                     console.log(`price change`);
-                        recipeFromMyRecipes.recipe_price = manualPrice / quantity;
-                        addToOrderPrice(manualPrice);
-                    }
-                else {
+                    recipeFromMyRecipes.recipe_price = manualPrice / quantity;
+                    addToOrderPrice(manualPrice);
+                } else {
                     addToOrderPrice(recipePrice * quantity);
                 }
                 setOrderRecipes([...orderRecipes, recipeFromMyRecipes]);
@@ -290,8 +274,7 @@ export default function NewOrderForm() {
                 addTotalMinIngredientCost(recipeFromMyRecipes.ingredients_min_cost * quantity);
                 addTotalAvgIngredientCost(recipeFromMyRecipes.ingredients_avg_cost * quantity);
                 addTotalMaxIngredientCost(recipeFromMyRecipes.ingredients_max_cost * quantity);
-                }
-            else{
+            } else {
                 toast.error("please choose a recipe");
             }
         }
@@ -321,7 +304,7 @@ export default function NewOrderForm() {
                             id="combo-box-demo"
                             // value={myCustomers[0]}
                             onChange={(event: any, newValue: string | null) => {
-                                setCustomerName(newValue? newValue: myCustomersNames[0]);
+                                setCustomerName(newValue ? newValue : myCustomersNames[0]);
                             }}
                             options={myCustomersNames}
                             sx={{width: 300}}
@@ -408,67 +391,71 @@ export default function NewOrderForm() {
                                     }
                                 }}
                                 options={myRecipesNames}
-                                sx={{ width: 235, padding: "8px 0 0 0" }}
-                                renderInput={(params) => <TextField {...params} label={"Name"} variant="standard" />}
+                                sx={{width: 235, padding: "8px 0 0 0"}}
+                                renderInput={(params) => <TextField {...params} label={"Name"} variant="standard"/>}
                             />
 
                             <Box
                                 component="div"
-                                sx={{ '& > :not(style)': { m: 1, width: '25ch' }}}
+                                sx={{'& > :not(style)': {m: 1, width: '25ch'}}}
                                 onChange={(e: any) => {
                                     setQuantity(Number(e.target.value))
                                 }}
                             >
                                 <TextField variant="standard" id="standard-number" label={'Quantity'} type="number"
                                            defaultValue={quantity} value={quantity === 0 ? "" : quantity}
-                                           inputProps={{ min: 1, inputMode: "numeric", pattern: '[0-9]+' }}
+                                           inputProps={{min: 1, inputMode: "numeric", pattern: '[0-9]+'}}
                                 />
                             </Box>
 
                             <Box
                                 component="div"
-                                sx={{ '& > :not(style)': { m: 1, width: '25ch' }}}
+                                sx={{'& > :not(style)': {m: 1, width: '25ch'}}}
                             >
                                 <TextField variant="standard" id="standard-number" label={'Ingredients Min Cost'}
                                            type="number" disabled={true}
-                                           defaultValue={minCost} value={minCost === 0 || quantity === 0 ? "" : minCost*quantity}
-                                           inputProps={{ min: 0, inputMode: "numeric", pattern: '[0-9]+' }}
+                                           defaultValue={minCost}
+                                           value={minCost === 0 || quantity === 0 ? "" : minCost * quantity}
+                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
                                 />
                             </Box>
 
                             <Box
                                 component="div"
-                                sx={{ '& > :not(style)': { m: 1, width: '25ch' }}}
+                                sx={{'& > :not(style)': {m: 1, width: '25ch'}}}
                             >
                                 <TextField variant="standard" id="standard-number" label={'Ingredients Avg Cost'}
                                            type="number" disabled={true}
-                                           defaultValue={avgCost} value={avgCost === 0 || quantity === 0 ? "" : avgCost*quantity}
-                                           inputProps={{ min: 0, inputMode: "numeric", pattern: '[0-9]+' }}
+                                           defaultValue={avgCost}
+                                           value={avgCost === 0 || quantity === 0 ? "" : avgCost * quantity}
+                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
                                 />
                             </Box>
 
                             <Box
                                 component="div"
-                                sx={{ '& > :not(style)': { m: 1, width: '25ch' }}}
+                                sx={{'& > :not(style)': {m: 1, width: '25ch'}}}
                             >
                                 <TextField variant="standard" id="standard-number" label={'Ingredients Max Cost'}
                                            type="number" disabled={true}
-                                           defaultValue={maxCost} value={maxCost === 0 || quantity === 0 ? "" : maxCost*quantity}
-                                           inputProps={{ min: 0, inputMode: "numeric", pattern: '[0-9]+' }}
+                                           defaultValue={maxCost}
+                                           value={maxCost === 0 || quantity === 0 ? "" : maxCost * quantity}
+                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
                                 />
                             </Box>
 
                             <Box
                                 component="div"
-                                sx={{ '& > :not(style)': { m: 1, width: '25ch' }}}
+                                sx={{'& > :not(style)': {m: 1, width: '25ch'}}}
                                 onChange={(e: any) => {
                                     setManualPrice(Number(e.target.value));
                                 }}
                             >
                                 <TextField variant="standard" id="standard-number" label={'Price'}
                                            type="number"
-                                           defaultValue={manualPrice} value={manualPrice === 0 ? recipePrice*quantity === 0 ?"" :recipePrice*quantity : manualPrice}
-                                           inputProps={{ min: 0, inputMode: "numeric", pattern: '[0-9]+' }}
+                                           defaultValue={manualPrice}
+                                           value={manualPrice === 0 ? recipePrice * quantity === 0 ? "" : recipePrice * quantity : manualPrice}
+                                           inputProps={{min: 0, inputMode: "numeric", pattern: '[0-9]+'}}
                                 />
                             </Box>
                         </div>
@@ -479,10 +466,10 @@ export default function NewOrderForm() {
                                                            key={recipe.recipe_name}
                                                            name={recipe.recipe_name}
                                                            quantity={recipe.recipe_quantity}
-                                                           minCost={recipe.ingredients_min_cost*recipe.recipe_quantity}
-                                                           avgCost={recipe.ingredients_avg_cost*recipe.recipe_quantity}
-                                                           maxCost={recipe.ingredients_max_cost*recipe.recipe_quantity}
-                                                           price={recipe.recipe_price*recipe.recipe_quantity}/>
+                                                           minCost={recipe.ingredients_min_cost * recipe.recipe_quantity}
+                                                           avgCost={recipe.ingredients_avg_cost * recipe.recipe_quantity}
+                                                           maxCost={recipe.ingredients_max_cost * recipe.recipe_quantity}
+                                                           price={recipe.recipe_price * recipe.recipe_quantity}/>
                                 })
                             }
                         </div>

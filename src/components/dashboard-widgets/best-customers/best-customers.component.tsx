@@ -46,14 +46,16 @@ export default function WeekOrders() {
                 name: item.email
             }));
             setCustomers(filteredData);
-        }        catch (error: any) {
+        } catch (error: any) {
+            console.error('Error getting top buyers:', error);
             if (error.response.status === 401) {
                 deleteToken();
                 navigate('/');
-                toast.error('Login expired please login again', { autoClose: 1500 });
+                toast.error('Login expired please login again', {autoClose: 1500});
+            } else {
+
+                toast.error('Error getting top buyers, please try again later', {autoClose: 1500});
             }
-            else
-                console.error('Error deleting order:', error);
         }
     }
 

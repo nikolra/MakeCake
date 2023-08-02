@@ -35,9 +35,9 @@ export default function Login() {
                 }
             )
             // Assuming the response contains a token field
-            console.error('Login: ', response.data);
-            console.error('idToken: ', response.data.body.idToken);
-            console.error('accessToken: ', response.data.body.accessToken);
+            // console.error('Login: ', response.data);
+            // console.error('idToken: ', response.data.body.idToken);
+            // console.error('accessToken: ', response.data.body.accessToken);
             const token = response.data.body.idToken;
             if (token && response.data.statusCode === 200) {
                 Cookies.set('makecake-token', response.data.body.idToken, { expires: 1 });

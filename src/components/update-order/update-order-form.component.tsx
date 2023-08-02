@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import axios from "axios";
 import dayjs from "dayjs";
 import 'react-toastify/dist/ReactToastify.css';
-import {toast, ToastContainer,} from "react-toastify";
+import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import Cookies from 'js-cookie';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -168,8 +168,10 @@ export default function EditOrderForm({id}: IProps) {
                 navigate('/');
                 toast.error('Login expired please login again',{autoClose:1500});
             }
-            else
-                console.error('Error fetching orders:', error);
+            else {
+                console.error('Error fetching recipes:', error);
+                toast.error(`Error fetching recipes, please try again later`, {autoClose: 5000});
+            }
         }
     };
 
@@ -192,7 +194,6 @@ export default function EditOrderForm({id}: IProps) {
                     recipes: orderRecipes,
                     order_price: orderPrice
                 };
-                try {
                     const response = await axios.post(
                         'https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_order',
                         payload,
@@ -209,16 +210,6 @@ export default function EditOrderForm({id}: IProps) {
                     } else {
                         toast.error('Error updating order');
                     }
-                } catch (error:any) {
-                    if(error.response.status===401)
-                    {
-                        deleteToken();
-                        navigate('/');
-                        toast.error('Login expired please login again',{autoClose:1500});
-                    }
-                    else
-                        console.error('Error fetching orders:', error);
-                }
             } catch (error:any) {
                 if(error.response.status===401)
                 {
@@ -226,8 +217,10 @@ export default function EditOrderForm({id}: IProps) {
                     navigate('/');
                     toast.error('Login expired please login again',{autoClose:1500});
                 }
-                else
-                    console.error('Error fetching orders:', error);
+                else {
+                    console.error('Error updating new order:', error);
+                    toast.error(`Error updating new order, please try again later`, {autoClose: 5000});
+                }
             }
         }
     }
@@ -274,8 +267,10 @@ export default function EditOrderForm({id}: IProps) {
                 navigate('/');
                 toast.error('Login expired please login again',{autoClose:1500});
             }
-            else
+            else{
                 console.error('Error fetching orders:', error);
+                toast.error(`Error fetching orders, please try again later`, {autoClose: 5000});
+            }
         }
     };
 

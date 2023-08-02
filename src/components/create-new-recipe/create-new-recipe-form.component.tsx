@@ -137,8 +137,6 @@ export default function NewRecipeForm() {
                     ingredients_max_cost: totalMaxCost,
                     ingredients: recipeIngredients
                 };
-
-                try {
                     const response = await axios.post(
                         'https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/new_recipe',
                         payload,
@@ -156,16 +154,6 @@ export default function NewRecipeForm() {
                     } else {
                         toast.error('Error creating recipe');
                     }
-                } catch (error:any) {
-                    if(error.response.status===401)
-                    {
-                        deleteToken();
-                        navigate('/');
-                        toast.error('Login expired please login again',{autoClose:1500});
-                    }
-                    else
-                        console.error('Error fetching orders:', error);
-                }
             }catch (error:any) {
                 if(error.response.status===401)
                 {
@@ -173,8 +161,10 @@ export default function NewRecipeForm() {
                     navigate('/');
                     toast.error('Login expired please login again',{autoClose:1500});
                 }
-                else
-                    console.error('Error fetching orders:', error);
+                else {
+                    console.error('Error creating recipe:', error);
+                    toast.error('Error creating recipe, please try again later', {autoClose: 5000});
+                }
             }
         }
     }

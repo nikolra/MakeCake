@@ -8,6 +8,8 @@ import TextField from '@mui/material/TextField';
 import Box from "@mui/material/Box";
 import axios from "axios";
 import Cookies from "js-cookie";
+import {deleteToken} from "../../utils/TokenValidation";
+import {useNavigate} from "react-router-dom";
 
 interface IOrderProps {
     className?: string,
@@ -22,21 +24,22 @@ export default function SettingsComponent({className, username}: IOrderProps) {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
+    const navigate = useNavigate();
 
     const updatePasswordAndName = async () => {
-        if(!newPassword)
+        if (!newPassword)
             toast.error(`Please your new password`);
-        else if(!repeatPassword)
+        else if (!repeatPassword)
             toast.error(`Please repeat your new password`);
-        else if(!oldPassword)
+        else if (!oldPassword)
             toast.error(`Please enter current password`);
-        else if(newPassword !== repeatPassword)
+        else if (newPassword !== repeatPassword)
             toast.error(`Passwords do not match`);
         try {
             const payload = {
-                    PreviousPassword: oldPassword,
-                    ProposedPassword: newPassword,
-                    AccessToken: Cookies.get('makecake-accessToken')
+                PreviousPassword: oldPassword,
+                ProposedPassword: newPassword,
+                AccessToken: Cookies.get('makecake-accessToken')
             };
             const response = await axios.post("https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/change_password",
                 payload,
@@ -54,18 +57,24 @@ export default function SettingsComponent({className, username}: IOrderProps) {
             } else {
                 toast.error(`Error changing password`)
             }
-        } catch (error) {
-            toast.error('Error changing password');
+        } catch (error: any) {
+            if (error.response.status === 401) {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again', {autoClose: 5000});
+            } else {
+                console.error('Error fetching recipes:', error);
+                toast.error('Error changing password, try again later', {autoClose: 5000});
+            }
         }
     }
 
-    const createNewSMSTemplate = () => {
-        try{
-        const payload = {
-            smsTemplateName:templateName,
-            smsTemplateMessage:smsTemplate
-        };
-        toast.promise(async ()=> {
+    const createNewSMSTemplate = async () => {
+        try {
+            const payload = {
+                smsTemplateName: templateName,
+                smsTemplateMessage: smsTemplate
+            };
             const response =
                 await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/create_sms_template',
                     payload,
@@ -77,14 +86,22 @@ export default function SettingsComponent({className, username}: IOrderProps) {
                     });
             console.log(JSON.stringify(response));
             console.log(response.data);
-        }, {
-            // @ts-ignore
-            loading: 'Loading',
-            success: `Created template ${templateName}`,
-            error: `Error creating template ${templateName}`
-        });
-        } catch (error) {
-            console.error(JSON.stringify(error));
+            // }, {
+            //     // @ts-ignore
+            //     loading: 'Loading',
+            //     success: `Created template ${templateName}`,
+            //     error: `Error creating template ${templateName}`
+            // });
+        } catch (error: any) {
+            // console.error(JSON.stringify(error));
+            if (error.response.status === 401) {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again', {autoClose: 5000});
+            } else {
+                console.error('Error creating SMS template:', error);
+                toast.error('Error creating SMS template, try again later', {autoClose: 5000});
+            }
         }
     }
 
@@ -93,17 +110,20 @@ export default function SettingsComponent({className, username}: IOrderProps) {
             <div className="settings-header">
                 <div className="settings-header-title-col">
                     <InputField setValueDelegate={setName} label="Name" width={300} value={name}/>
-                    <LabeledField title='Password' inputClassName={"password-field-input"} className={'setting-label-field'}
+                    <LabeledField title='Password' inputClassName={"password-field-input"}
+                                  className={'setting-label-field'}
                                   placeholder='Enter your current password' type="password" required={true}
                                   onChange={(e: any) => {
                                       setOldPassword(e.target.value)
                                   }}/>
-                    <LabeledField title='Password' inputClassName={"password-field-input"} className={'setting-label-field'}
+                    <LabeledField title='Password' inputClassName={"password-field-input"}
+                                  className={'setting-label-field'}
                                   placeholder='Enter your new password password' type="password" required={true}
                                   onChange={(e: any) => {
                                       setNewPassword(e.target.value)
                                   }}/>
-                    <LabeledField title='Password' inputClassName={"password-field-input"} className={'setting-label-field'}
+                    <LabeledField title='Password' inputClassName={"password-field-input"}
+                                  className={'setting-label-field'}
                                   placeholder='Enter new password again' type="password" required={true}
                                   onChange={(e: any) => {
                                       setRepeatPassword(e.target.value)
@@ -116,11 +136,12 @@ export default function SettingsComponent({className, username}: IOrderProps) {
                 </div>
                 <div className="settings-header-title-col">
                     <div className="">
-                        <InputField setValueDelegate={setTemplateName} label="SMS Template Title" width={300} value={templateName}/>
+                        <InputField setValueDelegate={setTemplateName} label="SMS Template Title" width={300}
+                                    value={templateName}/>
                         <Box
                             component="form"
                             sx={{
-                                '& .MuiTextField-root': {m:'2vh 0 0 0', width: '100%'},
+                                '& .MuiTextField-root': {m: '2vh 0 0 0', width: '100%'},
                             }}
                             noValidate
 
