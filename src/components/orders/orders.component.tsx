@@ -72,6 +72,7 @@ export default function Orders({className, header, description, isDashboard}: IO
                     }
                 });
             handleDeleteOrder(id);
+            toast.success('Order successfully deleted!', { autoClose: 3000 });
         } catch (error: any) {
             console.error(`Error deleting order`, error);
             if (error.response.status === 401 || error.response.status === 403) {

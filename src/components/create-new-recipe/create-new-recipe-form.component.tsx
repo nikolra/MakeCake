@@ -20,7 +20,6 @@ export default function NewRecipeForm() {
         avgCost: number;
         maxCost: number;
         quantity: number;
-        //measurement_unit:string;
      };
 
     /////////////////////////////////Change only at load////////////////////////////////////
@@ -92,6 +91,7 @@ export default function NewRecipeForm() {
             const formattedIngredients = data.map((ingredient: any) => {
                 return {
                     name: ingredient.name,
+                    code:ingredient.code,
                     minCost: ingredient.min_price,
                     maxCost: ingredient.max_price,
                     avgCost: ingredient.avg_price,
@@ -147,8 +147,9 @@ export default function NewRecipeForm() {
                             }
                         }
                     );
-                    if (response.status === 200) {
-                        //TODO: Tomer - success message appears when creation failed -> Need to fix the lambda
+                    console.log(response);
+                    console.log(response.data.statusCode);
+                    if (response.data.statusCode === 200) {
                         toast.success('Recipe created successfully', { autoClose: 2000 });
                         navigate(`/recipes`);
                     } else {
@@ -368,7 +369,6 @@ export default function NewRecipeForm() {
                                                                minCost={ingredient.minCost}
                                                                avgCost={ingredient.avgCost}
                                                                maxCost={ingredient.maxCost}
-                                                               //measurement_unit={ingredient.measurement_unit}
                                     />
                                 })
                             }
