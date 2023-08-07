@@ -46,7 +46,6 @@ export const options = {
     }
 };
 
-
 const chartColor = '#ff875e';
 const chartBorderRadius = 16;
 
@@ -79,8 +78,8 @@ export default function Income() {
     }, []);
 
     useEffect(() => {
-        validateToken(Cookies.get('makecake-token'), navigate);
-        rangeChanged(range);
+        if(validateToken(Cookies.get('makecake-token'), navigate))
+            rangeChanged(range);
     }, [range]);
 
     const rangeChanged = async (rangeString: string) => {
@@ -117,15 +116,17 @@ export default function Income() {
             });
         }
         catch (error: any) {
-            if (error.response.status === 401) {
+            console.error('Error getting income data:', error);
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
                 toast.error('Login expired please login again', { autoClose: 1500 });
             }
-            else
+            else {
                 console.error('Error deleting order:', error);
+                toast.error('Error getting income data, please try again later', {autoClose: 1500});
+            }
         }
-        // setRange(rangeString);
     }
 
     return (

@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import validator from 'validator';
 import Cookies from "js-cookie";
+import {deleteToken} from "../../utils/TokenValidation";
 
 export default function NewCustomerForm() {
 
@@ -22,20 +23,19 @@ export default function NewCustomerForm() {
     const navigate = useNavigate();
 
     async function sendDataToBackend() {
-        if(!isValidEmail)
+        if (!isValidEmail)
             toast.error(`Please enter a valid email address`);
-        else if(!customerName)
+        else if (!customerName)
             toast.error(`Please enter customer name`);
-        else if(!isValidNumber)
+        else if (!isValidNumber)
             toast.error(`Please enter a valid phone number`);
         else try {
-            const payload = {
-                name: customerName,
-                phone_number: phoneNumber,
-                email_address: email,
-                address: address
-            };
-            toast.promise(async ()=> {
+                const payload = {
+                    name: customerName,
+                    phone_number: phoneNumber,
+                    email_address: email,
+                    address: address
+                };
                 navigate('/customers');
                 console.log('create customer:', payload);
                 const response =
@@ -52,18 +52,22 @@ export default function NewCustomerForm() {
                 console.log('create customer response data:', response.data);
                 console.log(JSON.stringify(response));
                 console.log(response.data);
-            }, {
-                // @ts-ignore
-                loading: 'Loading',
-                success: `Created customer ${customerName}, ${email}`,
-                error: `Error creating customer ${customerName}, ${email}`
-            });
-        } catch (error) {
-            console.error(JSON.stringify(error));
-        }
+                toast.error(`Created customer ${customerName}, ${email}`, {autoClose: 5000});
+
+            } catch (error: any) {
+                console.log(error);
+                if (error.response.status === 401 || error.response.status === 403) {
+                    deleteToken();
+                    navigate('/');
+                    toast.error('Login expired please login again', {autoClose: 5000});
+                } else {
+                    console.error('Error fetching orders:', error);
+                    toast.error('Error creatin customer, please try again later', {autoClose: 5000});
+                }
+            }
     }
 
-    const phoneNumberValidator = (phone: string) :boolean => {
+    const phoneNumberValidator = (phone: string): boolean => {
         const phoneNumberRegex = /^\+\d{1,3}\s?\(?\d{1,}\)?[-.\s]?\d{1,}[-.\s]?\d{1,}[-.\s]?\d{1,}$/;
 
         const regex = new RegExp(phoneNumberRegex);
@@ -91,14 +95,15 @@ export default function NewCustomerForm() {
                             width: 500,
                             maxWidth: '100%',
                             m: '0 0 6px 0',
-                            border: !isValidNumber ? '1px solid #ff0000': "",
+                            border: !isValidNumber ? '1px solid #ff0000' : "",
                             ':focus-within': {
-                                border: !isValidNumber ?'1px solid #ff0000' :  "",
+                                border: !isValidNumber ? '1px solid #ff0000' : "",
                                 "border-radius": "4px"
                             }
                         }}
                     >
-                        <TextField fullWidth id="outlined-basic" label={"Phone Number"} variant="outlined" defaultValue={phoneNumber}
+                        <TextField fullWidth id="outlined-basic" label={"Phone Number"} variant="outlined"
+                                   defaultValue={phoneNumber}
                                    onChange={(e: any) => {
                                        const value = e.target.value
                                        setIsValidNumber(phoneNumberValidator(value));
@@ -116,14 +121,15 @@ export default function NewCustomerForm() {
                             width: 500,
                             maxWidth: '100%',
                             m: '0 0 6px 0',
-                            border: !isValidEmail ? '1px solid #ff0000': "",
+                            border: !isValidEmail ? '1px solid #ff0000' : "",
                             ':focus-within': {
-                                border: !isValidEmail ?'1px solid #ff0000' :  "",
+                                border: !isValidEmail ? '1px solid #ff0000' : "",
                                 "border-radius": "4px"
                             }
                         }}
                     >
-                        <TextField fullWidth id="outlined-basic" label={"Email Address"} variant="outlined" defaultValue={email} type={'email'}
+                        <TextField fullWidth id="outlined-basic" label={"Email Address"} variant="outlined"
+                                   defaultValue={email} type={'email'}
                                    onChange={(e: any) => {
                                        const value = e.target.value
                                        setIsValidEmail(validator.isEmail(value))
@@ -138,7 +144,8 @@ export default function NewCustomerForm() {
                 </div>
             </div>
             <div className="submit-button-container customer-create-button">
-                <button className='create-customer-button button button-gradient' onClick={sendDataToBackend}>Create</button>
+                <button className='create-customer-button button button-gradient' onClick={sendDataToBackend}>Create
+                </button>
             </div>
             <ToastContainer/>
         </div>

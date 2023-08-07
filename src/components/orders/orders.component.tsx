@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import '../dashboard-widgets/widgets.style.css';
 import './orders.style.css';
-import axios,{AxiosError} from 'axios';
+import axios from 'axios';
 import OrderDelegate from './order-delegate/order-delegate.component';
 import SearchField from '../search-field/search-field.component';
 import NavigationButtonComponent from '../navigation-button/navigation-button.component';
 import {toast, ToastContainer} from 'react-toastify';
 import dayjs from "dayjs";
 import Cookies from 'js-cookie';
-import { deleteToken } from '../../utils/TokenValidation';
+import {deleteToken} from '../../utils/TokenValidation';
 import {useNavigate} from "react-router-dom";
 
 interface IOrderProps {
@@ -37,7 +37,7 @@ type OrderType = {
     recipes: OrderRecipeItem[]
 };
 
-export default function Orders({ className, header, description, isDashboard }: IOrderProps) {
+export default function Orders({className, header, description, isDashboard}: IOrderProps) {
     const [orders, setOrders] = useState<OrderType[]>([]);
     const [filteredOrders, setFilteredOrders] = useState<OrderType[]>([]);
     const [searchString, setSearchString] = useState('');
@@ -52,7 +52,7 @@ export default function Orders({ className, header, description, isDashboard }: 
 
     useEffect(() => {
         const filtered = orders.filter((order) => {
-            console.log(order);
+            console.log('orders', order);
             const name = order.customer.toLowerCase();
             const doesInclude = name.includes(searchString);
             console.log(doesInclude);
@@ -62,45 +62,25 @@ export default function Orders({ className, header, description, isDashboard }: 
     }, [orders, searchString]);
 
     const deleteOrder = async (id: any) => {
+        const payload = {order_id: id.toString()};
         try {
-            const payload = { order_id: id.toString() };
-            toast.promise(
-                async () => {
-                    try {
-                        await axios.post(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_order`, payload,
-                            {
-                                headers: {
-                                    "Content-type": "application/json",
-                                    Authorization: "Bearer " + Cookies.get('makecake-token'),
-                                }
-                            });
-                    } catch (error:any) {
-                        if (error.response && error.response.status === 401) {
-                            deleteToken();
-                            navigate('/');
-                            toast.error('Login expired please login again', { autoClose: 5000 });
-                        }
-                        // Re-throw the error to be caught by toast.promise
-                        throw error;
-                    }
-                },
+            await axios.post(`https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/delete_order`, payload,
                 {
-                    pending: 'Loading',
-                    success: { render: 'Order deleted', autoClose: 1000 },
-                    error: { render: 'Error deleting order', autoClose: 1000 }
-                }
-            ).then(response => {
-                handleDeleteOrder(id);
-            });
-        }
-        catch (error: any) {
-            if (error.response.status === 401) {
+                    headers: {
+                        "Content-type": "application/json",
+                        Authorization: "Bearer " + Cookies.get('makecake-token'),
+                    }
+                });
+            handleDeleteOrder(id);
+        } catch (error: any) {
+            console.error(`Error deleting order`, error);
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
-                toast.error('Login expired please login again', { autoClose: 1500 });
+                toast.error('Login expired please login again', {autoClose: 1500});
+            } else {
+                toast.error('Error deleting order, please try again later', {autoClose: 1500});
             }
-            else
-                console.error('Error deleting order:', error);
         }
     }
 
@@ -113,54 +93,48 @@ export default function Orders({ className, header, description, isDashboard }: 
             console.log(1);
             const response = await axios.get('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/get-all-my-orders',
                 {
-                    headers:{
+                    headers: {
                         "Content-type": "application/json",
                         Authorization: "Bearer " + Cookies.get('makecake-token')
                     }
                 });
             const apiData = JSON.parse(response.data.body);
-            if(isDashboard)
-            {
-                const transformedOrders = apiData.map((orderData:any) => createOrderFromData(orderData,true)).filter((orderData:any)=>orderData!=null);
+            if (isDashboard) {
+                const transformedOrders = apiData.map((orderData: any) => createOrderFromData(orderData, true)).filter((orderData: any) => orderData != null);
                 setOrders(transformedOrders);
-            }
-            else
-            {
-                const transformedOrders = apiData.map((orderData: any) => createOrderFromData(orderData,false));
+            } else {
+                const transformedOrders = apiData.map((orderData: any) => createOrderFromData(orderData, false));
                 setOrders(transformedOrders);
                 console.log(orders);
             }
-        } catch (error:any) {
-            if(error.response.status===401)
-            {
+        } catch (error: any) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
                 navigate('/');
-                toast.error('Login expired please login again',{autoClose:1500});
-            }
-            else
+                toast.error('Login expired please login again', {autoClose: 1500});
+            } else
                 console.error('Error fetching orders:', error);
         }
     };
 
-    const createRecipeFromData = (recipeData:any):OrderRecipeItem => {
-        return{
-            ingredients_min_cost:recipeData.M.ingredients_min_cost.N,
-            ingredients_avg_cost:recipeData.M.ingredients_avg_cost.N,
-            ingredients_max_cost:recipeData.M.ingredients_max_cost.N,
+    const createRecipeFromData = (recipeData: any): OrderRecipeItem => {
+        return {
+            ingredients_min_cost: recipeData.M.ingredients_min_cost.N,
+            ingredients_avg_cost: recipeData.M.ingredients_avg_cost.N,
+            ingredients_max_cost: recipeData.M.ingredients_max_cost.N,
             recipe_name: recipeData.M.recipe_name.S,
             recipe_price: recipeData.M.recipe_price.N,
             recipe_quantity: recipeData.M.recipe_quantity.N
         };
     };
 
-    const createOrderFromData = (orderData: any,onlyTodayOrders:boolean) => {
+    const createOrderFromData = (orderData: any, onlyTodayOrders: boolean) => {
 
         const today = dayjs().toISOString().split('T')[0];
         const orderDate = orderData['due_date'].S.split('T')[0];
         if (onlyTodayOrders && today !== orderDate) {
             return null;
-        }
-        else {
+        } else {
             const orderRecipes = orderData.recipes.L.map(createRecipeFromData);
             console.log(orderRecipes);
             const customer = orderData.buyer_name.S;
@@ -169,7 +143,7 @@ export default function Orders({ className, header, description, isDashboard }: 
                 dueDate: orderDate,
                 customer: customer,
                 recipes: orderRecipes,
-                order_price:orderData.order_price.N,
+                order_price: orderData.order_price.N,
             };
         }
     };
@@ -209,13 +183,13 @@ export default function Orders({ className, header, description, isDashboard }: 
             </div>
             <div className="orders-list-container">
                 <div className="orders-list">
-                    {filteredOrders.map((order:OrderType) => {
+                    {filteredOrders.map((order: OrderType) => {
                         return <OrderDelegate key={order.id} data={order} deleteDelegate={deleteOrder}/>;
                     })}
                 </div>
             </div>
             <NavigationButtonComponent to="/orders/new" text="Add Order" spanClass={'add-order-span'}/>
-            <ToastContainer />
+            <ToastContainer/>
         </div>
     );
 }

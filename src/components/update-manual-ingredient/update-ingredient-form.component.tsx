@@ -7,19 +7,10 @@ import Cookies from "js-cookie";
 import {toast} from "react-toastify";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import {deleteToken} from "../../utils/TokenValidation";
 
 interface IProps {
     id: string
-}
-
-interface IIngredientData{
-    id: string,
-    name: string,
-    minCost: number,
-    avgCost: number,
-    maxCost: number,
-    minCostStore: string,
-    avgCostStore: string
 }
 
 export default function UpdateIngredientForm({id}: IProps) {
@@ -36,10 +27,8 @@ export default function UpdateIngredientForm({id}: IProps) {
         const func = async () => {
             const ingredient = await fetchIngredient();
             console.log("99", ingredient);
-
             if (!ingredient) {
                 toast.error('Error getting ingredient data');
-                return;
             }
             else {
                 console.log("11", ingredient);
@@ -77,11 +66,20 @@ export default function UpdateIngredientForm({id}: IProps) {
                 return response.data;
             }
             else {
-                console.error(`Error updating: ${ingredientName}`, response);
+                console.error(`Error getting ingredients`);
+                toast.error(`Error getting ingredients, try again later`, {autoClose: 5000});
             }
         }
-        catch (error) {
+        catch (error: any) {
             console.error(`Error updating: ${ingredientName}`, error);
+            if (error.response.status === 401 || error.response.status === 403) {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again', {autoClose: 5000});
+            } else {
+                console.error(`Error getting ingredients`, error);
+                toast.error(`Error getting ingredients, try again later`, {autoClose: 5000});
+            }
         }
     }
 
@@ -113,10 +111,16 @@ export default function UpdateIngredientForm({id}: IProps) {
                 console.error(`Error updating: ${ingredientName}`, response);
                 toast.error(`Error updating: ${ingredientName}`);
             }
-        }
-        catch (error) {
+        } catch (error: any) {
             console.error(`Error updating: ${ingredientName}`, error);
-            toast.error(`Error updating: ${ingredientName}`);
+            if (error.response.status === 401 || error.response.status === 403) {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again', {autoClose: 5000});
+            } else {
+                console.error(`Error updating: ${ingredientName}`, error);
+                toast.error(`Error updating: ${ingredientName}, try again later`, {autoClose: 5000});
+            }
         }
     }
 
@@ -138,7 +142,7 @@ export default function UpdateIngredientForm({id}: IProps) {
                             m: '0 2vh 1vh 0'
                         }}
                     >
-                        <TextField fullWidth id="outlined-basic" label={"Ingredient Name"} variant="outlined"value={ingredientName}
+                        <TextField fullWidth id="outlined-basic" label={"Ingredient Name"} variant="outlined" value={ingredientName}
                                    onChange={(e: any) => {
                                        console.log(`Ingredient Name: ${e.target.value}`)
                                        setIngredientName(e.target.value)
@@ -226,7 +230,7 @@ export default function UpdateIngredientForm({id}: IProps) {
             </div>
 
             <div className="submit-button-container ingredient-create-button">
-                <button className='create-ingredient-button button button-gradient' onClick={sendDataToBackend}>Create
+                <button className='create-ingredient-button button button-gradient' onClick={sendDataToBackend}>Update
                 </button>
             </div>
         </div>

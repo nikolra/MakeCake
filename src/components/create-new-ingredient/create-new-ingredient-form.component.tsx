@@ -7,6 +7,7 @@ import {useNavigate} from "react-router-dom";
 import Cookies from 'js-cookie';
 import axios from "axios";
 import {toast} from "react-toastify";
+import {deleteToken} from "../../utils/TokenValidation";
 
 export default function NewIngredientForm() {
 
@@ -31,26 +32,30 @@ export default function NewIngredientForm() {
                 "max_store": maxPriceStore
             }
             try {
-                const response =
-                    await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/create_new_mnl_ingredient',
-                        body,
-                        {
-                            headers: {
-                                "Content-type": "application/json",
-                                Authorization: "Bearer " + Cookies.get('makecake-token')
-                            }
-                        });
+                await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/create_new_mnl_ingredient',
+                    body,
+                    {
+                        headers: {
+                            "Content-type": "application/json",
+                            Authorization: "Bearer " + Cookies.get('makecake-token')
+                        }
+                    });
                 toast.success(`${ingredientName} Added Successfully`);
                 navigate('/ingredients');
-            }
-            catch (error) {
+            } catch (error) {
                 console.error(`Error adding: ${ingredientName}`, error);
                 toast.error(`Error adding: ${ingredientName}`);
             }
-        }
-        catch (error) {
-            console.error(`Error getting user email`, error);
-            toast.error(`Error getting user email`);
+        } catch (error: any) {
+            console.log(error);
+            if (error.response.status === 401 || error.response.status === 403) {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again', {autoClose: 5000});
+            } else {
+                console.error('Error creating ingredient:', error);
+                toast.error('Error creating ingredient, please try again later', {autoClose: 5000});
+            }
         }
     }
 
@@ -64,16 +69,19 @@ export default function NewIngredientForm() {
             </div>
             <div className="new-ingredient-input-fields">
                 <div className="ingredient-input-field">
-                    <InputField setValueDelegate={setIngredientName} label="Ingredient Name" width={290} margin={'0 2vh 1vh 0'}/>
+                    <InputField setValueDelegate={setIngredientName} label="Ingredient Name" width={290}
+                                margin={'0 2vh 1vh 0'}/>
                     <InputField setValueDelegate={setCode} label="Ingredient Code" width={195}/>
                 </div>
 
                 <div className="ingredient-input-field">
-                    <InputField setValueDelegate={setMaxPriceStore} label="Store Name" width={290} margin={'0 2vh 1vh 0'}/>
+                    <InputField setValueDelegate={setMaxPriceStore} label="Store Name" width={290}
+                                margin={'0 2vh 1vh 0'}/>
                     <NumericInputField setValueDelegate={setMaxPrice} label="Highest Price" width={195}/>
                 </div>
                 <div className="ingredient-input-field">
-                    <InputField setValueDelegate={setMinPriceStore} label="Store Name" width={290} margin={'0 2vh 1vh 0'}/>
+                    <InputField setValueDelegate={setMinPriceStore} label="Store Name" width={290}
+                                margin={'0 2vh 1vh 0'}/>
                     <NumericInputField setValueDelegate={setMinPrice} label="Lowest Price" width={195}/>
                 </div>
             </div>

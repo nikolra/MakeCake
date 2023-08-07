@@ -25,3 +25,10 @@
     font-weight: 700;
     color: var(--foreground);
 }
+
+.recipe-delegate-table-container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+}

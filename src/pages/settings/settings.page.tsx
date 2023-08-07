@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import SettingsComponent from "../../components/settings/settings.component";
 import {useNavigate} from "react-router-dom";
 import Cookies from "js-cookie";
-import {validateToken} from "../../utils/TokenValidation";
+import {deleteToken, validateToken} from "../../utils/TokenValidation";
 import axios from "axios";
 import {toast} from "react-toastify";
 
@@ -42,9 +42,15 @@ export default function Settings() {
             const data = response.data.body;
             setName(data.username);
 
-        } catch (e) {
-            console.error(`error getting user: ${e}`);
-            toast.error(`error getting user`);
+        } catch (error: any) {
+            console.error(`error getting user: ${error}`);
+            if (error.response.status === 401 || error.response.status === 403) {
+                deleteToken();
+                navigate('/');
+                toast.error('Login expired please login again', {autoClose: 1500});
+            } else {
+                toast.error('error getting user, please try again later', {autoClose: 1500});
+            }
         }
     }
 
