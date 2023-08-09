@@ -65,7 +65,7 @@ export default function WeekOrders() {
                 <div className="best-customers-header-title-row">
                     <div className="best-customers-header-text">
                         <span className="widget-title-text">Best Customers</span>
-                        <span className="widget-title-text-secondary">Top 5 customers by number of orders</span>
+                        <span className="widget-title-text-secondary">Top 5 customers in current month by number of orders</span>
                     </div>
                 </div>
                 <div className="best-customers-header-orders-list-title">

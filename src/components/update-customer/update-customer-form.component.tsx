@@ -76,7 +76,7 @@ export default function UpdateCustomerForm({email}: ICustomerProps) {
     }
 
     const phoneNumberValidator = (phone: string): boolean => {
-        const phoneNumberRegex = /\b[0245]\d{2}-\d{7}\b/;
+        const phoneNumberRegex = /^\+972-\d{9}$/;
         const regex = new RegExp(phoneNumberRegex);
         return regex.test(phone) || phone == "";
     }
