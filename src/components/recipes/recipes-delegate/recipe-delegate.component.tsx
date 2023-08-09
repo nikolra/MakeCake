@@ -95,22 +95,17 @@ function RecipeDelegate(props: IRecipeProps) {
                     </div>
                 </div>
                 {
-                    ingredients.map((ingredient: Ingredient) => {
-                        let barcode = "" ;
-                        if(ingredient.automated) {
-                            barcode = ingredient.ingredient_code.toString();
-                        }
-                        console.log(barcode);
+                    ingredients.map((ingredient:any) => {
                         return(
                             <div className="all-recipes-delegate-recipe-title-value">
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{barcode}</span>
+                                    <span>{ingredient.code}</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.ingredient_name}</span>
+                                    <span>{ingredient.name}</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.quantity} {ingredient.measurement_unit}</span>
+                                    <span>{ingredient.quantity}</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
                                     <span>{ingredient.minCost*ingredient.quantity}₪</span>

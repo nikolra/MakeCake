@@ -57,6 +57,7 @@ export default function Recipes({className, header, description}: IRecipeProps) 
                     }
                 });
             handleDeleteOrder(id);
+            toast.success('Recipe successfully deleted!', { autoClose: 3000 });
         } catch (error: any) {
             if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();

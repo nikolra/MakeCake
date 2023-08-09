@@ -43,7 +43,7 @@ export default function WeekOrders() {
             const filteredData: Customer[] = responseData.map((item: any, index: number) => ({
                 number: index + 1,
                 orders: item.count,
-                name: item.email
+                name: item.name+'-'+item.email
             }));
             setCustomers(filteredData);
         } catch (error: any) {

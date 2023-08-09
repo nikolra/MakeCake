@@ -99,7 +99,8 @@ export default function EditRecipeForm({id}: IRecipeProps) {
             console.log('data#####:', data);
             const formattedIngredients = data.map((ingredient: any) => {
                 return {
-                    name: ingredient.name,
+                    name:ingredient.name,
+                    code:ingredient.code,
                     minCost: ingredient.min_price,
                     maxCost: ingredient.max_price,
                     avgCost: ingredient.avg_price,
@@ -139,6 +140,7 @@ export default function EditRecipeForm({id}: IRecipeProps) {
             if(response.status!==200)
                 toast.error("Loading recipes failed");
             const data = JSON.parse(response.data.body)[0];
+            console.log(data);
             setRecipeIngredients(data.ingredients);
             setRecipeName(data.recipe_name);
             setRecipePrice(data.recipe_price);

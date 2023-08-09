@@ -4,17 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c7a2437d-b918-4d33-803d-084c99b088ba" name="Changes" comment="toasters added">
+    <list default="true" id="c7a2437d-b918-4d33-803d-084c99b088ba" name="Changes" comment="toasters token added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/create-new-order/create-new-order-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-order/create-new-order-form.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/create-new-recipe/create-new-recipe-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/create-new-recipe/create-new-recipe-form.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard-widgets/best-customers/best-customers.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard-widgets/best-customers/best-customers.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard-widgets/income/income.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard-widgets/income/income.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/orders/orders.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/orders/orders.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/recipes/recipes.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recipes/recipes.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/update-order/update-order-form.component.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/recipes/recipes-delegate/recipe-delegate.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recipes/recipes-delegate/recipe-delegate.component.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/update-recipe/update-recipe-form.component.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/update-recipe/update-recipe-form.component.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/TokenValidation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/TokenValidation.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +88,10 @@
       <workItem from="1690453439606" duration="18074000" />
       <workItem from="1690475010989" duration="92000" />
       <workItem from="1690739673463" duration="1261000" />
-      <workItem from="1690797317612" duration="17026000" />
+      <workItem from="1690797317612" duration="17916000" />
+      <workItem from="1691006313413" duration="1028000" />
+      <workItem from="1691081434410" duration="960000" />
+      <workItem from="1691431603388" duration="2421000" />
     </task>
     <task id="LOCAL-00001" summary="implemented best customers widget">
       <option name="closed" value="true" />
@@ -255,7 +253,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690740932777</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="toasters token added">
+      <option name="closed" value="true" />
+      <created>1690830704969</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1690830704969</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -287,7 +293,8 @@
     <MESSAGE value="." />
     <MESSAGE value="fixed bugs" />
     <MESSAGE value="toasters added" />
-    <option name="LAST_COMMIT_MESSAGE" value="toasters added" />
+    <MESSAGE value="toasters token added" />
+    <option name="LAST_COMMIT_MESSAGE" value="toasters token added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
