@@ -39,13 +39,13 @@ function RecipeDelegate(props: IRecipeProps) {
                     <span>{recipe_name}</span>
                 </div>
                 <div className="all-recipes-delegate-table-container">
-                    <span>{ingredients_min_cost}₪</span>
+                    <span>{ingredients_min_cost.toFixed(2)}₪</span>
                 </div>
                 <div className="all-recipes-delegate-table-container">
-                    <span>{ingredients_avg_cost}₪</span>
+                    <span>{ingredients_avg_cost.toFixed(2)}₪</span>
                 </div>
                 <div className="all-recipes-delegate-table-container">
-                    <span>{ingredients_max_cost}₪</span>
+                    <span>{ingredients_max_cost.toFixed(2)}₪</span>
                 </div>
                 <div className="all-recipes-delegate-table-container">
                     <span>{recipe_price}₪</span>
@@ -108,13 +108,13 @@ function RecipeDelegate(props: IRecipeProps) {
                                     <span>{ingredient.quantity}</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.minCost*ingredient.quantity}₪</span>
+                                    <span>{(ingredient.minCost*ingredient.quantity).toFixed(2)}₪</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.avgCost*ingredient.quantity}₪</span>
+                                    <span>{(ingredient.avgCost*ingredient.quantity).toFixed(2)}₪</span>
                                 </div>
                                 <div className="all-recipes-delegate-recipe-title-item">
-                                    <span>{ingredient.maxCost*ingredient.quantity}₪</span>
+                                    <span>{(ingredient.maxCost*ingredient.quantity).toFixed(2)}₪</span>
                                 </div>
                             </div>
                         )
