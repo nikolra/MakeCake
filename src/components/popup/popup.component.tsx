@@ -4,6 +4,7 @@ import './popup.style.css'
 import ComboBox from "../combo-box/combo-box.component";
 import {toast} from "react-toastify";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 interface IProps {
     buttonText: string,
@@ -21,14 +22,20 @@ function PopUp({buttonText, dropdownValues, customerEmail, customerName}: IProps
 
     const fetchSendSMS = async () => {
         try {
-            //TODO: Amit - should get connected user email
             const payload = {
                 customerEmailAddress: customerEmail,
-                smsTemplateName: template,
-                konditorEmail: "tomer@gmail.com"
+                smsTemplateName: template
             };
             toast.promise(async () => {
-                const response = await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/send_sms_to_customer', payload);
+                const response =
+                    await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/send_sms_to_customer',
+                        payload,
+                {
+                    headers: {
+                        "Content-type": "application/json",
+                            Authorization: "Bearer " + Cookies.get('makecake-token')
+                    }
+                });
                 const data = response.data;
                 console.log(data);
                 //setTemplates(data);

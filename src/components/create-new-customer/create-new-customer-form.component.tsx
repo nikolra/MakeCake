@@ -36,7 +36,6 @@ export default function NewCustomerForm() {
                     email_address: email,
                     address: address
                 };
-                navigate('/customers');
                 console.log('create customer:', payload);
                 const response =
                     await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/customer',
@@ -47,12 +46,12 @@ export default function NewCustomerForm() {
                                 Authorization: "Bearer " + Cookies.get('makecake-token')
                             }
                         });
-                //TODO: Eden - understand why showing error on success
                 console.log('create customer response status:', response.status);
                 console.log('create customer response data:', response.data);
                 console.log(JSON.stringify(response));
                 console.log(response.data);
-                toast.error(`Created customer ${customerName}, ${email}`, {autoClose: 5000});
+                navigate('/customers');
+                toast.success(`Created customer ${customerName}, ${email}`, {autoClose: 5000});
 
             } catch (error: any) {
                 console.log(error);
@@ -68,8 +67,7 @@ export default function NewCustomerForm() {
     }
 
     const phoneNumberValidator = (phone: string): boolean => {
-        const phoneNumberRegex = /^\+\d{1,3}\s?\(?\d{1,}\)?[-.\s]?\d{1,}[-.\s]?\d{1,}[-.\s]?\d{1,}$/;
-
+        const phoneNumberRegex = /^\+972-\d{9}$/;
         const regex = new RegExp(phoneNumberRegex);
         return regex.test(phone) || phone == "";
     }
