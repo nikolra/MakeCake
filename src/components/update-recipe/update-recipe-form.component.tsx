@@ -51,6 +51,25 @@ export default function EditRecipeForm({id}: IRecipeProps) {
 
 
     useEffect(() => {
+        let sumMinCost = 0;
+        let sumAvgCost = 0;
+        let sumMaxCost = 0;
+
+        // Calculate the sum for each ingredient in recipeIngredients
+        recipeIngredients.forEach(ingredient => {
+            sumMinCost += ingredient.quantity * ingredient.minCost;
+            sumAvgCost += ingredient.quantity * ingredient.avgCost;
+            sumMaxCost += ingredient.quantity * ingredient.maxCost;
+        });
+
+        // Update the state variables
+        setTotalMinCost(sumMinCost);
+        setTotalAvgCost(sumAvgCost);
+        setTotalMaxCost(sumMaxCost);
+    }, [recipeIngredients]);
+
+
+    useEffect(() => {
         if(recipeName==="")
         {
             setQuantity(0);
@@ -234,7 +253,7 @@ export default function EditRecipeForm({id}: IRecipeProps) {
         else {
             const recipeIngredientFromRecipe = recipeIngredients.find((ingredient) => ingredient.name === currentIngredient?.name);    /// check if the ingredient exist in the recipe
             if (recipeIngredientFromRecipe) {
-                recipeIngredientFromRecipe.quantity = recipeIngredientFromRecipe.quantity + quantity;
+                recipeIngredientFromRecipe.quantity = parseFloat((recipeIngredientFromRecipe.quantity + quantity).toFixed(3));
             }
             else if (recipeIngredients && currentIngredient) {
                 setRecipeIngredients([...recipeIngredients, currentIngredient]);
@@ -437,7 +456,7 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                                 label={"Order Min Cost"}
                                 variant="standard"
                                 defaultValue={totalMinCost}
-                                value={totalMinCost === 0 ? "" : totalMinCost}
+                                value={totalMinCost === 0 ? "" : totalMinCost.toFixed(2)}
                                 onChange={(e: any) => {
                                     setTotalMinCost(Number(e.target.value))
                                 }}
@@ -456,7 +475,7 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                                 label={"Order Avg Cost"}
                                 variant="standard"
                                 defaultValue={totalAvgCost}
-                                value={totalAvgCost === 0 ? "" : totalAvgCost}
+                                value={totalAvgCost === 0 ? "" : totalAvgCost.toFixed(2)}
                                 onChange={(e: any) => {
                                     setTotalAvgCost(Number(e.target.value))
                                 }}
@@ -475,7 +494,7 @@ export default function EditRecipeForm({id}: IRecipeProps) {
                                 label={"Order Max Cost"}
                                 variant="standard"
                                 defaultValue={totalMaxCost}
-                                value={totalMaxCost === 0 ? "" : totalMaxCost}
+                                value={totalMaxCost === 0 ? "" : totalMaxCost.toFixed(2)}
                                 onChange={(e: any) => {
                                     setTotalMaxCost(Number(e.target.value))
                                 }}

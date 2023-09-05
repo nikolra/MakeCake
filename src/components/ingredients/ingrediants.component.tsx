@@ -140,7 +140,7 @@ export default function Ingredients({className, header, description}: IIngredien
                     <div className="all-ingredients-header-find-container">
                         <SearchField placeholder="Find" onChangeHandler={
                             (event: any) => {
-                                setSearchString(event.target.value.toLowerCase())
+                                setSearchString(event.target.value)
                             }
                         }/>
                     </div>
