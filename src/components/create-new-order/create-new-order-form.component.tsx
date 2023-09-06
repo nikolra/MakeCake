@@ -53,7 +53,6 @@ export default function NewOrderForm() {
     const [totalMaxCost, setTotalMaxCost] = useState(0);
     const [totalAvgCost, setTotalAvgCost] = useState(0);
     const [recipePrice, setRecipePrice] = useState(0);
-    const [currentRecipe, setCurrentRecipe] = useState<RecipeItem>();
     const [myRecipesNames, setRecipeNames] = useState<string[]>([]);
     const [myCustomersNames, setCustomersNames] = useState<string[]>([""]);
     const [myRecipes, setMyRecipes] = useState<RecipeItem[]>([]);
@@ -80,7 +79,6 @@ export default function NewOrderForm() {
         if (myRecipes) {
             const recipe = myRecipes.find((recipe) => recipe.recipe_name === recipeName);
             if (recipe) {
-                setCurrentRecipe(recipe);
                 setMinCost(recipe.ingredients_min_cost);
                 setAvgCost(recipe.ingredients_avg_cost);
                 setMaxCost(recipe.ingredients_max_cost);
@@ -277,7 +275,6 @@ export default function NewOrderForm() {
                 toast.error("please choose a recipe");
             }
         }
-        setCurrentRecipe(undefined);
         setRecipeName('');
         setManualPrice(0)
         setQuantity(0);
@@ -534,7 +531,7 @@ export default function NewOrderForm() {
                                 }}
                             />
                         </Box>
-                        <button className='add-recipe-to-order-button' onClick={addRecipeToOrder}>Add recipe</button>
+                        <button className='add-recipe-to-order-button' onClick={addRecipeToOrder}>Add recipe to order</button>
                     </div>
                 </div>
             </div>

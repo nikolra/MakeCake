@@ -170,7 +170,7 @@ export default function Ingredients({className, header, description}: IIngredien
             </div>
             <div className="buttons-container-row align-right">
                 <div className="update-ingredients-button-container align-right">
-                    <button className='update-ingredients-button' onClick={updateIngredients}>Update ingredients
+                    <button className='update-ingredients-button' onClick={updateIngredients}>Update Ingredients
                     </button>
                 </div>
                 <NavigationButtonComponent to="/ingredients/new" text="Add Ingredient"
