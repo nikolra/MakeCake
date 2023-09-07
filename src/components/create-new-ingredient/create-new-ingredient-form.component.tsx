@@ -23,12 +23,24 @@ export default function NewIngredientForm() {
     async function sendDataToBackend() {
         console.log(`Submit clicked`);
         try {
+            let codeRand = '';
+            //if code is empty, generate random code
+            if (code === undefined || code === null || code === '') {
+                const randomNumber = Math.floor(Math.random() * 100000000);
+                codeRand = randomNumber.toString().padStart(8, '0');
+            }
+            //if minPrice and maxPrice are empty, show error.
+            if (minPrice === 0 && maxPrice === 0) {
+                toast.error('Please fill at least one price field');
+                return;
+            }
+
             const body = {
-                "code": code,
+                "code": code ? code : codeRand,
                 "name": ingredientName,
-                "min_price": minPrice,
+                "min_price": minPrice === 0 ? maxPrice : minPrice,
                 "min_store": minPriceStore,
-                "max_price": maxPrice,
+                "max_price": maxPrice === 0 ? minPrice : maxPrice,
                 "max_store": maxPriceStore
             }
             try {

@@ -23,8 +23,8 @@ export default function Register() {
             phone_num: "+9728786719",
             given_name: firstName,
             family_name: lastName,
-            repeat_password: repeatPassword,
-            password: password
+            password: password,
+            repeat_password: repeatPassword
         };
         try {
             console.log(body);
@@ -35,24 +35,16 @@ export default function Register() {
                 }
             })
             
-            if (response.status === 200) {
+            if (response.data.statusCode === 200) {
                 toast.success("Registration successful");
                 navigate('/');
             } else {
-                toast.error("Registration failed");
-                console.error("Registration failed", response.data.message);
+                toast.error(JSON.stringify(response.data.body));
+                console.error("Registration failed", response.data.body);
             }
         } catch (error: unknown) {
-            if (error instanceof Error) {
-                if (error.message === "Passwords do not match") {
-                    toast.error("Passwords do not match");
-                } else if (error.message === "An account with the given email already exists.") {
-                    toast.error("A user with this email already exists");
-                } else {
-                    toast.error("Registration failed");
-                    console.error("Registration failed", error);
-                }
-            }
+            toast.error('Error during registration')
+
         }
     };
 

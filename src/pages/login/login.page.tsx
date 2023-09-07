@@ -31,13 +31,7 @@ export default function Login() {
                     headers: {
                         'Access-Control-Allow-Origin': '*',
                         'Access-Control-Allow-Headers': '*'
-                    }
-                }
-            )
-            // Assuming the response contains a token field
-            // console.error('Login: ', response.data);
-            // console.error('idToken: ', response.data.body.idToken);
-            // console.error('accessToken: ', response.data.body.accessToken);
+                    }});
             const token = response.data.body.idToken;
             if (token && response.data.statusCode === 200) {
                 Cookies.set('makecake-token', response.data.body.idToken, { expires: 1 });
@@ -45,7 +39,7 @@ export default function Login() {
                 navigate('/dashboard');
             } else {
                 console.error('Login failed: ', response);
-                toast.error('Login failed')
+                toast.error(JSON.stringify(response.data.body));
             }
         } catch (error) {
             toast.error('Error during login')
