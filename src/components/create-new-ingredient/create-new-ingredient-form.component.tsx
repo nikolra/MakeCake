@@ -34,14 +34,25 @@ export default function NewIngredientForm() {
                 toast.error('Please fill at least one price field');
                 return;
             }
-
+            if (minPrice > maxPrice) {
+                toast.error('Minimum price cannot be greater than maximum price');
+                return;
+            }
+            if (minPriceStore === undefined && maxPriceStore === undefined) {
+                toast.error('Please fill at least one store field');
+                return;
+            }
+            if(ingredientName === undefined || ingredientName === null || ingredientName === '') {
+                toast.error('Please fill ingredient name');
+                return;
+            }
             const body = {
                 "code": code ? code : codeRand,
                 "name": ingredientName,
                 "min_price": minPrice === 0 ? maxPrice : minPrice,
-                "min_store": minPriceStore,
+                "min_store": minPriceStore === undefined ? maxPriceStore : minPriceStore,
                 "max_price": maxPrice === 0 ? minPrice : maxPrice,
-                "max_store": maxPriceStore
+                "max_store": maxPriceStore === undefined ? minPriceStore : maxPriceStore
             }
             try {
                 await axios.post('https://5wcgnzy0bg.execute-api.us-east-1.amazonaws.com/dev/create_new_mnl_ingredient',
@@ -58,7 +69,8 @@ export default function NewIngredientForm() {
                 console.error(`Error adding: ${ingredientName}`, error);
                 toast.error(`Error adding: ${ingredientName}`);
             }
-        } catch (error: any) {
+        } catch
+            (error: any) {
             console.log(error);
             if (error.response.status === 401 || error.response.status === 403) {
                 deleteToken();
@@ -98,7 +110,8 @@ export default function NewIngredientForm() {
                 </div>
             </div>
             <div className="new-ingredient-create-button">
-                <button className='create-ingredient-button button button-gradient' onClick={sendDataToBackend}>Create
+                <button className='create-ingredient-button button button-gradient'
+                        onClick={sendDataToBackend}>Create
                 </button>
             </div>
         </div>
