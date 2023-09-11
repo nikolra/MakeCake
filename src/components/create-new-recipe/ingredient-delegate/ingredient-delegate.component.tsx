@@ -29,13 +29,13 @@ function IngredientDelegate(props: IIngredientProps) {
                     <span>{quantity} {measurement_unit}</span>
                 </div>
                 <div className="recipe-delegate-table-container">
-                    <span>{minCost*quantity}₪</span>
+                    <span>{(minCost*quantity).toFixed(2)}₪</span>
                 </div>
                 <div className="recipe-delegate-table-container">
-                    <span>{avgCost*quantity}₪</span>
+                    <span>{(avgCost*quantity).toFixed(2)}₪</span>
                 </div>
                 <div className="recipe-delegate-table-container">
-                    <span>{maxCost*quantity}₪</span>
+                    <span>{(maxCost*quantity).toFixed(2)}₪</span>
                 </div>
                 <div className="recipe-delegate-table-container align-right">
                     <button className="expand-button" onClick={() => {

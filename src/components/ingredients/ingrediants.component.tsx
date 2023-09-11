@@ -35,7 +35,7 @@ export default function Ingredients({className, header, description}: IIngredien
 
     useEffect(() => {
         const filtered = ingredients?.filter((ingredient) => {
-            const name = ingredient.name;
+            const name = ingredient.name.toLowerCase();
             console.log(name, searchString, name.includes(searchString))
             return name.includes(searchString);
         })
@@ -140,7 +140,7 @@ export default function Ingredients({className, header, description}: IIngredien
                     <div className="all-ingredients-header-find-container">
                         <SearchField placeholder="Find" onChangeHandler={
                             (event: any) => {
-                                setSearchString(event.target.value.toLowerCase())
+                                setSearchString(event.target.value)
                             }
                         }/>
                     </div>
@@ -170,7 +170,7 @@ export default function Ingredients({className, header, description}: IIngredien
             </div>
             <div className="buttons-container-row align-right">
                 <div className="update-ingredients-button-container align-right">
-                    <button className='update-ingredients-button' onClick={updateIngredients}>update ingredients
+                    <button className='update-ingredients-button' onClick={updateIngredients}>Update Ingredients
                     </button>
                 </div>
                 <NavigationButtonComponent to="/ingredients/new" text="Add Ingredient"

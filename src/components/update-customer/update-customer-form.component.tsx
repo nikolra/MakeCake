@@ -23,7 +23,6 @@ interface ICustomer {
 
 export default function UpdateCustomerForm({email}: ICustomerProps) {
 
-    const [customer, setCustomer] = useState<ICustomer | null>(null);
     const [customerName, setCustomerName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [isValidNumber, setIsValidNumber] = useState(true);
@@ -34,9 +33,6 @@ export default function UpdateCustomerForm({email}: ICustomerProps) {
     useEffect(() => {
         const func = async () => {
             await fetchCustomer();
-            if (!customer) {
-                toast.error('Error getting custoemrs data');
-            }
         }
         func();
     }, []);
@@ -56,7 +52,6 @@ export default function UpdateCustomerForm({email}: ICustomerProps) {
             const customerData = customers.find((customer: { email: string; }) => customer.email === email);
 
             if (customerData) {
-                setCustomer(customerData);
                 console.log(customerData.name);
                 setCustomerName(customerData.name);
                 setPhoneNumber(customerData.phoneNumber);
@@ -76,9 +71,9 @@ export default function UpdateCustomerForm({email}: ICustomerProps) {
     }
 
     const phoneNumberValidator = (phone: string): boolean => {
-        const phoneNumberRegex = /\b[0245]\d{2}-\d{7}\b/;
+        const phoneNumberRegex = /^\+972-\d{9}$/;
         const regex = new RegExp(phoneNumberRegex);
-        return regex.test(phone) || phone == "";
+        return regex.test(phone) || phone === "";
     }
 
     async function sendDataToBackend() {
