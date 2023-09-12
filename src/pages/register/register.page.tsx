@@ -19,7 +19,7 @@ export default function Register() {
 
 
     const tryRegister = async () => {
-        if (validator.isEmail(email)) {
+        if (!validator.isEmail(email)) {
             toast.error("Please enter valid email.");
             return;
         }
