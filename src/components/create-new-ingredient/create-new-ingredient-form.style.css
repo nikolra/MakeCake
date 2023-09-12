@@ -91,6 +91,10 @@
     padding-top: 6vh;
 }
 
+.update-ingredients-button-span{
+    padding-left: 11px;
+}
+
 .buttons-container-row{
     display: flex;
     justify-content: flex-end;
