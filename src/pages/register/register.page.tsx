@@ -6,6 +6,7 @@ import LabeledField from '../../components/labeled-input/labeled-input.component
 import '../../App.css';
 import axios from "axios";
 import {toast, ToastContainer} from "react-toastify";
+import validator from "validator";
 
 export default function Register() {
 
@@ -18,6 +19,10 @@ export default function Register() {
 
 
     const tryRegister = async () => {
+        if (validator.isEmail(email)) {
+            toast.error("Please enter valid email.");
+            return;
+        }
         const body = {
             email: email,
             phone_num: "+9728786719",
@@ -39,7 +44,7 @@ export default function Register() {
                 toast.success("Registration successful");
                 navigate('/');
             } else {
-                toast.error(JSON.stringify(response.data.body));
+                toast.error(response.data.body);
                 console.error("Registration failed", response.data.body);
             }
         } catch (error: unknown) {

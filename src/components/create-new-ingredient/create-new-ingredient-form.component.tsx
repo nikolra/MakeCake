@@ -38,7 +38,7 @@ export default function NewIngredientForm() {
                 toast.error('Minimum price cannot be greater than maximum price');
                 return;
             }
-            if (minPriceStore === undefined && maxPriceStore === undefined) {
+            if ((minPriceStore === undefined || minPriceStore === "") && (maxPriceStore === undefined || maxPriceStore === "")) {
                 toast.error('Please fill at least one store field');
                 return;
             }
